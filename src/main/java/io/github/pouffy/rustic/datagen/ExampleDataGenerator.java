@@ -1,15 +1,14 @@
-package io.github.pouffy.examplemod.datagen;
+package io.github.pouffy.rustic.datagen;
 
-import com.pouffydev.krystal_core.datagen.client.KCSoundsProvider;
-import io.github.pouffy.examplemod.Example;
-import io.github.pouffy.examplemod.datagen.client.ModBlockStateProvider;
-import io.github.pouffy.examplemod.datagen.client.ModItemModelProvider;
-import io.github.pouffy.examplemod.datagen.client.ModLanguageProvider;
-import io.github.pouffy.examplemod.datagen.client.ModSoundsProvider;
-import io.github.pouffy.examplemod.datagen.server.ModAdvancementProvider;
-import io.github.pouffy.examplemod.datagen.server.loot.ModLootGenerator;
-import io.github.pouffy.examplemod.datagen.server.tags.ModBlockTagsProvider;
-import io.github.pouffy.examplemod.datagen.server.tags.ModItemTagsProvider;
+import io.github.pouffy.rustic.Rustic;
+import io.github.pouffy.rustic.datagen.client.ModBlockStateProvider;
+import io.github.pouffy.rustic.datagen.client.ModItemModelProvider;
+import io.github.pouffy.rustic.datagen.client.ModLanguageProvider;
+import io.github.pouffy.rustic.datagen.client.ModSoundsProvider;
+import io.github.pouffy.rustic.datagen.server.ModAdvancementProvider;
+import io.github.pouffy.rustic.datagen.server.loot.ModLootGenerator;
+import io.github.pouffy.rustic.datagen.server.tags.ModBlockTagsProvider;
+import io.github.pouffy.rustic.datagen.server.tags.ModItemTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -22,7 +21,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = Example.MODID)
+@EventBusSubscriber(modid = Rustic.MODID)
 public class ExampleDataGenerator {
 
     @SubscribeEvent

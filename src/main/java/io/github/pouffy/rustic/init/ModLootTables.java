@@ -1,7 +1,7 @@
-package io.github.pouffy.examplemod.init;
+package io.github.pouffy.rustic.init;
 
 import com.google.common.collect.Sets;
-import io.github.pouffy.examplemod.Example;
+import io.github.pouffy.rustic.Rustic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -52,7 +52,7 @@ public class ModLootTables {
     }
 
     private static ResourceKey<LootTable> register(String id) {
-        return register(ResourceKey.create(Registries.LOOT_TABLE, Example.location(id)));
+        return register(ResourceKey.create(Registries.LOOT_TABLE, Rustic.location(id)));
     }
 
     private static ResourceKey<LootTable> register(ResourceKey<LootTable> id) {

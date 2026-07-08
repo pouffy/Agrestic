@@ -1,4 +1,4 @@
-package io.github.pouffy.examplemod.datagen.server.loot;
+package io.github.pouffy.rustic.datagen.server.loot;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.function.BiConsumer;
 
-public record ModChestLootTables(HolderLookup.Provider registries) implements LootTableSubProvider {
+public record ModArchaeologyLootTables(HolderLookup.Provider registries) implements LootTableSubProvider {
 
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {

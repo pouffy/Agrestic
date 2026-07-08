@@ -1,6 +1,6 @@
-package io.github.pouffy.examplemod.datagen.server.loot;
+package io.github.pouffy.rustic.datagen.server.loot;
 
-import io.github.pouffy.examplemod.init.ModLootTables;
+import io.github.pouffy.rustic.init.ModLootTables;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.data.PackOutput;

@@ -1,7 +1,7 @@
-package io.github.pouffy.examplemod.datagen.server;
+package io.github.pouffy.rustic.datagen.server;
 
 import com.mojang.datafixers.util.Pair;
-import io.github.pouffy.examplemod.Example;
+import io.github.pouffy.rustic.Rustic;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
@@ -32,17 +32,17 @@ public class ModAdvancementProvider implements AdvancementProvider.AdvancementGe
     }
 
     private ResourceLocation path(String name) {
-        return Example.location("main/" + name);
+        return Rustic.location("main/" + name);
     }
 
     private Component title(String name, String translation) {
-        String key = "advancements." + Example.MODID + "." + name + ".title";
+        String key = "advancements." + Rustic.MODID + "." + name + ".title";
         titles.add(Pair.of(key, translation));
         return Component.translatable(key);
     }
 
     private Component description(String name, String translation) {
-        String key = "advancements." + Example.MODID + "." + name + ".description";
+        String key = "advancements." + Rustic.MODID + "." + name + ".description";
         descriptions.add(Pair.of(key, translation));
         return Component.translatable(key);
     }

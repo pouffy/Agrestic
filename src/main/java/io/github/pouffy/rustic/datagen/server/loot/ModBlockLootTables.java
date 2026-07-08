@@ -1,4 +1,4 @@
-package io.github.pouffy.examplemod.datagen.server.loot;
+package io.github.pouffy.rustic.datagen.server.loot;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;

@@ -1,6 +1,6 @@
-package io.github.pouffy.examplemod.datagen.server.tags;
+package io.github.pouffy.rustic.datagen.server.tags;
 
-import io.github.pouffy.examplemod.Example;
+import io.github.pouffy.rustic.Rustic;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, blockTags, Example.MODID, existingFileHelper);
+        super(output, lookupProvider, blockTags, Rustic.MODID, existingFileHelper);
     }
 
     @Override
