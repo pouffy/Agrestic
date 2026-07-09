@@ -1,12 +1,14 @@
 package io.github.pouffy.rustic.datagen.server.tags;
 
+import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import io.github.pouffy.rustic.Rustic;
 import io.github.pouffy.rustic.init.RusticBlocks;
+import io.github.pouffy.rustic.init.RusticTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -20,7 +22,34 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         super(output, lookupProvider, Rustic.MODID, existingFileHelper);
     }
 
+    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider provider) {
+        for(BlockDefinition<?> definition : Rustic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
+            if (definition.get() instanceof FlowerBlock) {
+                this.tag(BlockTags.SMALL_FLOWERS).add(definition.block());
+            }
+
+            if (definition.get() instanceof WallBlock) {
+                this.tag(BlockTags.WALLS).add(definition.block());
+            }
+
+            if (definition.get() instanceof SaplingBlock) {
+                this.tag(BlockTags.SAPLINGS).add(definition.block());
+            }
+
+            if (definition.get() instanceof LeavesBlock) {
+                this.tag(BlockTags.LEAVES).add(definition.block());
+            }
+
+            if (definition.get() instanceof SlabBlock) {
+                this.tag(BlockTags.SLABS).add(definition.block());
+            }
+
+            if (definition.get() instanceof StairBlock) {
+                this.tag(BlockTags.STAIRS).add(definition.block());
+            }
+        }
+
         for(RusticBlocks.Woodset woodset : RusticBlocks.WOODSETS) {
             this.tag(BlockTags.STANDING_SIGNS).add(woodset.sign().block());
             this.tag(BlockTags.WALL_SIGNS).add(woodset.wallSign().block());
@@ -41,6 +70,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             this.tag(Tags.Blocks.STRIPPED_LOGS).add(woodset.strippedLog().block());
             this.tag(Tags.Blocks.STRIPPED_WOODS).add(woodset.strippedWood().block());
         }
+
+        this.tag(RusticTags.OLIVE_LOGS.blockTag()).add(RusticBlocks.OLIVE.log().get(), RusticBlocks.OLIVE.wood().get(), RusticBlocks.OLIVE.strippedLog().get(), RusticBlocks.OLIVE.strippedWood().get());
+        this.tag(RusticTags.IRONWOOD_LOGS.blockTag()).add(RusticBlocks.IRONWOOD.log().get(), RusticBlocks.IRONWOOD.wood().get(), RusticBlocks.IRONWOOD.strippedLog().get(), RusticBlocks.IRONWOOD.strippedWood().get());
+        this.tag(BlockTags.LOGS_THAT_BURN).addTags(RusticTags.OLIVE_LOGS.blockTag(), RusticTags.IRONWOOD_LOGS.blockTag());
+        this.tag(BlockTags.OVERWORLD_NATURAL_LOGS).addTags(RusticTags.OLIVE_LOGS.blockTag(), RusticTags.IRONWOOD_LOGS.blockTag());
     }
 
     @SafeVarargs

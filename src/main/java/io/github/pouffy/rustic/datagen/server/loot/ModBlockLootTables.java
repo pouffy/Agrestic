@@ -1,5 +1,10 @@
 package io.github.pouffy.rustic.datagen.server.loot;
 
+import com.pouffydev.krystal_core.foundation.data.loot.*;
+import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
+import io.github.pouffy.rustic.Rustic;
+import io.github.pouffy.rustic.core.block.DoorBlockLootType;
+import io.github.pouffy.rustic.core.block.SlabBlockLootType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -19,7 +24,23 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-
+        for(BlockDefinition<?> definition : Rustic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
+            Block block = (Block)definition.get();
+            BlockLootType lootType = definition.lootType();
+            if (lootType instanceof SelfBlockLootType) {
+                this.dropSelf(block);
+            } else if (lootType instanceof OtherBlockLootType otherBlockLootType) {
+                this.add(block, this.createSingleItemTable(otherBlockLootType.getBlock()));
+            } else if (lootType instanceof ShearsBlockLootType) {
+                this.add(block, createShearsOnlyDrop(block));
+            } else if (lootType instanceof OtherShearsBlockLootType otherShearsBlockLootType) {
+                this.add(block, createShearsOnlyDrop(otherShearsBlockLootType.getBlock()));
+            } else if (lootType instanceof SlabBlockLootType) {
+                this.add(block, this.createSlabItemTable(block));
+            } else if (lootType instanceof DoorBlockLootType) {
+                this.add(block, this.createDoorTable(block));
+            }
+        }
     }
 
     protected void dropNamedContainer(Block block) {
