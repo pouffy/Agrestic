@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
+import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockRegistryHelper;
+import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemRegistryHelper;
 import io.github.pouffy.rustic.init.RusticBlocks;
 import io.github.pouffy.rustic.init.RusticItems;
 import net.minecraft.resources.ResourceLocation;
@@ -30,12 +32,17 @@ public class Rustic {
     private final IEventBus modEventBus;
     private final RegistryHelper registryHelper;
 
+    public final ItemRegistryHelper itemRegistryHelper;
+    public final BlockRegistryHelper blockRegistryHelper;
+
     public Rustic(IEventBus modEventBus, ModContainer modContainer) {
         KrystalCore.disableDebugFeatures();
         KrystalCore.enableHoneyFluid();
         this.modEventBus = modEventBus;
         INSTANCE = this;
         this.registryHelper = new RegistryHelper(MODID, modEventBus);
+        this.itemRegistryHelper = this.registryHelper.getItemHelper();
+        this.blockRegistryHelper = this.registryHelper.getBlockHelper();
         RusticCreativeTab.staticInit();
         RusticBlocks.staticInit();
         RusticItems.staticInit();

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RusticBlocks {
-    public static final BlockRegistryHelper HELPER = Rustic.getRegistryHelper().getBlockHelper();
+    public static final BlockRegistryHelper HELPER = Rustic.INSTANCE.blockRegistryHelper;
     public static List<Woodset> WOODSETS = new ArrayList<>();
 
     public static final Woodset OLIVE = new Woodset("olive");

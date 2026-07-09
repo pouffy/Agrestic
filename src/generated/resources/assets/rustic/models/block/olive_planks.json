@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "rustic:block/olive_planks"
+    "all": "rustic:block/wooden/olive/planks"
   }
 }

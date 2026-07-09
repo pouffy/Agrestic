@@ -27,9 +27,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         for (RusticBlocks.Woodset woodset : RusticBlocks.WOODSETS) {
             String name = woodset.planks().getId().getPath().replace("_planks", "");
-            simpleBlockAndItem(woodset.planks());
-            simpleSlab(woodset.slab(), woodset.planks());
-            simpleStairs(woodset.stairs(), woodset.planks());
+            simpleBlockAndItem(woodset.planks(), Rustic.location("block/wooden/%s/planks".formatted(name)));
+            simpleSlab(woodset.slab(), woodset.planks(), Rustic.location("block/wooden/%s/planks".formatted(name)));
+            simpleStairs(woodset.stairs(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             cubeColumnAxis(woodset.log(), Rustic.location("block/wooden/%s/log".formatted(name)));
             cubeColumnAxisSingle(woodset.wood(), Rustic.location("block/wooden/%s/log".formatted(name)));
             cubeColumnAxis(woodset.strippedLog(), Rustic.location("block/wooden/%s/stripped_log".formatted(name)));
@@ -38,7 +38,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             fenceGateBlock(woodset.fenceGate().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             buttonBlock(woodset.button().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             pressurePlateBlock(woodset.pressurePlate().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
-            doorBlock(woodset.door().get(), Rustic.location("block/wooden/%s/door_bottom".formatted(name)), Rustic.location("block/wooden/%s/door_top".formatted(name)));
+            altDoorBlock(woodset.door().get(), Rustic.location("block/wooden/%s/door".formatted(name)));
             altTrapdoorBlock(woodset.trapdoor().get(), Rustic.location("block/wooden/%s/trapdoor".formatted(name)));
             justParticle(woodset.sign(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             justParticle(woodset.wallSign(), Rustic.location("block/wooden/%s/planks".formatted(name)));
@@ -151,6 +151,19 @@ public class ModBlockStateProvider extends BlockStateProvider {
         this.simpleBlockItem(block.get(), models().stairs(name + "_inventory", main, main, main));
         this.simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block.get()) + "_inventory")));
     }
+    private void simpleSlab(Supplier<? extends Block> block, Supplier<? extends Block> parent, ResourceLocation texture) {
+        String name = this.name(block.get());
+        ResourceLocation doubleSlab = Rustic.location("block/" + this.name(parent.get()));
+        this.slabBlock((SlabBlock) block.get(), doubleSlab, texture, texture, texture);
+        this.simpleBlockItem(block.get(), models().slab(name + "_inventory", texture, texture, texture));
+        this.simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block.get()) + "_inventory")));
+    }
+    private void simpleStairs(Supplier<? extends Block> block, ResourceLocation texture) {
+        String name = this.name(block.get());
+        this.stairsBlock((StairBlock) block.get(), name, texture, texture, texture);
+        this.simpleBlockItem(block.get(), models().stairs(name + "_inventory", texture, texture, texture));
+        this.simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block.get()) + "_inventory")));
+    }
     private void simpleExisting(Supplier<? extends Block> block, ResourceLocation existing) {
         this.simpleBlock(block.get(), new ModelFile.UncheckedModelFile(existing));
         this.simpleBlockItem(block);
@@ -162,6 +175,37 @@ public class ModBlockStateProvider extends BlockStateProvider {
             int yRot = Mth.floor((state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360);
             return ConfiguredModel.builder().modelFile(new ModelFile.UncheckedModelFile(modelLoc)).rotationY(yRot).build();
         });
+    }
+
+    public void buttonBlock(ButtonBlock block, ResourceLocation texture) {
+        ModelFile button = this.models().button(this.name(block), texture);
+        ModelFile buttonPressed = this.models().buttonPressed(this.name(block) + "_pressed", texture);
+        this.buttonBlock(block, button, buttonPressed);
+        this.models().withExistingParent(this.name(block) + "_inventory", "block/button_inventory").texture("texture", texture);
+        this.simpleBlockItem(block, new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block) + "_inventory")));
+    }
+
+    public void pressurePlateBlock(PressurePlateBlock block, ResourceLocation texture) {
+        ModelFile pressurePlate = this.models().pressurePlate(this.name(block), texture);
+        ModelFile pressurePlateDown = this.models().pressurePlateDown(this.name(block) + "_down", texture);
+        this.pressurePlateBlock(block, pressurePlate, pressurePlateDown);
+        this.simpleBlockItem(block, pressurePlate);
+    }
+
+    private void altDoorBlock(DoorBlock block, ResourceLocation texture) {
+        String name = this.name(block);
+        ResourceLocation bottom = texture.withSuffix("_bottom");
+        ResourceLocation top = texture.withSuffix("_top");
+        ResourceLocation sides = texture.withSuffix("_sides");
+        ModelFile bottomLeft = this.models().withExistingParent(name + "_bottom_left", Rustic.location("block/template/alt_door_bottom_left")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile bottomLeftOpen = this.models().withExistingParent(name + "_bottom_left_open", Rustic.location("block/template/alt_door_bottom_left_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile bottomRight = this.models().withExistingParent(name + "_bottom_right", Rustic.location("block/template/alt_door_bottom_right")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile bottomRightOpen = this.models().withExistingParent(name + "_bottom_right_open", Rustic.location("block/template/alt_door_bottom_right_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile topLeft = this.models().withExistingParent(name + "_top_left", Rustic.location("block/template/alt_door_top_left")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile topLeftOpen = this.models().withExistingParent(name + "_top_left_open", Rustic.location("block/template/alt_door_top_left_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile topRight = this.models().withExistingParent(name + "_top_right", Rustic.location("block/template/alt_door_top_right")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile topRightOpen = this.models().withExistingParent(name + "_top_right_open", Rustic.location("block/template/alt_door_top_right_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        this.doorBlock(block, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen);
     }
 
     private void altTrapdoorBlock(TrapDoorBlock block, ResourceLocation texture) {

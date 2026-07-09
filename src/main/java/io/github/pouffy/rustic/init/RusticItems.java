@@ -8,7 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 
 public class RusticItems {
-    public static final ItemRegistryHelper HELPER = Rustic.getRegistryHelper().getItemHelper();
+    public static final ItemRegistryHelper HELPER = Rustic.INSTANCE.itemRegistryHelper;
 
     public static final ItemDefinition<SignItem> OLIVE_SIGN = HELPER.register("olive_sign", () -> new SignItem(new Item.Properties().stacksTo(16), RusticBlocks.OLIVE.sign().get(), RusticBlocks.OLIVE.wallSign().get()));
     public static final ItemDefinition<HangingSignItem> OLIVE_HANGING_SIGN = HELPER.register("olive_hanging_sign", () -> new HangingSignItem(RusticBlocks.OLIVE.hangingSign().get(), RusticBlocks.OLIVE.hangingWallSign().get(), new Item.Properties().stacksTo(16)));

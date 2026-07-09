@@ -1,7 +1,8 @@
 {
-  "parent": "minecraft:block/door_bottom_left",
+  "parent": "rustic:block/template/alt_door_bottom_left",
   "textures": {
     "bottom": "rustic:block/wooden/olive/door_bottom",
+    "sides": "rustic:block/wooden/olive/door_sides",
     "top": "rustic:block/wooden/olive/door_top"
   }
 }
