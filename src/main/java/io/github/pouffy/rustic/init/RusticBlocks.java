@@ -1,10 +1,10 @@
 package io.github.pouffy.rustic.init;
 
-import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.foundation.data.loot.SelfBlockLootType;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockRegistryHelper;
+import io.github.pouffy.rustic.Rustic;
 import io.github.pouffy.rustic.common.block.LogBlock;
 import io.github.pouffy.rustic.core.block.DoorBlockLootType;
 import io.github.pouffy.rustic.core.block.SlabBlockLootType;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RusticBlocks {
-    public static final BlockRegistryHelper HELPER = KrystalCore.getRegistryHelper().getBlockHelper();
+    public static final BlockRegistryHelper HELPER = Rustic.getRegistryHelper().getBlockHelper();
     public static List<Woodset> WOODSETS = new ArrayList<>();
 
     public static final Woodset OLIVE = new Woodset("olive");

@@ -170,6 +170,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         ModelFile top = this.models().withExistingParent(name + "_top", Rustic.location("block/template/alt_trapdoor_top")).texture("front", texture).texture("side", texture.withSuffix("_sides"));
         ModelFile open = this.models().withExistingParent(name + "_open", Rustic.location("block/template/alt_trapdoor_open")).texture("front", texture).texture("side", texture.withSuffix("_sides"));
         this.trapdoorBlock(block, bottom, top, open, true);
+        this.simpleBlockItem(block, new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block) + "_bottom")));
     }
 
     private void justParticle(Supplier<? extends Block> block, ResourceLocation texture) {
