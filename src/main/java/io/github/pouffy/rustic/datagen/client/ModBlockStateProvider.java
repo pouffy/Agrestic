@@ -34,8 +34,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
             cubeColumnAxisSingle(woodset.wood(), Rustic.location("block/wooden/%s/log".formatted(name)));
             cubeColumnAxis(woodset.strippedLog(), Rustic.location("block/wooden/%s/stripped_log".formatted(name)));
             cubeColumnAxisSingle(woodset.strippedWood(), Rustic.location("block/wooden/%s/stripped_log".formatted(name)));
-            fenceBlock(woodset.fence().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
-            fenceGateBlock(woodset.fenceGate().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
+            simpleFence(woodset.fence(), Rustic.location("block/wooden/%s/planks".formatted(name)));
+            simpleFenceGate(woodset.fenceGate(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             buttonBlock(woodset.button().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             pressurePlateBlock(woodset.pressurePlate().get(), Rustic.location("block/wooden/%s/planks".formatted(name)));
             altDoorBlock(woodset.door().get(), Rustic.location("block/wooden/%s/door".formatted(name)));
@@ -192,19 +192,32 @@ public class ModBlockStateProvider extends BlockStateProvider {
         this.simpleBlockItem(block, pressurePlate);
     }
 
+    private void simpleFence(Supplier<? extends Block> block, ResourceLocation texture) {
+        String name = this.name(block.get());
+        this.fourWayBlock((FenceBlock) block.get(), this.models().fencePost(name + "_post", texture), this.models().fenceSide(name + "_side", texture));
+        this.simpleBlockItem(block.get(), models().fenceInventory(name + "_inventory", texture));
+        this.simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block.get()) + "_inventory")));
+    }
+    private void simpleFenceGate(Supplier<? extends Block> block, ResourceLocation texture) {
+        String name = this.name(block.get());
+        this.fenceGateBlock((FenceGateBlock) block.get(), name.replace("_fence_gate", ""), texture);
+        this.simpleBlockItem(block.get(), models().fenceGate(name + "_inventory", texture));
+        this.simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(Rustic.location("block/" + this.name(block.get()) + "_inventory")));
+    }
+
     private void altDoorBlock(DoorBlock block, ResourceLocation texture) {
         String name = this.name(block);
         ResourceLocation bottom = texture.withSuffix("_bottom");
         ResourceLocation top = texture.withSuffix("_top");
         ResourceLocation sides = texture.withSuffix("_sides");
-        ModelFile bottomLeft = this.models().withExistingParent(name + "_bottom_left", Rustic.location("block/template/alt_door_bottom_left")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile bottomLeftOpen = this.models().withExistingParent(name + "_bottom_left_open", Rustic.location("block/template/alt_door_bottom_left_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile bottomRight = this.models().withExistingParent(name + "_bottom_right", Rustic.location("block/template/alt_door_bottom_right")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile bottomRightOpen = this.models().withExistingParent(name + "_bottom_right_open", Rustic.location("block/template/alt_door_bottom_right_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile topLeft = this.models().withExistingParent(name + "_top_left", Rustic.location("block/template/alt_door_top_left")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile topLeftOpen = this.models().withExistingParent(name + "_top_left_open", Rustic.location("block/template/alt_door_top_left_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile topRight = this.models().withExistingParent(name + "_top_right", Rustic.location("block/template/alt_door_top_right")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
-        ModelFile topRightOpen = this.models().withExistingParent(name + "_top_right_open", Rustic.location("block/template/alt_door_top_right_open")).texture("bottom", bottom).texture("top", top).texture("sides", sides);
+        ModelFile bottomLeft = this.models().withExistingParent(name + "_bottom_left", Rustic.location("block/template/alt_door_bottom_left")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile bottomLeftOpen = this.models().withExistingParent(name + "_bottom_left_open", Rustic.location("block/template/alt_door_bottom_left_open")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile bottomRight = this.models().withExistingParent(name + "_bottom_right", Rustic.location("block/template/alt_door_bottom_right")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile bottomRightOpen = this.models().withExistingParent(name + "_bottom_right_open", Rustic.location("block/template/alt_door_bottom_right_open")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile topLeft = this.models().withExistingParent(name + "_top_left", Rustic.location("block/template/alt_door_top_left")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile topLeftOpen = this.models().withExistingParent(name + "_top_left_open", Rustic.location("block/template/alt_door_top_left_open")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile topRight = this.models().withExistingParent(name + "_top_right", Rustic.location("block/template/alt_door_top_right")).texture("bottom", bottom).texture("top", top).texture("side", sides);
+        ModelFile topRightOpen = this.models().withExistingParent(name + "_top_right_open", Rustic.location("block/template/alt_door_top_right_open")).texture("bottom", bottom).texture("top", top).texture("side", sides);
         this.doorBlock(block, bottomLeft, bottomLeftOpen, bottomRight, bottomRightOpen, topLeft, topLeftOpen, topRight, topRightOpen);
     }
 
