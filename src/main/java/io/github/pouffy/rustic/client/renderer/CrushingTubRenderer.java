@@ -9,7 +9,6 @@ import io.github.pouffy.rustic.common.block.entity.CrushingTubBlockEntity;
 import io.github.pouffy.rustic.core.item.DisplayedItemStack;
 import io.github.pouffy.rustic.init.RusticTags;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -68,7 +67,7 @@ public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlock
         ItemRenderer itemRenderer = Minecraft.getInstance()
                 .getItemRenderer();
         var msr = TransformStack.of(ms);
-        int count = Mth.log2((itemStack.getCount())) / 2;
+        int count = Mth.log2((itemStack.getCount()));
         BakedModel bakedModel = itemRenderer.getModel(itemStack, null, null, 0);
         boolean blockItem = bakedModel.isGui3d();
         boolean renderUpright = itemStack.is(RusticTags.RENDER_UPRIGHT);

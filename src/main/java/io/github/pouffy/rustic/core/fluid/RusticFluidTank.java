@@ -27,6 +27,14 @@ public class RusticFluidTank extends FluidTank {
         return this;
     }
 
+    public boolean canInsert() {
+        return !this.forbidInsertion;
+    }
+
+    public boolean canExtract() {
+        return !this.forbidExtraction;
+    }
+
     @Override
     public int fill(FluidStack resource, FluidAction action) {
         if (forbidInsertion)

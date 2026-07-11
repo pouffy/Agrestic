@@ -1,5 +1,6 @@
 package io.github.pouffy.rustic.common.block.entity;
 
+import io.github.pouffy.rustic.core.block.ILightEmitting;
 import io.github.pouffy.rustic.core.fluid.RusticFluidTank;
 import io.github.pouffy.rustic.core.fluid.transfer.FluidTransferHelper;
 import io.github.pouffy.rustic.core.item.DisplayedItemContainer;
@@ -25,13 +26,14 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +62,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
             tank.setCapacity(getCapacity());
             if (tank.getSpace() < 0) tank.drain(-tank.getSpace(), IFluidHandler.FluidAction.EXECUTE);
         }
-
+        updateLight(this, tank);
         markUpdated();
     }
 
@@ -115,8 +117,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
         if (level == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem != ItemStack.EMPTY) {
-            if (FluidTransferHelper.interactWithContainer(level, worldPosition, this.tank, player, hand).didTransfer()) {
-                markUpdated();
+            if (FluidTransferHelper.interactWithTank(level, worldPosition, player, hand, side, side)) {
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             } else {
                 if (this.container.getStackInSlot(0).isEmpty()) {
@@ -139,10 +140,11 @@ public class CrushingTubBlockEntity extends BlockEntity {
         if (level == null) return InteractionResult.PASS;
         if (player.isShiftKeyDown() && this.getFluidStack().getAmount() > 0) {
             FluidStack drained = this.tank.drain(getCapacity(), IFluidHandler.FluidAction.EXECUTE);
-            SoundEvent soundevent = drained.getFluidType().getSound(drained, SoundActions.BUCKET_EMPTY);
+            SoundEvent soundevent = FluidTransferHelper.getEmptySound(drained);
             if (soundevent != null) {
                 level.playSound(null, this.worldPosition, soundevent, SoundSource.BLOCKS, 1F, 1F);
             }
+            FluidTransferHelper.displayDrained(player, drained);
             markUpdated();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -155,6 +157,18 @@ public class CrushingTubBlockEntity extends BlockEntity {
         return InteractionResult.PASS;
     }
 
+    public static void updateLight(BlockEntity be, IFluidTank tank) {
+        Level level = be.getLevel();
+        if (level != null && !level.isClientSide) {
+            FluidStack fluid = tank.getFluid();
+            int light = fluid.isEmpty() ? 0 : fluid.getFluid().getFluidType().getLightLevel(fluid);
+            BlockState state = be.getBlockState();
+            if (light != state.getValue(ILightEmitting.LIGHT)) {
+                level.setBlock(be.getBlockPos(), state.setValue(ILightEmitting.LIGHT, light), Block.UPDATE_CLIENTS);
+            }
+        }
+    }
+
     public FluidStack getFluidStack() {
         var inv = getTank();
         return inv == null ? FluidStack.EMPTY : inv.getFluid();
@@ -163,7 +177,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.tank.readFromNBT(registries, tag.getCompound("Tank"));
+        updateLight(this, this.tank.readFromNBT(registries, tag.getCompound("Tank")));
         this.container.deserializeNBT(registries, tag.getCompound("Container"));
     }
 

@@ -30,6 +30,8 @@
   "block.rustic.stripped_ironwood_wood": "Stripped Ironwood Wood",
   "block.rustic.stripped_olive_log": "Stripped Olive Log",
   "block.rustic.stripped_olive_wood": "Stripped Olive Wood",
+  "block.rustic.tank.drained": "Drained %s mb %s",
+  "block.rustic.tank.filled": "Filled %s mb %s",
   "emi.category.rustic.tub_crushing": "Tub Crushing",
   "itemGroup.rustic.main": "Rustic"
 }

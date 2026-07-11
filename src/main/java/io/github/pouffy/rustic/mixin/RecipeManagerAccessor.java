@@ -9,5 +9,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface RecipeManagerAccessor {
 
     @Accessor
-    public HolderLookup.Provider getRegistries();
+    HolderLookup.Provider getRegistries();
 }

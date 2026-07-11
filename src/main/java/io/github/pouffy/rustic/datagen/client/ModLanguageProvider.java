@@ -39,5 +39,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         }
 
         add("emi.category.rustic.tub_crushing", "Tub Crushing");
+        add("block.rustic.tank.drained", "Drained %s mb %s");
+        add("block.rustic.tank.filled", "Filled %s mb %s");
     }
 }

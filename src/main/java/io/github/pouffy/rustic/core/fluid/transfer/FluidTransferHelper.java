@@ -1,7 +1,7 @@
 package io.github.pouffy.rustic.core.fluid.transfer;
 
 import io.github.pouffy.rustic.Rustic;
-import io.github.pouffy.rustic.mixin.LivingEntityAccessor;
+import io.github.pouffy.rustic.core.fluid.RusticFluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,6 +58,14 @@ public class FluidTransferHelper {
     /** Gets the fill sound for a fluid */
     public static SoundEvent getFillSound(FluidStack fluid) {
         return getSound(fluid, SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL);
+    }
+
+    public static void displayFilled(Player player, FluidStack fluidStack) {
+        player.displayClientMessage(Component.translatable(KEY_FILLED, COMMA_FORMAT.format(FluidType.BUCKET_VOLUME), fluidStack.getHoverName()), true);
+    }
+
+    public static void displayDrained(Player player, FluidStack fluidStack) {
+        player.displayClientMessage(Component.translatable(KEY_DRAINED, COMMA_FORMAT.format(fluidStack.getAmount()), fluidStack.getHoverName()), true);
     }
 
     public static FluidStack tryTransfer(IFluidHandler input, IFluidHandler output, int maxFill) {
@@ -126,6 +134,9 @@ public class FluidTransferHelper {
             if (fluid != Fluids.EMPTY) {
                 if (!world.isClientSide) {
                     FluidStack fluidStack = new FluidStack(bucket.content, FluidType.BUCKET_VOLUME);
+                    if (handler instanceof RusticFluidTank rusticTank) {
+                        if (!rusticTank.canInsert()) return FluidInteractionResult.MISSING;
+                    }
                     // must empty the whole bucket
                     if (handler.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) == FluidType.BUCKET_VOLUME) {
                         SoundEvent sound = getEmptySound(fluidStack);
@@ -161,7 +172,6 @@ public class FluidTransferHelper {
         if (!player.getItemInHand(hand).isEmpty()) {
             BlockEntity te = world.getBlockEntity(pos);
             if (te != null) {
-                // TE must have a capability
                 IFluidHandler fluidHandler = world.getCapability(Capabilities.FluidHandler.BLOCK, pos, hit.getDirection());
                 if (fluidHandler != null) {
                     return interactWithContainer(world, pos, fluidHandler, player, hand);
@@ -186,8 +196,6 @@ public class FluidTransferHelper {
                             playEmptySound(world, pos, player, result.fluid());
                         }
                         player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, result.stack()));
-                        ((LivingEntityAccessor) player).setUseItemRemaining(0);
-                        ((LivingEntityAccessor) player).setUseItem(ItemStack.EMPTY);
                         return result.didFill() ? FluidInteractionResult.FILLED_STACK : FluidInteractionResult.DRAINED_STACK;
                     }
                 }
@@ -230,8 +238,7 @@ public class FluidTransferHelper {
             if (te != null) {
                 IFluidHandler fluidHandler = world.getCapability(Capabilities.FluidHandler.BLOCK, pos, hit);
                 if (fluidHandler != null) {
-                    return interactWithContainer(world, pos, fluidHandler, player, hand).hasContainer()
-                            || interactWithFilledBucket(world, pos, fluidHandler, player, hand, offset).hasContainer();
+                    return interactWithContainer(world, pos, fluidHandler, player, hand).didTransfer() || interactWithFilledBucket(world, pos, fluidHandler, player, hand, offset).didTransfer();
                 }
             }
         }

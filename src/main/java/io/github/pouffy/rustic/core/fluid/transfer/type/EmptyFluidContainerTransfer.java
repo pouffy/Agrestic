@@ -3,6 +3,7 @@ package io.github.pouffy.rustic.core.fluid.transfer.type;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pouffy.rustic.Rustic;
+import io.github.pouffy.rustic.core.fluid.RusticFluidTank;
 import io.github.pouffy.rustic.core.fluid.transfer.FluidTransferType;
 import io.github.pouffy.rustic.core.fluid.transfer.IFluidContainerTransfer;
 import io.github.pouffy.rustic.init.RusticFluidTransferTypes;
@@ -57,6 +58,9 @@ public class EmptyFluidContainerTransfer implements IFluidContainerTransfer.With
     public TransferResult transfer(ItemStack stack, FluidStack fluid, IFluidHandler handler, TransferDirection direction) {
         if (!direction.canEmpty()) {
             return null;
+        }
+        if (handler instanceof RusticFluidTank rusticTank) {
+            if (!rusticTank.canInsert()) return null;
         }
         FluidStack contained = getFluid(stack);
         int simulated = handler.fill(contained.copy(), IFluidHandler.FluidAction.SIMULATE);

@@ -2,12 +2,12 @@ package io.github.pouffy.rustic.common.block;
 
 import com.mojang.serialization.MapCodec;
 import io.github.pouffy.rustic.common.block.entity.CrushingTubBlockEntity;
+import io.github.pouffy.rustic.core.block.ILightEmitting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,11 +24,18 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class CrushingTubBlock extends BaseEntityBlock {
+public class CrushingTubBlock extends BaseEntityBlock implements ILightEmitting {
     public static final MapCodec<CrushingTubBlock> CODEC = simpleCodec(CrushingTubBlock::new);
 
     public CrushingTubBlock(Properties properties) {
         super(properties);
+        registerDefaultState(defaultBlockState().setValue(LIGHT, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(LIGHT);
     }
 
     @Override
