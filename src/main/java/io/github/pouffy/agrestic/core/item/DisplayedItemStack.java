@@ -5,8 +5,11 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+
+import static net.minecraft.world.item.ItemStack.matches;
 
 public class DisplayedItemStack {
     public static final DisplayedItemStack EMPTY = new DisplayedItemStack();
@@ -24,6 +27,11 @@ public class DisplayedItemStack {
         this.stack = stack;
         boolean centered = stack.is(AgresticTags.RENDER_UPRIGHT);
         this.angle = centered ? 180 : R.nextInt(360);
+    }
+
+    public DisplayedItemStack(ItemStack stack, int angle) {
+        this.stack = stack;
+        this.angle = angle;
     }
 
     public boolean isEmpty() {
@@ -51,5 +59,19 @@ public class DisplayedItemStack {
         DisplayedItemStack stack = new DisplayedItemStack(itemStack.get());
         stack.angle = nbt.getInt("Angle");
         return Optional.of(stack);
+    }
+
+    public static boolean listMatches(List<DisplayedItemStack> list, List<DisplayedItemStack> other) {
+        if (list.size() != other.size()) {
+            return false;
+        } else {
+            for(int i = 0; i < list.size(); ++i) {
+                if (!matches(list.get(i).stack, other.get(i).stack) || list.get(i).angle != other.get(i).angle) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

@@ -41,5 +41,8 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("emi.category.agrestic.tub_crushing", "Tub Crushing");
         add("block.agrestic.tank.drained", "Drained %s mb %s");
         add("block.agrestic.tank.filled", "Filled %s mb %s");
+
+        add("ui.agrestic.tooltip.fluid", "%s %smb / %smb");
+        add("ui.agrestic.tooltip.item", "%s x%s");
     }
 }

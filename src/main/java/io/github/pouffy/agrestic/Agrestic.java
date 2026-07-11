@@ -16,6 +16,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -58,8 +59,13 @@ public class Agrestic {
         AgresticRecipeTypes.staticInit();
         AgresticFluidTransferTypes.staticInit();
         AgresticIngredientTypes.staticInit();
+        AgresticDataComponents.staticInit();
 
         modEventBus.addListener(AgresticBlockEntities::addBlockEntities);
+
+        modContainer.registerConfig(ModConfig.Type.SERVER, AgresticConfig.serverSpec);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, AgresticConfig.clientSpec);
+        modContainer.registerConfig(ModConfig.Type.COMMON, AgresticConfig.commonSpec);
     }
 
     @SubscribeEvent

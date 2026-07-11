@@ -4,16 +4,22 @@ import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
 import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferHelper;
 import io.github.pouffy.agrestic.core.item.DisplayedItemContainer;
+import io.github.pouffy.agrestic.core.item.StoredFluidStack;
+import io.github.pouffy.agrestic.core.item.StoredItemStack;
 import io.github.pouffy.agrestic.core.recipe.RecipeSearch;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
+import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,7 +30,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -36,6 +45,9 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
 
 public class CrushingTubBlockEntity extends BlockEntity {
 
@@ -167,6 +179,34 @@ public class CrushingTubBlockEntity extends BlockEntity {
                 level.setBlock(be.getBlockPos(), state.setValue(ILightEmitting.LIGHT, light), Block.UPDATE_CLIENTS);
             }
         }
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
+        super.applyImplicitComponents(componentInput);
+        this.container.setStackInSlot(0, ItemStack.EMPTY);
+        StoredItemStack storedItem = componentInput.getOrDefault(AgresticDataComponents.ITEM_STACK, new StoredItemStack(ItemStack.EMPTY));
+        if (!storedItem.isEmpty()) {
+            this.container.setStackInSlot(0, storedItem.stack());
+        }
+        StoredFluidStack storedFluid = componentInput.getOrDefault(AgresticDataComponents.FLUID_STACK, new StoredFluidStack(FluidStack.EMPTY, 0));
+        if (!storedFluid.isEmpty()) {
+            this.tank.setFluid(storedFluid.stack());
+        }
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        components.set(AgresticDataComponents.ITEM_STACK, new StoredItemStack(this.container.getStackInSlot(0)));
+        components.set(AgresticDataComponents.FLUID_STACK, new StoredFluidStack(this.getFluidStack(), getCapacity()));
+    }
+
+    @Override
+    public void removeComponentsFromTag(CompoundTag tag) {
+        super.removeComponentsFromTag(tag);
+        tag.remove("Tank");
+        tag.remove("Container");
     }
 
     public FluidStack getFluidStack() {

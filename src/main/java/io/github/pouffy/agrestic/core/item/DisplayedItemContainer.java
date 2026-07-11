@@ -30,6 +30,8 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
 
     public void setStackInSlot(int slot, ItemStack stack) {
         this.validateSlotIndex(slot);
+        DisplayedItemStack old = this.stacks.get(slot);
+
         this.stacks.set(slot, new DisplayedItemStack(stack));
         this.onContentsChanged(slot);
     }

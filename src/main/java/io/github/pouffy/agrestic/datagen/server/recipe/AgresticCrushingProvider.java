@@ -2,6 +2,7 @@ package io.github.pouffy.agrestic.datagen.server.recipe;
 
 import com.pouffydev.krystal_core.KrystalCore;
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.datagen.server.recipe.builder.AgresticRecipeProvider;
 import io.github.pouffy.agrestic.datagen.server.recipe.builder.CrushingTubRecipeBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -14,9 +15,14 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModCrushingRecipeProvider extends RecipeProvider {
-    public ModCrushingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+public class AgresticCrushingProvider extends AgresticRecipeProvider {
+    public AgresticCrushingProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
+    }
+
+    @Override
+    protected String type() {
+        return "Tub Crushing";
     }
 
     protected void buildRecipes(RecipeOutput output) {

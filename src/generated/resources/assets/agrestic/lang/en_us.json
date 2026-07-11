@@ -33,5 +33,7 @@
   "block.agrestic.tank.drained": "Drained %s mb %s",
   "block.agrestic.tank.filled": "Filled %s mb %s",
   "emi.category.agrestic.tub_crushing": "Tub Crushing",
-  "itemGroup.agrestic.main": "Agrestic"
+  "itemGroup.agrestic.main": "Agrestic",
+  "ui.agrestic.tooltip.fluid": "%s %smb / %smb",
+  "ui.agrestic.tooltip.item": "%s x%s"
 }
