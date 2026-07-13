@@ -5,6 +5,7 @@ import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefi
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.core.block.DoorBlockLootType;
 import io.github.pouffy.agrestic.core.block.SlabBlockLootType;
+import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
@@ -24,8 +25,8 @@ public class ModBlockLootTables extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        for(BlockDefinition<?> definition : Agrestic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
-            Block block = (Block)definition.get();
+        for(BlockDefinition<?> definition : AgresticBlocks.BLOCK_DEFINITIONS) {
+            Block block = definition.get();
             BlockLootType lootType = definition.lootType();
             if (lootType instanceof SelfBlockLootType) {
                 this.dropSelf(block);

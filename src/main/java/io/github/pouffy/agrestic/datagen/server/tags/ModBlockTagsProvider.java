@@ -24,7 +24,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider provider) {
-        for(BlockDefinition<?> definition : Agrestic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
+        for(BlockDefinition<?> definition : AgresticBlocks.BLOCK_DEFINITIONS) {
             if (definition.get() instanceof FlowerBlock) {
                 this.tag(BlockTags.SMALL_FLOWERS).add(definition.block());
             }

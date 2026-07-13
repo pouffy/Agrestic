@@ -2,27 +2,162 @@ package io.github.pouffy.agrestic;
 
 import com.pouffydev.krystal_core.foundation.registry.CreativeTabRegistryHelper;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Items;
+import com.pouffydev.krystal_core.foundation.utility.CreativeTabManager;
+import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticItems;
+import lombok.Setter;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
+
+import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class AgresticCreativeTab {
     private static final CreativeTabRegistryHelper HELPER = Agrestic.getRegistryHelper().getCreativeTabHelper();
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = HELPER.registerTabSearchBar("main", Items.DIRT.builtInRegistryHolder(), (params, output) -> {
-                for (var definition : Agrestic.INSTANCE.itemRegistryHelper.ITEM_DEFINITIONS) {
-                    if (definition.get() instanceof BlockItem) continue;
-                    output.accept(definition.get());
-                }
-                for (var definition : Agrestic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
-                    if (!definition.hasItem()) continue;
-                    output.accept(definition.get());
-                }
-            },
-            builder -> RegistryHelper.noAction());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> AGRICULTURE = registerTab("agriculture", () -> AgresticItems.OLIVES, (params, output) -> {}, RegistryHelper.noAction());
 
-    public static void staticInit() {
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECORATION = registerTab("decoration", AgresticBlocks.OLIVE::planks, (params, output) -> {}, RegistryHelper.noAction());
 
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ALCHEMY = registerTab("alchemy", () -> AgresticItems.TINY_IRON_DUST, (params, output) -> {}, RegistryHelper.noAction());
+
+    @Setter
+    private static ResourceKey<CreativeModeTab> currentTab = AGRICULTURE.getKey();
+
+    public static void staticInit() {}
+
+    public static void populate() {
+        setCurrentTab(AGRICULTURE.getKey());
+        ///add(AgresticItems.CATALOG);
+        ///add(AgresticBlocks.FERTILE_SOIL);
+        for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
+            add(woodset.log());
+            add(woodset.wood());
+            add(woodset.strippedLog());
+            add(woodset.strippedWood());
+        }
+        ///add(AgresticBlocks.OLIVE_LEAVES);
+        ///add(AgresticBlocks.IRONWOOD_LEAVES);
+        ///add(AgresticBlocks.APPLE_LEAVES);
+        ///add(AgresticBlocks.APPLE_SAPLING);
+        ///add(AgresticBlocks.OLIVE_SAPLING);
+        ///add(AgresticBlocks.IRONWOOD_SAPLING);
+        add(AgresticBlocks.CRUSHING_TUB);
+        ///add(AgresticBlocks.DRYING_BASIN);
+        ///add(AgresticBlocks.UNFIRED_DRYING_BASIN);
+        ///add(AgresticBlocks.STAKE);
+        ///add(AgresticBlocks.ROPE);
+        //Seeds
+        ///add(AgresticItems.CHILI_PEPPER_SEEDS);
+        ///add(AgresticItems.TOMATO_SEEDS);
+        ///add(AgresticItems.GRAPE_SEEDS);
+        ///add(AgresticItems.APPLE_SEEDS);
+        //Crops
+        add(AgresticItems.OLIVES);
+        ///add(AgresticItems.IRON_BERRIES);
+        ///add(AgresticItems.GRAPES);
+        ///add(AgresticItems.TOMATO);
+        add(AgresticItems.CHILLI_PEPPER);
+        ///add(AgresticItems.GHOST_PEPPER);
+        //Ingredients
+        add(AgresticItems.TALLOW);
+        add(AgresticItems.GOLD_DUST);
+        ///add(AgresticItems.TINY_GOLD_DUST);
+        ///add(AgresticItems.IRON_DUST);
+        add(AgresticItems.TINY_IRON_DUST);
+        ///add(AgresticItems.TINY_GLOWSTONE_DUST);
+        //Drinks
+        ///add(AgresticItems.IRON_BERRY_JUICE);
+        ///add(AgresticItems.VANTA_OIL);
+        ///add(AgresticItems.ALE_WORT);
+        ///add(AgresticItems.OLIVE_OIL);
+        ///add(AgresticItems.SUGAR_CANE_JUICE);
+        ///add(AgresticItems.GOLDEN_APPLE_JUICE);
+        ///add(AgresticItems.APPLE_JUICE);
+        ///add(AgresticItems.GLOW_BERRY_JUICE);
+        ///add(AgresticItems.SWEET_BERRY_JUICE);
+        ///add(AgresticItems.GRAPE_JUICE);
+        setCurrentTab(DECORATION.getKey());
+        for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
+            add(woodset.planks());
+            add(woodset.stairs());
+            add(woodset.slab());
+            add(woodset.fence());
+            add(woodset.fenceGate());
+            add(woodset.door());
+            add(woodset.trapdoor());
+            add(woodset.pressurePlate());
+            add(woodset.button());
+        }
+        startChain(AgresticBlocks.OLIVE.button());
+        toChain(AgresticItems.OLIVE_SIGN);
+        toChain(AgresticItems.OLIVE_HANGING_SIGN);
+        toChain(AgresticItems.OLIVE_BOAT);
+        toChain(AgresticItems.OLIVE_CHEST_BOAT);
+        endChain();
+        startChain(AgresticBlocks.IRONWOOD.button());
+        toChain(AgresticItems.IRONWOOD_SIGN);
+        toChain(AgresticItems.IRONWOOD_HANGING_SIGN);
+        toChain(AgresticItems.IRONWOOD_BOAT);
+        toChain(AgresticItems.IRONWOOD_CHEST_BOAT);
+        endChain();
+        setCurrentTab(ALCHEMY.getKey());
+        ///add(AgresticItems.ALOE_VERA);
+        ///add(AgresticItems.BLOOD_ORCHID);
+        ///add(AgresticItems.CHAMOMILE);
+        ///add(AgresticItems.CLOUDSBLUFF);
+        ///add(AgresticItems.COHOSH);
+        ///add(AgresticItems.HORSETAIL);
+        ///add(AgresticItems.VANTA_LILY);
+        ///add(AgresticItems.WIND_THISTLE);
+        ///add(AgresticItems.CORE_ROOT);
+        ///add(AgresticItems.GINSENG);
+        ///add(AgresticItems.MARSH_MALLOW);
+        ///add(AgresticItems.MOONCAP_MUSHROOM);
+        ///add(AgresticItems.DEATHSTALK_MUSHROOM);
+        ///add(AgresticBlocks.BASIC_CONDENSER);
+        ///add(AgresticBlocks.BASIC_RETORT);
+        ///add(AgresticBlocks.ADVANCED_CONDENSER);
+        ///add(AgresticBlocks.ADVANCED_RETORT);
+    }
+
+    private static void add(ItemLike itemLike) {
+        CreativeTabManager.addToTab(currentTab, itemLike);
+    }
+
+    private static void before(ItemLike itemLike, ItemLike target) {
+        CreativeTabManager.addNextToItem(currentTab, itemLike, target, true);
+    }
+
+    private static void after(ItemLike itemLike, ItemLike target) {
+        CreativeTabManager.addNextToItem(currentTab, itemLike, target, false);
+    }
+
+    private static void startChain(ItemLike parent) {
+        CreativeTabManager.startChain(currentTab, false, false, parent);
+    }
+
+    private static void toChain(ItemLike itemLike) {
+        CreativeTabManager.queryChain().addToChain(itemLike);
+    }
+
+    private static void endChain() {
+        CreativeTabManager.endChain();
+    }
+
+    public static DeferredHolder<CreativeModeTab, CreativeModeTab> registerTab(String name, Supplier<ItemLike> icon, BiConsumer<CreativeModeTab.ItemDisplayParameters, CreativeModeTab.Output> displayItems, Consumer<CreativeModeTab.Builder> additionalProperties) {
+        return HELPER.TABS.register(name, (id) -> {
+            CreativeModeTab.Builder builder = CreativeModeTab.builder();
+            CreativeModeTab.Builder var10000 = builder.title(Component.translatable(id.toLanguageKey("itemGroup"))).icon(() -> new ItemStack(icon.get()));
+            Objects.requireNonNull(displayItems);
+            var10000.displayItems(displayItems::accept);
+            additionalProperties.accept(builder);
+            return builder.build();
+        });
     }
 }

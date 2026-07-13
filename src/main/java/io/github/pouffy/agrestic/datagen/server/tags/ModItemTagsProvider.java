@@ -4,6 +4,7 @@ import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefi
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticItems;
 import io.github.pouffy.agrestic.init.AgresticTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -29,7 +30,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     @SuppressWarnings("unchecked")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        for(BlockDefinition<?> definition : Agrestic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
+        for(BlockDefinition<?> definition : AgresticBlocks.BLOCK_DEFINITIONS) {
             if (definition.hasItem()) {
                 if (definition.get() instanceof FlowerBlock) {
                     this.tag(ItemTags.SMALL_FLOWERS).add(definition.item());
@@ -53,7 +54,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             }
         }
 
-        for(ItemDefinition<?> definition : Agrestic.INSTANCE.itemRegistryHelper.ITEM_DEFINITIONS) {
+        for(ItemDefinition<?> definition : AgresticItems.ITEM_DEFINITIONS) {
             if (definition.hasItem() && definition.get() instanceof BoatItem) {
                 this.tag(ItemTags.BOATS).add(definition.item());
             }

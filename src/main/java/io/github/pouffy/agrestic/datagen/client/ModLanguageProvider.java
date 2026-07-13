@@ -5,6 +5,8 @@ import com.pouffydev.krystal_core.foundation.data.provider.client.KrystalSoundsP
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticItems;
 import net.minecraft.data.PackOutput;
 
 public class ModLanguageProvider extends KrystalLanguageProvider {
@@ -15,8 +17,10 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
     @Override
     protected void extraTranslations() {
-        add("itemGroup.agrestic.main", "Agrestic");
-        for(BlockDefinition<?> definition : Agrestic.INSTANCE.blockRegistryHelper.BLOCK_DEFINITIONS) {
+        add("itemGroup.agrestic.agriculture", "Agrestic Agriculture");
+        add("itemGroup.agrestic.decoration", "Agrestic Decorations");
+        add("itemGroup.agrestic.alchemy", "Agrestic Alchemy");
+        for(BlockDefinition<?> definition : AgresticBlocks.BLOCK_DEFINITIONS) {
             String customLang = definition.customLang();
             if (customLang == null) continue;
             if (!customLang.isEmpty()) {
@@ -26,7 +30,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
             }
         }
 
-        for(ItemDefinition<?> definition : Agrestic.INSTANCE.itemRegistryHelper.ITEM_DEFINITIONS) {
+        for(ItemDefinition<?> definition : AgresticItems.ITEM_DEFINITIONS) {
             if (!definition.isBlockItem()) {
                 String customLang = definition.customLang();
                 if (customLang == null) continue;

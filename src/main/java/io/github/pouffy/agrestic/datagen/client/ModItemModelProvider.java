@@ -20,7 +20,12 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         }
         this.basicItem(AgresticItems.OLIVE_SIGN, "wooden/olive/sign");
         this.basicItem(AgresticItems.OLIVE_HANGING_SIGN, "wooden/olive/hanging_sign");
+        this.basicItem(AgresticItems.OLIVE_BOAT, "wooden/olive/boat");
+        this.basicItem(AgresticItems.OLIVE_CHEST_BOAT, "wooden/olive/boat_with_chest");
         this.basicItem(AgresticItems.IRONWOOD_SIGN, "wooden/ironwood/sign");
         this.basicItem(AgresticItems.IRONWOOD_HANGING_SIGN, "wooden/ironwood/hanging_sign");
+        this.basicItem(AgresticItems.IRONWOOD_BOAT, "wooden/ironwood/boat");
+        this.basicItem(AgresticItems.IRONWOOD_CHEST_BOAT, "wooden/ironwood/boat_with_chest");
+        this.basicItem(AgresticItems.TALLOW);
     }
 }

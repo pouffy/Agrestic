@@ -10,26 +10,36 @@ import io.github.pouffy.agrestic.common.block.LogBlock;
 import io.github.pouffy.agrestic.core.block.DoorBlockLootType;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.block.SlabBlockLootType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class AgresticBlocks {
-    public static final BlockRegistryHelper HELPER = Agrestic.INSTANCE.blockRegistryHelper;
+    public static final DeferredRegister.Blocks HELPER = DeferredRegister.createBlocks(Agrestic.MODID);
     public static List<Woodset> WOODSETS = new ArrayList<>();
+    public static List<BlockDefinition<?>> BLOCK_DEFINITIONS = new ArrayList<>();
 
     public static final Woodset OLIVE = new Woodset("olive");
     public static final Woodset IRONWOOD = new Woodset("ironwood");
 
-    public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = HELPER.register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), BlockProperties.custom(""));
+    public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
 
-    public static void staticInit() {}
+    public static void staticInit(IEventBus bus) {
+        HELPER.register(bus);
+    }
 
     public static class Woodset {
         private final BlockDefinition<Block> PLANKS;
@@ -54,26 +64,26 @@ public class AgresticBlocks {
             BlockSetType blockSetType = BlockSetType.register(new BlockSetType("agrestic:" + name));
             WoodType woodType = WoodType.register(new WoodType("agrestic:" + name, blockSetType));
             AgresticBlocks.WOODSETS.add(this);
-            this.PLANKS = HELPER.register(name + "_planks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), Properties.planks());
-            this.STAIRS = HELPER.register(name + "_stairs", () -> new StairBlock(this.PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(this.PLANKS.get())), Properties.woodenStairs(this.PLANKS));
-            this.SLAB = HELPER.register(name + "_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(this.PLANKS.get())), Properties.woodenSlab(this.PLANKS));
-            this.LOG = HELPER.register(name + "_log", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)), Properties.log());
-            this.WOOD = HELPER.register(name + "_wood", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)), Properties.log());
-            this.STRIPPED_LOG = HELPER.register("stripped_" + name + "_log", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)), Properties.log());
-            this.STRIPPED_WOOD = HELPER.register("stripped_" + name + "_wood", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)), Properties.log());
-            this.FENCE = HELPER.register(name + "_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE)), Properties.woodenFence(this.PLANKS));
-            this.FENCE_GATE = HELPER.register(name + "_fence_gate", () -> new FenceGateBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)), Properties.fenceGate(this.PLANKS));
-            this.BUTTON = HELPER.register(name + "_button", () -> new ButtonBlock(blockSetType, 15, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)), Properties.woodenButton(this.PLANKS));
-            this.PRESSURE_PLATE = HELPER.register(name + "_pressure_plate", () -> new PressurePlateBlock(blockSetType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)), Properties.woodenPressurePlate(this.PLANKS));
-            this.DOOR = HELPER.register(name + "_door", () -> new DoorBlock(blockSetType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)), Properties.woodenDoor(this.PLANKS));
-            this.TRAPDOOR = HELPER.register(name + "_trapdoor", () -> new TrapDoorBlock(blockSetType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)), Properties.woodenTrapdoor(this.PLANKS));
-            this.SIGN = HELPER.registerNoItem(name + "_sign", () -> new StandingSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)), Properties.sign());
-            this.WALL_SIGN = HELPER.registerNoItem(name + "_wall_sign", () -> {
+            this.PLANKS = register(name + "_planks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), Properties.planks());
+            this.STAIRS = register(name + "_stairs", () -> new StairBlock(this.PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(this.PLANKS.get())), Properties.woodenStairs(this.PLANKS));
+            this.SLAB = register(name + "_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(this.PLANKS.get())), Properties.woodenSlab(this.PLANKS));
+            this.LOG = register(name + "_log", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LOG)), Properties.log());
+            this.WOOD = register(name + "_wood", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)), Properties.log());
+            this.STRIPPED_LOG = register("stripped_" + name + "_log", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)), Properties.log());
+            this.STRIPPED_WOOD = register("stripped_" + name + "_wood", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)), Properties.log());
+            this.FENCE = register(name + "_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE)), Properties.woodenFence(this.PLANKS));
+            this.FENCE_GATE = register(name + "_fence_gate", () -> new FenceGateBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)), Properties.fenceGate(this.PLANKS));
+            this.BUTTON = register(name + "_button", () -> new ButtonBlock(blockSetType, 15, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)), Properties.woodenButton(this.PLANKS));
+            this.PRESSURE_PLATE = register(name + "_pressure_plate", () -> new PressurePlateBlock(blockSetType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PRESSURE_PLATE)), Properties.woodenPressurePlate(this.PLANKS));
+            this.DOOR = register(name + "_door", () -> new DoorBlock(blockSetType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_DOOR)), Properties.woodenDoor(this.PLANKS));
+            this.TRAPDOOR = register(name + "_trapdoor", () -> new TrapDoorBlock(blockSetType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_TRAPDOOR)), Properties.woodenTrapdoor(this.PLANKS));
+            this.SIGN = registerNoItem(name + "_sign", () -> new StandingSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SIGN)), Properties.sign());
+            this.WALL_SIGN = registerNoItem(name + "_wall_sign", () -> {
                 Block signBlock = this.SIGN.get();
                 return new WallSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WALL_SIGN).lootFrom(() -> signBlock));
             }, BlockProperties.custom(null));
-            this.HANGING_SIGN = HELPER.registerNoItem(name + "_hanging_sign", () -> new CeilingHangingSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_HANGING_SIGN)), Properties.hangingSign());
-            this.HANGING_WALL_SIGN = HELPER.registerNoItem(name + "_wall_hanging_sign", () -> {
+            this.HANGING_SIGN = registerNoItem(name + "_hanging_sign", () -> new CeilingHangingSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_HANGING_SIGN)), Properties.hangingSign());
+            this.HANGING_WALL_SIGN = registerNoItem(name + "_wall_hanging_sign", () -> {
                 Block hangingSignBlock = this.HANGING_SIGN.get();
                 return new WallHangingSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WALL_HANGING_SIGN).lootFrom(() -> hangingSignBlock));
             }, BlockProperties.custom(null));
@@ -213,4 +223,26 @@ public class AgresticBlocks {
             return new BlockProperties(new SelfBlockLootType(), "");
         }
     }
+
+    public static <T extends Block> BlockDefinition<T> registerNoItem(String name, Supplier<T> block, BlockProperties properties) {
+        DeferredBlock<T> deferred = HELPER.register(name, block);
+        BlockDefinition<T> definition = BlockDefinition.fromHolder(deferred, properties);
+        BLOCK_DEFINITIONS.add(definition);
+        return definition;
+    }
+
+    public static <T extends Block> BlockDefinition<T> registerNoItem(String name, Supplier<T> block) {
+        return registerNoItem(name, block, BlockProperties.custom(""));
+    }
+
+    public static <T extends Block> BlockDefinition<T> register(String name, Supplier<T> block, BlockProperties properties) {
+        BlockDefinition<T> definition = registerNoItem(name, block, properties);
+        AgresticItems.register(name, () -> new BlockItem(definition.get(), new Item.Properties()));
+        return definition;
+    }
+
+    public static <T extends Block> BlockDefinition<T> register(String name, Supplier<T> block) {
+        return register(name, block, BlockProperties.custom(""));
+    }
+
 }
