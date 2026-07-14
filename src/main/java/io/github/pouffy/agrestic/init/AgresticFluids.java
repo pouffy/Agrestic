@@ -110,23 +110,23 @@ public class AgresticFluids {
     }
 
     public static class Types {
-        public static final FluidType OLIVE_OIL = new AgresticFluidType();
-        public static final FluidType IRONBERRY_JUICE = new AgresticFluidType();
-        public static final FluidType WILDBERRY_JUICE = new AgresticFluidType();
-        public static final FluidType GRAPE_JUICE = new AgresticFluidType();
-        public static final FluidType APPLE_JUICE = new AgresticFluidType();
-        public static final FluidType ALE_WORT = new AgresticFluidType();
-        public static final FluidType GOLDEN_APPLE_JUICE = new AgresticFluidType();
+        public static final FluidType OLIVE_OIL = new AgresticFluidType("olive_oil");
+        public static final FluidType IRONBERRY_JUICE = new AgresticFluidType("ironberry_juice");
+        public static final FluidType WILDBERRY_JUICE = new AgresticFluidType("wildberry_juice");
+        public static final FluidType GRAPE_JUICE = new AgresticFluidType("grape_juice");
+        public static final FluidType APPLE_JUICE = new AgresticFluidType("apple_juice");
+        public static final FluidType ALE_WORT = new AgresticFluidType("ale_wort");
+        public static final FluidType GOLDEN_APPLE_JUICE = new AgresticFluidType("golden_apple_juice");
 
-        public static final FluidType VANTA_OIL = new AgresticFluidType();
+        public static final FluidType VANTA_OIL = new AgresticFluidType("vanta_oil");
 
-        public static final FluidType ALE = new AgresticFluidType();
-        public static final FluidType CIDER = new AgresticFluidType();
-        public static final FluidType IRON_WINE = new AgresticFluidType();
-        public static final FluidType MEAD = new AgresticFluidType();
-        public static final FluidType WILDBERRY_WINE = new AgresticFluidType();
-        public static final FluidType WINE = new AgresticFluidType();
-        public static final FluidType AMBROSIA = new AgresticFluidType();
+        public static final FluidType ALE = new AgresticFluidType("ale").booze();
+        public static final FluidType CIDER = new AgresticFluidType("cider").booze();
+        public static final FluidType IRON_WINE = new AgresticFluidType("iron_wine").booze();
+        public static final FluidType MEAD = new AgresticFluidType("mead").booze();
+        public static final FluidType WILDBERRY_WINE = new AgresticFluidType("wildberry_wine").booze();
+        public static final FluidType WINE = new AgresticFluidType("wine").booze();
+        public static final FluidType AMBROSIA = new AgresticFluidType("ambrosia").booze();
 
         public static void registerAll() {
             Registry.register(NeoForgeRegistries.FLUID_TYPES, Agrestic.location("olive_oil"), OLIVE_OIL);

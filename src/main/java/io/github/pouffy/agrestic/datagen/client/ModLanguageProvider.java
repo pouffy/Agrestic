@@ -8,6 +8,7 @@ import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ModLanguageProvider extends KrystalLanguageProvider {
 
@@ -48,5 +49,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
         add("ui.agrestic.tooltip.fluid", "%s %smb / %smb");
         add("ui.agrestic.tooltip.item", "%s x%s");
+
+        NeoForgeRegistries.FLUID_TYPES.registryKeySet().stream().filter((key) -> key.location().getNamespace().equals(Agrestic.MODID)).forEach((key) -> add("fluid_type.agrestic.%s".formatted(key.location().getPath()), transform(key.location())));
     }
 }
