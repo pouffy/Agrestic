@@ -4,7 +4,6 @@ import com.pouffydev.krystal_core.foundation.data.provider.client.KrystalItemMod
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticItems;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -38,6 +37,7 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.TOMATO);
         this.basicItem(AgresticItems.CHILLI_PEPPER);
         this.basicItem(AgresticItems.GHOST_PEPPER);
+        this.basicItem(AgresticItems.CHILLI_PEPPER_SEEDS);
         this.basicItem(AgresticItems.GRAPES);
         this.basicItem(AgresticItems.TALLOW);
         this.basicItem(AgresticItems.GOLD_DUST);

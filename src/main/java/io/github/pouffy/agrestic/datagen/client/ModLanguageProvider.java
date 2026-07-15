@@ -9,6 +9,7 @@ import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticEffects;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ModLanguageProvider extends KrystalLanguageProvider {
@@ -33,7 +34,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         }
 
         for(ItemDefinition<?> definition : AgresticItems.ITEM_DEFINITIONS) {
-            if (!definition.isBlockItem()) {
+            if (!definition.isBlockItem() || definition.get() instanceof ItemNameBlockItem) {
                 String customLang = definition.customLang();
                 if (customLang == null) continue;
                 if (!customLang.isEmpty()) {

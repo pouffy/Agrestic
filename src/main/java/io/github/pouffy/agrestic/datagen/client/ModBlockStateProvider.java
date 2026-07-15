@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.datagen.client;
 
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.common.block.ChilliPepperBlock;
 import io.github.pouffy.agrestic.common.block.HerbBlock;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.client.renderer.RenderType;
@@ -61,6 +62,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         herbCrop(AgresticBlocks.MOONCAP);
         herbCrop(AgresticBlocks.VANTA_LILY);
         herbCrop(AgresticBlocks.WIND_THISTLE);
+        chilliPeppers();
     }
 
     private void simpleBlockItem(Supplier<? extends Block> block) {
@@ -258,6 +260,23 @@ public class ModBlockStateProvider extends BlockStateProvider {
         getVariantBuilder(block.get()).forAllStatesExcept((state) -> {
             int age = state.getValue(HerbBlock.AGE);
             return ConfiguredModel.builder().modelFile(ageModel.apply(age)).build();
+        });
+    }
+
+    private void chilliPeppers() {
+        String name = this.name(AgresticBlocks.CHILLI_PEPPERS.get());
+        Function<Integer, ResourceLocation> texture = (age) -> Agrestic.location("block/crops/" + name + "_" + age);
+        Function<Integer, ModelFile> ageModel = (age) -> this.models().withExistingParent(name + "_" + age, Agrestic.location("block/template/crop_cross")).texture("cross", texture.apply(age)).renderType("cutout");
+        getVariantBuilder(AgresticBlocks.CHILLI_PEPPERS.get()).forAllStatesExcept((state) -> {
+            int age = state.getValue(ChilliPepperBlock.AGE);
+            ModelFile modelFile = switch (age) {
+                case 2, 3 -> ageModel.apply(1);
+                case 4, 5 -> ageModel.apply(2);
+                case 6 -> ageModel.apply(3);
+                case 7 -> ageModel.apply(4);
+                default -> ageModel.apply(0);
+            };
+            return ConfiguredModel.builder().modelFile(modelFile).build();
         });
     }
 

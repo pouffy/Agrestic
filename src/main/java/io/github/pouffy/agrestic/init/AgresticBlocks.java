@@ -4,6 +4,7 @@ import com.pouffydev.krystal_core.foundation.data.loot.SelfBlockLootType;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.common.block.ChilliPepperBlock;
 import io.github.pouffy.agrestic.common.block.CrushingTubBlock;
 import io.github.pouffy.agrestic.common.block.HerbBlock;
 import io.github.pouffy.agrestic.common.block.LogBlock;
@@ -115,6 +116,7 @@ public class AgresticBlocks {
             return this::asItem;
         }
     });
+    public static final BlockDefinition<ChilliPepperBlock> CHILLI_PEPPERS = registerNoItem("chilli_peppers", () -> new ChilliPepperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
 
     public static void staticInit(IEventBus bus) {
         HELPER.register(bus);

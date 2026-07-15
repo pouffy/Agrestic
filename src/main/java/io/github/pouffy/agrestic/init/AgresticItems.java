@@ -66,6 +66,7 @@ public class AgresticItems {
             return super.finishUsingItem(stack, world, user);
         }
     });
+    public static final ItemDefinition<ItemNameBlockItem> CHILLI_PEPPER_SEEDS = register("chilli_pepper_seeds", (p) -> new ItemNameBlockItem(AgresticBlocks.CHILLI_PEPPERS.get(), p));
     public static final ItemDefinition<AgresticFoodItem> GRAPES = register("grapes", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.GRAPES)));
 
     public static void staticInit(IEventBus bus) {

@@ -53,7 +53,7 @@ public class AgresticCreativeTab {
         ///add(AgresticBlocks.STAKE);
         ///add(AgresticBlocks.ROPE);
         //Seeds
-        ///add(AgresticItems.CHILI_PEPPER_SEEDS);
+        add(AgresticItems.CHILLI_PEPPER_SEEDS);
         ///add(AgresticItems.TOMATO_SEEDS);
         ///add(AgresticItems.GRAPE_SEEDS);
         ///add(AgresticItems.APPLE_SEEDS);
@@ -72,7 +72,7 @@ public class AgresticCreativeTab {
         add(AgresticItems.TINY_IRON_DUST);
         ///add(AgresticItems.TINY_GLOWSTONE_DUST);
         //Drinks
-        ///add(AgresticItems.IRON_BERRY_JUICE);
+        ///add(AgresticItems.IRONBERRY_JUICE);
         ///add(AgresticItems.VANTA_OIL);
         ///add(AgresticItems.ALE_WORT);
         ///add(AgresticItems.OLIVE_OIL);
