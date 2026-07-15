@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:crushing_tub",
+  "input": {
+    "item": "agrestic:ironberries"
+  },
+  "output": {
+    "amount": 250,
+    "id": "agrestic:ironberry_juice"
+  }
+}

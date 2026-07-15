@@ -31,10 +31,10 @@ public class AgresticCrushingProvider extends AgresticRecipeProvider {
 
     protected void buildRecipes(RecipeOutput output) {
         recipe(new FluidStack(AgresticFluids.OLIVE_OIL, 250), Ingredient.of(AgresticItems.OLIVES), output, "olives");
-        //recipe(new FluidStack(AgresticFluids.IRONBERRY_JUICE, 250), Ingredient.of(AgresticItems.IRONBERRIES), output, "ironberries");
+        recipe(new FluidStack(AgresticFluids.IRONBERRY_JUICE, 250), Ingredient.of(AgresticItems.IRONBERRIES), output, "ironberries");
         //recipe(new FluidStack(Fluids.WATER, 250), Ingredient.of(Items.REEDS), new ItemStack(Items.SUGAR, 2), output, "reeds");
-        //recipe(new FluidStack(AgresticFluids.WILDBERRY_JUICE, 250), Ingredient.of(AgresticItems.WILDBERRIES), output, "wildberries");
-        //recipe(new FluidStack(AgresticFluids.GRAPE_JUICE, 250), Ingredient.of(AgresticItems.GRAPES), output, "grapes");
+        recipe(new FluidStack(AgresticFluids.SWEET_BERRY_JUICE, 250), Ingredient.of(Items.SWEET_BERRIES), output, "sweet_berries");
+        recipe(new FluidStack(AgresticFluids.GRAPE_JUICE, 250), Ingredient.of(AgresticItems.GRAPES), output, "grapes");
         //recipe(new FluidStack(AgresticFluids.APPLE_JUICE, 250), Ingredient.of(Items.APPLE), new ItemStack(AgresticBlocks.APPLE_SEEDS), output, "apple");
         recipe(new FluidStack(KrystalCore.HONEY, 250), Ingredient.of(Items.HONEYCOMB), output, "honeycomb");
         //recipe(new FluidStack(AgresticFluids.GOLDEN_APPLE_JUICE, 100), Ingredient.of(Items.GOLDEN_APPLE), new ItemStack(AgresticBlocks.APPLE_SEEDS), output, "golden_apple");

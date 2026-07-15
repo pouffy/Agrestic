@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:crushing_tub",
+  "input": {
+    "item": "minecraft:sweet_berries"
+  },
+  "output": {
+    "amount": 250,
+    "id": "agrestic:sweet_berry_juice"
+  }
+}

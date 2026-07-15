@@ -44,6 +44,7 @@ public class AgresticItems {
 
     public static final ItemDefinition<AgresticFoodItem> IRONBERRIES = register("ironberries", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.IRONBERRIES)));
     public static final ItemDefinition<AgresticFoodItem> OLIVES = register("olives", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.OLIVES)));
+    public static final ItemDefinition<TomatoItem> TOMATO = register("tomato", (p) -> new TomatoItem(p.food(AgresticFoodValues.TOMATO)));
     public static final ItemDefinition<AgresticFoodItem> CHILLI_PEPPER = register("chilli_pepper", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.CHILLI_PEPPER)) {
         @Override
         public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
@@ -56,7 +57,16 @@ public class AgresticItems {
             return super.finishUsingItem(stack, world, user);
         }
     });
-    public static final ItemDefinition<TomatoItem> TOMATO = register("tomato", (p) -> new TomatoItem(p.food(AgresticFoodValues.TOMATO)));
+    public static final ItemDefinition<AgresticFoodItem> GHOST_PEPPER = register("ghost_pepper", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.GHOST_PEPPER)) {
+        @Override
+        public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
+            if (!world.isClientSide()) {
+                user.hurt(world.damageSources().onFire(), 2.0F);
+            }
+            return super.finishUsingItem(stack, world, user);
+        }
+    });
+    public static final ItemDefinition<AgresticFoodItem> GRAPES = register("grapes", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.GRAPES)));
 
     public static void staticInit(IEventBus bus) {
         HELPER.register(bus);
