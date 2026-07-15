@@ -6,9 +6,16 @@ import org.apache.commons.lang3.tuple.Pair;
 public class AgresticConfig {
 
     public static class Server {
+        private final static String CATEGORY_GENERAL = "all.general";
+        private final static String CATEGORY_BEES = "all.bees";
+        private final static String CATEGORY_WORLD = "all.world";
+        private final static String CATEGORY_COMPAT = "all.compat";
+
+        public final ModConfigSpec.BooleanValue offsetWildberryBushes;
 
         Server(ModConfigSpec.Builder builder) {
-
+            builder.push(CATEGORY_GENERAL);
+            offsetWildberryBushes = builder.define("offset_wildberry_bushes", true);
         }
     }
 

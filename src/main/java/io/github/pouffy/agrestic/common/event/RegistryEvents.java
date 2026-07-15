@@ -10,6 +10,8 @@ import io.github.pouffy.agrestic.init.AgresticFlammables;
 import io.github.pouffy.agrestic.init.AgresticFluids;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import io.github.pouffy.agrestic.mixin.BoatItemAccessor;
+import io.github.pouffy.agrestic.network.FirePowerAttackPayload;
+import io.github.pouffy.agrestic.network.ShameFXPayload;
 import net.minecraft.core.Registry;
 import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -67,6 +69,9 @@ public class RegistryEvents {
         final PayloadRegistrar registrar = event.registrar(Agrestic.MODID).versioned("1.0");
 
         registrar.playToClient(FluidTransferSyncPacket.TYPE, FluidTransferSyncPacket.STREAM_CODEC, FluidTransferSyncPacket::handle);
+        registrar.playToClient(ShameFXPayload.TYPE, ShameFXPayload.STREAM_CODEC, ShameFXPayload::handle);
+
+        registrar.playToServer(FirePowerAttackPayload.TYPE, FirePowerAttackPayload.STREAM_CODEC, FirePowerAttackPayload::handle);
     }
 
     public static <T> void register(RegisterEvent event, ResourceKey<Registry<T>> registry, Runnable registerMethod) {

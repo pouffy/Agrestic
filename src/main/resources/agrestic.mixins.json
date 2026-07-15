@@ -5,10 +5,12 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "BoatItemAccessor",
+    "MobEffectInstanceAccessor",
     "ModelBuilderMixin",
     "RecipeManagerAccessor"
   ],
   "client": [
+    "EntityRenderDispatcherAccessor",
     "PoseStackMixin"
   ],
   "injectors": {

@@ -7,6 +7,11 @@ import net.minecraft.world.food.FoodProperties;
 public class AgresticFoodValues {
     public static final FoodProperties OLIVES = new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).effect(new MobEffectInstance(MobEffects.CONFUSION,200,1,true, false, false),1f).build();
     public static final FoodProperties CHILLI_PEPPER = new FoodProperties.Builder().nutrition(3).saturationModifier(0.4f).alwaysEdible().effect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,400,0,true, false, true),1f).build();
+    public static final FoodProperties GHOST_PEPPER = new FoodProperties.Builder().alwaysEdible().nutrition(3).saturationModifier(0.4f).effect(new MobEffectInstance(AgresticEffects.FIRE_POWER,400,0),0.95f).build();
+    public static final FoodProperties TOMATO = new FoodProperties.Builder().nutrition(4).saturationModifier(0.4f).build();
+    public static final FoodProperties GRAPES = new FoodProperties.Builder().nutrition(3).saturationModifier(0.3f).build();
+    public static final FoodProperties IRONBERRIES = new FoodProperties.Builder().nutrition(2).saturationModifier(0.4f).effect(new MobEffectInstance(AgresticEffects.FULLMETAL,280,0,true, false, false),1f).build();
+    public static final FoodProperties ROOT = new FoodProperties.Builder().nutrition(1).saturationModifier(0.4f).build();
 
     public static final FoodProperties CLOUDSBLUFF = new FoodProperties.Builder().nutrition(2).saturationModifier(0.2f).effect(new MobEffectInstance(MobEffects.LEVITATION,400,1,true, false, false),1f).build();
     public static final FoodProperties CORE_ROOT = new FoodProperties.Builder().nutrition(2).saturationModifier(0.3f).build();

@@ -4,6 +4,7 @@ import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefini
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.AgresticEnumParams;
 import io.github.pouffy.agrestic.common.item.HerbItem;
+import io.github.pouffy.agrestic.common.item.TomatoItem;
 import io.github.pouffy.agrestic.core.item.AgresticFoodItem;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,7 +42,7 @@ public class AgresticItems {
     public static final ItemDefinition<HerbItem> GINSENG = register("ginseng", (p) -> new HerbItem(AgresticBlocks.GINSENG.get(), p.food(AgresticFoodValues.GINSENG)));
     public static final ItemDefinition<HerbItem> MARSH_MALLOW = register("marsh_mallow", (p) -> new HerbItem(AgresticBlocks.MARSH_MALLOW.get(), p.food(AgresticFoodValues.MARSH_MALLOW)));
 
-    //public static final ItemDefinition<AgresticFoodItem> IRONBERRIES = register("ironberries", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.IRONBERRIES)));
+    public static final ItemDefinition<AgresticFoodItem> IRONBERRIES = register("ironberries", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.IRONBERRIES)));
     public static final ItemDefinition<AgresticFoodItem> OLIVES = register("olives", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.OLIVES)));
     public static final ItemDefinition<AgresticFoodItem> CHILLI_PEPPER = register("chilli_pepper", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.CHILLI_PEPPER)) {
         @Override
@@ -55,6 +56,7 @@ public class AgresticItems {
             return super.finishUsingItem(stack, world, user);
         }
     });
+    public static final ItemDefinition<TomatoItem> TOMATO = register("tomato", (p) -> new TomatoItem(p.food(AgresticFoodValues.TOMATO)));
 
     public static void staticInit(IEventBus bus) {
         HELPER.register(bus);

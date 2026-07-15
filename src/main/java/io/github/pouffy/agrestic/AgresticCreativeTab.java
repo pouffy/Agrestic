@@ -59,9 +59,9 @@ public class AgresticCreativeTab {
         ///add(AgresticItems.APPLE_SEEDS);
         //Crops
         add(AgresticItems.OLIVES);
-        ///add(AgresticItems.IRON_BERRIES);
+        add(AgresticItems.IRONBERRIES);
         ///add(AgresticItems.GRAPES);
-        ///add(AgresticItems.TOMATO);
+        add(AgresticItems.TOMATO);
         add(AgresticItems.CHILLI_PEPPER);
         ///add(AgresticItems.GHOST_PEPPER);
         //Ingredients

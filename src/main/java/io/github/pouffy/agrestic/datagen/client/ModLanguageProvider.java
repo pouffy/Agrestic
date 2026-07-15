@@ -6,6 +6,7 @@ import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefi
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticEffects;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -42,6 +43,8 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
                 }
             }
         }
+
+        AgresticEffects.HELPER.getEntries().forEach((effect) -> this.add(effect.get().getDescriptionId(), transform(effect.getId())));
 
         add("emi.category.agrestic.tub_crushing", "Tub Crushing");
         add("recipe.agrestic.chance", "Chance: %s");

@@ -35,6 +35,7 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.IRONWOOD_CHEST_BOAT, "wooden/ironwood/boat_with_chest");
         this.basicItem(AgresticItems.OLIVES);
         this.basicItem(AgresticItems.CHILLI_PEPPER);
+        this.basicItem(AgresticItems.TOMATO);
         this.basicItem(AgresticItems.TALLOW);
         this.basicItem(AgresticItems.GOLD_DUST);
         this.basicItem(AgresticItems.TINY_IRON_DUST);

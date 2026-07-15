@@ -48,6 +48,8 @@ public class Agrestic {
         AgresticFluidTransferTypes.staticInit();
         AgresticIngredientTypes.staticInit();
         AgresticDataComponents.staticInit();
+        AgresticEffects.staticInit();
+        AgresticAttachmentTypes.staticInit();
 
         modEventBus.addListener(AgresticBlockEntities::addBlockEntities);
 

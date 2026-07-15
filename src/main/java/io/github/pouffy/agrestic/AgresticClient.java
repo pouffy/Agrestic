@@ -1,9 +1,15 @@
 package io.github.pouffy.agrestic;
 
+import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidType;
-import net.minecraft.client.Minecraft;
+import io.github.pouffy.agrestic.mixin.EntityRenderDispatcherAccessor;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -13,13 +19,12 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -44,6 +49,27 @@ public class AgresticClient {
                 event.registerFluidType(agresticFluidType.getExtension(), agresticFluidType);
             }
         });
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void addLayers(EntityRenderersEvent.AddLayers event) {
+        addPlayerLayer(event, PlayerSkin.Model.WIDE);
+        addPlayerLayer(event, PlayerSkin.Model.SLIM);
+
+        BuiltInRegistries.ENTITY_TYPE.forEach((type) -> {
+            EntityRenderer renderer = event.getRenderer(type);
+            if(renderer instanceof LivingEntityRenderer livingEntityRenderer)
+                livingEntityRenderer.addLayer(new FullmetalRenderLayer(livingEntityRenderer));
+        });
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static void addPlayerLayer(EntityRenderersEvent.AddLayers event, PlayerSkin.Model skin) {
+        EntityRenderer<? extends Player> renderer = event.getSkin(skin);
+        if (renderer instanceof LivingEntityRenderer livingRenderer) {
+            livingRenderer.addLayer(new FullmetalRenderLayer(livingRenderer));
+        }
     }
 
     @SubscribeEvent
