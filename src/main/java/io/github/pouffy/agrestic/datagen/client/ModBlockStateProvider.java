@@ -37,6 +37,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             cubeColumnAxisSingle(woodset.wood(), Agrestic.location("block/wooden/%s/log".formatted(name)));
             cubeColumnAxis(woodset.strippedLog(), Agrestic.location("block/wooden/%s/stripped_log".formatted(name)));
             cubeColumnAxisSingle(woodset.strippedWood(), Agrestic.location("block/wooden/%s/stripped_log".formatted(name)));
+            leaves(woodset.leaves(), Agrestic.location("block/wooden/%s/leaves".formatted(name)));
             simpleFence(woodset.fence(), Agrestic.location("block/wooden/%s/planks".formatted(name)));
             simpleFenceGate(woodset.fenceGate(), Agrestic.location("block/wooden/%s/planks".formatted(name)));
             buttonBlock(woodset.button().get(), Agrestic.location("block/wooden/%s/planks".formatted(name)));
@@ -50,6 +51,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         }
         simpleExisting(AgresticBlocks.CRUSHING_TUB, Agrestic.location("block/crushing_tub"));
         simpleExisting(AgresticBlocks.EVAPORATING_BASIN, Agrestic.location("block/evaporating_basin"));
+        sapling(AgresticBlocks.OLIVE_SAPLING, Agrestic.location("block/wooden/olive/sapling"));
+        sapling(AgresticBlocks.IRONWOOD_SAPLING, Agrestic.location("block/wooden/ironwood/sapling"));
         herbCrop(AgresticBlocks.ALOE_VERA);
         herbCrop(AgresticBlocks.BLOOD_ORCHID);
         herbCrop(AgresticBlocks.CHAMOMILE);
@@ -64,6 +67,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
         herbCrop(AgresticBlocks.VANTA_LILY);
         herbCrop(AgresticBlocks.WIND_THISTLE);
         chilliPeppers();
+    }
+
+    private void leaves(Supplier<? extends LeavesBlock> leaves, ResourceLocation texture) {
+        super.simpleBlockWithItem(leaves.get(), this.models().withExistingParent(this.name(leaves.get()), "block/leaves").texture("all", texture));
+    }
+
+    private void sapling(Supplier<? extends SaplingBlock> sapling, ResourceLocation texture) {
+        super.simpleBlock(sapling.get(), this.models().withExistingParent(this.name(sapling.get()), "block/cross").renderType("cutout").texture("cross", texture));
     }
 
     private void simpleBlockItem(Supplier<? extends Block> block) {

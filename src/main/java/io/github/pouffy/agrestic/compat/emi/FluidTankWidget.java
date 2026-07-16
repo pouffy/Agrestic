@@ -29,6 +29,14 @@ public class FluidTankWidget extends SlotWidget {
         this.fluid = fluid;
     }
 
+    public static FluidTankWidget input(EmiIngredient ingredient, int x, int y, long capacity) {
+        return new FluidTankWidget(Either.right(ingredient), x, y, capacity);
+    }
+
+    public static FluidTankWidget result(FluidStack fluidStack, int x, int y, long capacity) {
+        return new FluidTankWidget(Either.left(fluidStack), x, y, capacity);
+    }
+
     private static EmiIngredient map(@Nullable Either<FluidStack, EmiIngredient> fluid) {
         if (fluid == null) {
             return EmiStack.EMPTY;

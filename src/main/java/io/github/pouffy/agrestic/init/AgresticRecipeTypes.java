@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.init;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
+import io.github.pouffy.agrestic.core.recipe.ShapelessNoReturnRecipe;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeSerializer;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeType;
 import net.minecraft.core.registries.Registries;
@@ -31,6 +32,8 @@ public class AgresticRecipeTypes {
 
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> new SimpleRecipeSerializer<>(CrushingTubRecipe.CODEC));
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> new SimpleRecipeSerializer<>(EvaporatingBasinRecipe.CODEC));
+
+        public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<ShapelessNoReturnRecipe>> SHAPELESS_NO_RETURN = HELPER.register("shapeless_no_return", () -> new SimpleRecipeSerializer<>(ShapelessNoReturnRecipe.CODEC));
 
         public static void staticInit() {}
     }

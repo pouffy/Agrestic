@@ -41,12 +41,12 @@ public class AgresticCreativeTab {
             add(woodset.strippedLog());
             add(woodset.strippedWood());
         }
-        ///add(AgresticBlocks.OLIVE_LEAVES);
-        ///add(AgresticBlocks.IRONWOOD_LEAVES);
+        add(AgresticBlocks.OLIVE.leaves());
+        add(AgresticBlocks.IRONWOOD.leaves());
         ///add(AgresticBlocks.APPLE_LEAVES);
         ///add(AgresticBlocks.APPLE_SAPLING);
-        ///add(AgresticBlocks.OLIVE_SAPLING);
-        ///add(AgresticBlocks.IRONWOOD_SAPLING);
+        add(AgresticBlocks.OLIVE_SAPLING);
+        add(AgresticBlocks.IRONWOOD_SAPLING);
         add(AgresticBlocks.CRUSHING_TUB);
         add(AgresticBlocks.EVAPORATING_BASIN);
         ///add(AgresticBlocks.UNFIRED_DRYING_BASIN);
@@ -67,8 +67,8 @@ public class AgresticCreativeTab {
         //Ingredients
         add(AgresticItems.TALLOW);
         add(AgresticItems.GOLD_DUST);
-        ///add(AgresticItems.TINY_GOLD_DUST);
-        ///add(AgresticItems.IRON_DUST);
+        add(AgresticItems.TINY_GOLD_DUST);
+        add(AgresticItems.IRON_DUST);
         add(AgresticItems.TINY_IRON_DUST);
         ///add(AgresticItems.TINY_GLOWSTONE_DUST);
         //Drinks
@@ -82,6 +82,17 @@ public class AgresticCreativeTab {
         ///add(AgresticItems.GLOW_BERRY_JUICE);
         ///add(AgresticItems.SWEET_BERRY_JUICE);
         ///add(AgresticItems.GRAPE_JUICE);
+        //Buckets
+        ///add(AgresticItems.IRONBERRY_JUICE_BUCKET);
+        ///add(AgresticItems.VANTA_OIL_BUCKET);
+        add(AgresticItems.ALE_WORT_BUCKET);
+        ///add(AgresticItems.OLIVE_OIL_BUCKET);
+        ///add(AgresticItems.SUGAR_CANE_JUICE_BUCKET);
+        ///add(AgresticItems.GOLDEN_APPLE_JUICE_BUCKET);
+        ///add(AgresticItems.APPLE_JUICE_BUCKET);
+        ///add(AgresticItems.GLOW_BERRY_JUICE_BUCKET);
+        ///add(AgresticItems.SWEET_BERRY_JUICE_BUCKET);
+        ///add(AgresticItems.GRAPE_JUICE_BUCKET);
         setCurrentTab(DECORATION.getKey());
         for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
             add(woodset.planks());

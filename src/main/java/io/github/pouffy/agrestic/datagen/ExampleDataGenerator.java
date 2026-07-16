@@ -5,9 +5,11 @@ import io.github.pouffy.agrestic.datagen.client.ModBlockStateProvider;
 import io.github.pouffy.agrestic.datagen.client.ModItemModelProvider;
 import io.github.pouffy.agrestic.datagen.client.ModLanguageProvider;
 import io.github.pouffy.agrestic.datagen.client.ModSoundsProvider;
+import io.github.pouffy.agrestic.datagen.server.AgresticDatapackProvider;
 import io.github.pouffy.agrestic.datagen.server.ModAdvancementProvider;
 import io.github.pouffy.agrestic.datagen.server.loot.ModLootGenerator;
 import io.github.pouffy.agrestic.datagen.server.recipe.AgresticRecipeCollector;
+import io.github.pouffy.agrestic.datagen.server.tags.ModBiomeTagsProvider;
 import io.github.pouffy.agrestic.datagen.server.tags.ModBlockTagsProvider;
 import io.github.pouffy.agrestic.datagen.server.tags.ModEntityTypeTagsProvider;
 import io.github.pouffy.agrestic.datagen.server.tags.ModItemTagsProvider;
@@ -36,9 +38,14 @@ public class ExampleDataGenerator {
         boolean server = event.includeServer();
         boolean client = event.includeClient();
 
+        AgresticDatapackProvider datapackProvider = new AgresticDatapackProvider(packOutput, lookupProvider);
+        lookupProvider = datapackProvider.getRegistryProvider();
+        generator.addProvider(server, datapackProvider);
+
         ModBlockTagsProvider blockTags = new ModBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModItemTagsProvider itemTags = new ModItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper);
         ModEntityTypeTagsProvider entityTypeTags = new ModEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper);
+        ModBiomeTagsProvider biomeTags = new ModBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         AdvancementProvider advancements = new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new ModAdvancementProvider()));
         ModLootGenerator lootGenerator = new ModLootGenerator(packOutput, lookupProvider);
@@ -52,6 +59,7 @@ public class ExampleDataGenerator {
         generator.addProvider(server, blockTags);
         generator.addProvider(server, itemTags);
         generator.addProvider(server, entityTypeTags);
+        generator.addProvider(server, biomeTags);
 
         generator.addProvider(server, advancements);
         generator.addProvider(server, lootGenerator);

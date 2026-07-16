@@ -1,5 +1,6 @@
 package io.github.pouffy.agrestic.init;
 
+import com.pouffydev.krystal_core.foundation.data.loot.CustomBlockLootType;
 import com.pouffydev.krystal_core.foundation.data.loot.SelfBlockLootType;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
@@ -11,6 +12,7 @@ import io.github.pouffy.agrestic.core.block.SlabBlockLootType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -33,9 +35,11 @@ public class AgresticBlocks {
     public static final Woodset OLIVE = new Woodset("olive");
     public static final Woodset IRONWOOD = new Woodset("ironwood");
 
-    public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
-    public static final BlockDefinition<EvaporatingBasinBlock> EVAPORATING_BASIN = register("evaporating_basin", () -> new EvaporatingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
+    public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), new BlockProperties(new SelfBlockLootType(), ""));
+    public static final BlockDefinition<EvaporatingBasinBlock> EVAPORATING_BASIN = register("evaporating_basin", () -> new EvaporatingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), new BlockProperties(new SelfBlockLootType(), ""));
 
+    public static final BlockDefinition<SaplingBlock> OLIVE_SAPLING = register("olive_sapling", () -> new SaplingBlock(AgresticTreeGrowers.OLIVE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final BlockDefinition<SaplingBlock> IRONWOOD_SAPLING = register("ironwood_sapling", () -> new SaplingBlock(AgresticTreeGrowers.IRONWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 
     public static final BlockDefinition<HerbBlock> ALOE_VERA = register("aloe_vera", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS), (state) -> state.is(Blocks.SAND), true, true) {
         @Override
@@ -129,6 +133,7 @@ public class AgresticBlocks {
         private final BlockDefinition<Block> WOOD;
         private final BlockDefinition<Block> STRIPPED_LOG;
         private final BlockDefinition<Block> STRIPPED_WOOD;
+        private final BlockDefinition<LeavesBlock> LEAVES;
         private final BlockDefinition<FenceBlock> FENCE;
         private final BlockDefinition<FenceGateBlock> FENCE_GATE;
         private final BlockDefinition<ButtonBlock> BUTTON;
@@ -151,6 +156,7 @@ public class AgresticBlocks {
             this.WOOD = register(name + "_wood", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)), Properties.log());
             this.STRIPPED_LOG = register("stripped_" + name + "_log", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_LOG)), Properties.log());
             this.STRIPPED_WOOD = register("stripped_" + name + "_wood", () -> new LogBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STRIPPED_OAK_WOOD)), Properties.log());
+            this.LEAVES = register(name + "_leaves", () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)), Properties.leaves());
             this.FENCE = register(name + "_fence", () -> new FenceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE)), Properties.woodenFence(this.PLANKS));
             this.FENCE_GATE = register(name + "_fence_gate", () -> new FenceGateBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE_GATE)), Properties.fenceGate(this.PLANKS));
             this.BUTTON = register(name + "_button", () -> new ButtonBlock(blockSetType, 15, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_BUTTON)), Properties.woodenButton(this.PLANKS));
@@ -195,6 +201,10 @@ public class AgresticBlocks {
 
         public BlockDefinition<Block> strippedWood() {
             return this.STRIPPED_WOOD;
+        }
+
+        public BlockDefinition<LeavesBlock> leaves() {
+            return this.LEAVES;
         }
 
         public BlockDefinition<FenceBlock> fence() {
@@ -257,6 +267,10 @@ public class AgresticBlocks {
     static class Properties {
         public static BlockProperties log() {
             return new BlockProperties(new SelfBlockLootType(), "");
+        }
+
+        public static BlockProperties leaves() {
+            return new BlockProperties(new CustomBlockLootType(), "");
         }
 
         public static BlockProperties planks() {

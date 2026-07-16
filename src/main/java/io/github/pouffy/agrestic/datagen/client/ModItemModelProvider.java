@@ -32,6 +32,10 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.IRONWOOD_HANGING_SIGN, "wooden/ironwood/hanging_sign");
         this.basicItem(AgresticItems.IRONWOOD_BOAT, "wooden/ironwood/boat");
         this.basicItem(AgresticItems.IRONWOOD_CHEST_BOAT, "wooden/ironwood/boat_with_chest");
+
+        this.blockItem(AgresticBlocks.IRONWOOD_SAPLING::asItem, "wooden/ironwood/sapling");
+        this.blockItem(AgresticBlocks.OLIVE_SAPLING::asItem, "wooden/olive/sapling");
+
         this.basicItem(AgresticItems.IRONBERRIES);
         this.basicItem(AgresticItems.OLIVES);
         this.basicItem(AgresticItems.TOMATO);
@@ -41,7 +45,11 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.GRAPES);
         this.basicItem(AgresticItems.TALLOW);
         this.basicItem(AgresticItems.GOLD_DUST);
+        this.basicItem(AgresticItems.TINY_GOLD_DUST);
+        this.basicItem(AgresticItems.IRON_DUST);
         this.basicItem(AgresticItems.TINY_IRON_DUST);
+
+        this.bucket(AgresticItems.ALE_WORT_BUCKET);
         this.herb(AgresticBlocks.ALOE_VERA::asItem);
         this.herb(AgresticBlocks.BLOOD_ORCHID::asItem);
         this.herb(AgresticBlocks.CHAMOMILE::asItem);
@@ -63,5 +71,9 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
 
     public ItemModelBuilder herb(Supplier<? extends Item> item) {
         return this.basicItem(item, "herbs/" + itemName(item.get()), "");
+    }
+
+    public ItemModelBuilder bucket(Supplier<? extends Item> item) {
+        return this.basicItem(item, "bucket/" + itemName(item.get()).replace("_bucket", ""), "");
     }
 }

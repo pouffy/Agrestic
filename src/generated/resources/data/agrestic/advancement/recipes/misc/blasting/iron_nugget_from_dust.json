@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "agrestic:blasting/iron_nugget_from_dust"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tiny_iron_dust": {
+      "conditions": {
+        "items": [
+          {
+            "items": "agrestic:tiny_iron_dust"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tiny_iron_dust"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "agrestic:blasting/iron_nugget_from_dust"
+    ]
+  }
+}

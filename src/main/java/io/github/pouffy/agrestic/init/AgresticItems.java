@@ -34,8 +34,10 @@ public class AgresticItems {
     public static final ItemDefinition<Item> IRONWOOD_CHEST_BOAT = register("ironwood_chest_boat", (p) -> new BoatItem(true, AgresticEnumParams.IRONWOOD_BOAT_TYPE.getValue(), p.stacksTo(1)), "Ironwood Boat with Chest");
 
     public static final ItemDefinition<Item> TALLOW = register("tallow", Item::new);
+    public static final ItemDefinition<Item> IRON_DUST = register("iron_dust", Item::new);
     public static final ItemDefinition<Item> TINY_IRON_DUST = register("tiny_iron_dust", Item::new);
     public static final ItemDefinition<Item> GOLD_DUST = register("gold_dust", Item::new);
+    public static final ItemDefinition<Item> TINY_GOLD_DUST = register("tiny_gold_dust", Item::new);
 
     public static final ItemDefinition<HerbItem> CLOUDSBLUFF = register("cloudsbluff", (p) -> new HerbItem(AgresticBlocks.CLOUDSBLUFF.get(), p.food(AgresticFoodValues.CLOUDSBLUFF)));
     public static final ItemDefinition<HerbItem> CORE_ROOT = register("core_root", (p) -> new HerbItem(AgresticBlocks.CORE_ROOT.get(), p.food(AgresticFoodValues.CORE_ROOT)));
@@ -68,6 +70,8 @@ public class AgresticItems {
     });
     public static final ItemDefinition<ItemNameBlockItem> CHILLI_PEPPER_SEEDS = register("chilli_pepper_seeds", (p) -> new ItemNameBlockItem(AgresticBlocks.CHILLI_PEPPERS.get(), p));
     public static final ItemDefinition<AgresticFoodItem> GRAPES = register("grapes", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.GRAPES)));
+
+    public static final ItemDefinition<BucketItem> ALE_WORT_BUCKET = register("ale_wort_bucket", (p) -> new BucketItem(AgresticFluids.ALE_WORT, p));
 
     public static void staticInit(IEventBus bus) {
         HELPER.register(bus);

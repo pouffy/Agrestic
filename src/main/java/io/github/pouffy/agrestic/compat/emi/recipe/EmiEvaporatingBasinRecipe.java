@@ -16,6 +16,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
+import java.util.Collections;
 import java.util.List;
 
 public class EmiEvaporatingBasinRecipe extends BasicEmiRecipe {
@@ -40,10 +41,9 @@ public class EmiEvaporatingBasinRecipe extends BasicEmiRecipe {
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        SlotWidget tank = widgets.add(new FluidTankWidget(Either.right(NeoForgeEmiIngredient.of(recipe.getInput())), 20, 15, 6000)).recipeContext(this);
-        tank.appendTooltip(Component.translatable("recipe.agrestic.time", formatTime(recipe.getTime())).withStyle(ChatFormatting.GOLD));
+        SlotWidget tank = widgets.add(FluidTankWidget.input(NeoForgeEmiIngredient.of(recipe.getInput()), 20, 15, 6000)).recipeContext(this);
         widgets.addSlot(EmiStack.of(recipe.getResultItem(registries)), 70, 23).recipeContext(this);
-        widgets.addTexture(AgresticEmiPlugin.ARROW, 42, 23);
+        widgets.addTexture(AgresticEmiPlugin.ARROW, 42, 23).tooltipText(List.of(Component.translatable("recipe.agrestic.time", formatTime(recipe.getTime())).withStyle(ChatFormatting.GOLD)));
     }
 
     private String formatTime(int ticks) {

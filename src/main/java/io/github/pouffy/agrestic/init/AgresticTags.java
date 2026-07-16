@@ -54,6 +54,8 @@ public class AgresticTags {
     }
 
     public static class FeatureAddition {
+        public static final TagKey<Biome> HAS_IRONWOOD_TREES = createBiomeTag("feature_addition/has_ironwood_trees");
+        public static final TagKey<Biome> HAS_OLIVE_TREES = createBiomeTag("feature_addition/has_olive_trees");
 
         public FeatureAddition() {
         }

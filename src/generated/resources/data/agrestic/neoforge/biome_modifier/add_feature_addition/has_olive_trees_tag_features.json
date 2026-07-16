@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#agrestic:feature_addition/has_olive_trees",
+  "features": "agrestic:olive_tree",
+  "step": "vegetal_decoration"
+}
