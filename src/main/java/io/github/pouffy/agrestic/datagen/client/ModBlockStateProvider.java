@@ -49,6 +49,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             justParticle(woodset.hangingWallSign(), Agrestic.location("block/wooden/%s/stripped_log".formatted(name)));
         }
         simpleExisting(AgresticBlocks.CRUSHING_TUB, Agrestic.location("block/crushing_tub"));
+        simpleExisting(AgresticBlocks.EVAPORATING_BASIN, Agrestic.location("block/evaporating_basin"));
         herbCrop(AgresticBlocks.ALOE_VERA);
         herbCrop(AgresticBlocks.BLOOD_ORCHID);
         herbCrop(AgresticBlocks.CHAMOMILE);

@@ -4,10 +4,7 @@ import com.pouffydev.krystal_core.foundation.data.loot.SelfBlockLootType;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
 import io.github.pouffy.agrestic.Agrestic;
-import io.github.pouffy.agrestic.common.block.ChilliPepperBlock;
-import io.github.pouffy.agrestic.common.block.CrushingTubBlock;
-import io.github.pouffy.agrestic.common.block.HerbBlock;
-import io.github.pouffy.agrestic.common.block.LogBlock;
+import io.github.pouffy.agrestic.common.block.*;
 import io.github.pouffy.agrestic.core.block.DoorBlockLootType;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.block.SlabBlockLootType;
@@ -37,6 +34,8 @@ public class AgresticBlocks {
     public static final Woodset IRONWOOD = new Woodset("ironwood");
 
     public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
+    public static final BlockDefinition<EvaporatingBasinBlock> EVAPORATING_BASIN = register("evaporating_basin", () -> new EvaporatingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
+
 
     public static final BlockDefinition<HerbBlock> ALOE_VERA = register("aloe_vera", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS), (state) -> state.is(Blocks.SAND), true, true) {
         @Override

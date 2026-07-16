@@ -1,5 +1,6 @@
 package io.github.pouffy.agrestic.compat.emi.recipe;
 
+import com.mojang.datafixers.util.Either;
 import com.pouffydev.krystal_core.foundation.data.recipe.result.ChanceResult;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -10,6 +11,7 @@ import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.compat.emi.FluidSlotWidget;
 import io.github.pouffy.agrestic.compat.emi.AgresticEmiPlugin;
+import io.github.pouffy.agrestic.compat.emi.FluidTankWidget;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
@@ -47,7 +49,7 @@ public class EmiCrushingTubRecipe extends BasicEmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         widgets.addSlot(EmiIngredient.of(recipe.getInput()), 20, 23).recipeContext(this);
         widgets.addTexture(AgresticEmiPlugin.ARROW, 42, 23);
-        widgets.add(new FluidSlotWidget(recipe.getResultFluid(this.registries), 70, 4, 8000)).recipeContext(this);
+        widgets.add(new FluidTankWidget(Either.left(recipe.getResultFluid(this.registries)), 70, 4, 8000)).recipeContext(this);
         ChanceResult byproduct = recipe.getByproduct();
         SlotWidget byproductSlot = widgets.addSlot(EmiStack.of(byproduct.stack()), 70, 42).recipeContext(this);
         byproductSlot.customBackground(Agrestic.location("textures/gui/emi/widgets.png"), 40, byproduct.chance() < 1 ? 18 : 0, 18, 18);

@@ -2,6 +2,7 @@ package io.github.pouffy.agrestic.init;
 
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
+import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeSerializer;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeType;
 import net.minecraft.core.registries.Registries;
@@ -15,6 +16,7 @@ public class AgresticRecipeTypes {
     public static final DeferredRegister<RecipeType<?>> HELPER = Agrestic.getRegistryHelper().createRegister(Registries.RECIPE_TYPE);
 
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> registerRecipeType("crushing_tub"));
+    public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> registerRecipeType("evaporating_basin"));
 
     public static void staticInit() {
         Serializers.staticInit();
@@ -28,6 +30,7 @@ public class AgresticRecipeTypes {
         public static final DeferredRegister<RecipeSerializer<?>> HELPER = Agrestic.getRegistryHelper().createRegister(Registries.RECIPE_SERIALIZER);
 
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> new SimpleRecipeSerializer<>(CrushingTubRecipe.CODEC));
+        public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> new SimpleRecipeSerializer<>(EvaporatingBasinRecipe.CODEC));
 
         public static void staticInit() {}
     }

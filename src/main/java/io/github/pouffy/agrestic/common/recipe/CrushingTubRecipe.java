@@ -11,8 +11,8 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+@Getter
 public class CrushingTubRecipe extends InWorldFluidRecipe<SingleRecipeInput> {
-    @Getter
     protected Ingredient input;
     protected ChanceResult byproduct;
 
@@ -37,7 +37,4 @@ public class CrushingTubRecipe extends InWorldFluidRecipe<SingleRecipeInput> {
         return this.input.test(recipeInput.item());
     }
 
-    public ChanceResult getByproduct() {
-        return this.byproduct;
-    }
 }

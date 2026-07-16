@@ -1,0 +1,12 @@
+{
+  "type": "agrestic:evaporating_basin",
+  "input": {
+    "amount": 100,
+    "fluid": "agrestic:golden_apple_juice"
+  },
+  "output": {
+    "count": 1,
+    "id": "agrestic:gold_dust"
+  },
+  "time": 100
+}

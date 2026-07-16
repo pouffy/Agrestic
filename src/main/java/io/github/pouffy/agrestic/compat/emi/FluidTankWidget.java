@@ -1,0 +1,78 @@
+package io.github.pouffy.agrestic.compat.emi;
+
+import com.mojang.datafixers.util.Either;
+import dev.emi.emi.api.render.EmiRender;
+import dev.emi.emi.api.stack.EmiIngredient;
+import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.Bounds;
+import dev.emi.emi.api.widget.SlotWidget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
+
+import javax.annotation.Nullable;
+
+public class FluidTankWidget extends SlotWidget {
+    private final long capacity;
+    protected final float fluidFullness;
+    protected final @Nullable Either<FluidStack, EmiIngredient> fluid;
+    public static int WIDTH = 18;
+    public static int HEIGHT = 34;
+    public static int FLUID_AREA_WIDTH = 16;
+    public static int FLUID_AREA_HEIGHT = 32;
+
+    public FluidTankWidget(@Nullable Either<FluidStack, EmiIngredient> fluid, int x, int y, long capacity) {
+        super(map(fluid), x, y);
+        int amount = fluid == null ? 0 : fluid.map(FluidStack::getAmount, EmiIngredient::getAmount).intValue();
+        this.capacity = capacity;
+        this.fluidFullness = Math.min((float) ((double) amount / (double) capacity), 1.0f);
+        this.fluid = fluid;
+    }
+
+    private static EmiIngredient map(@Nullable Either<FluidStack, EmiIngredient> fluid) {
+        if (fluid == null) {
+            return EmiStack.EMPTY;
+        }
+        return fluid.map(stack -> EmiStack.of(stack.getFluid(), stack.getComponentsPatch(), stack.getAmount()), ingredient -> ingredient);
+    }
+
+    @Override
+    public Bounds getBounds() {
+        return new Bounds(x, y, WIDTH, HEIGHT);
+    }
+
+    @Override
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        if (this.fluid != null)
+            this.fluid.ifLeft(fluid -> renderStack(fluid, context, mouseX, mouseY, delta)).ifRight(ingredient -> renderIngredient(ingredient, context, mouseX, mouseY, delta));
+    }
+
+    private void renderStack(FluidStack fluid, GuiGraphics context, int mouseX, int mouseY, float delta) {
+        if (drawBack) {
+            AgresticEmiPlugin.TANK.render(context, x, y, delta);
+        }
+
+        if (fluid != null) {
+            EmiUIUtils.renderFluid(context.pose(), fluid, x + 1, y + 1, FLUID_AREA_HEIGHT, fluidFullness * FLUID_AREA_HEIGHT, FLUID_AREA_WIDTH);
+        }
+
+        if (this.catalyst) {
+            EmiRender.renderCatalystIcon(this.getStack(), context, x + 2, y + 4);
+        }
+
+        Bounds bounds = getBounds();
+        if (bounds.contains(mouseX, mouseY)) {
+            EmiUIUtils.drawSlotHightlight(context, bounds.x() + 1, bounds.y() + 1, bounds.width() - 2,
+                    bounds.height() - 2);
+        }
+    }
+
+    private void renderIngredient(EmiIngredient ingredient, GuiGraphics context, int mouseX, int mouseY, float delta) {
+        for (EmiStack stack : ingredient.getEmiStacks()) {
+            if (stack.getKey() instanceof Fluid fluid) {
+                FluidStack fluidStack = new FluidStack(fluid.builtInRegistryHolder(), (int) ingredient.getAmount(), stack.getComponentChanges());
+                renderStack(fluidStack, context, mouseX, mouseY, delta);
+            }
+        }
+    }
+}

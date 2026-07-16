@@ -48,6 +48,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         AgresticEffects.HELPER.getEntries().forEach((effect) -> this.add(effect.get().getDescriptionId(), transform(effect.getId())));
 
         add("emi.category.agrestic.tub_crushing", "Tub Crushing");
+        add("emi.category.agrestic.basin_evaporating", "Basin Evaporating");
         add("recipe.agrestic.chance", "Chance: %s");
         add("recipe.agrestic.time", "Time: %s");
         add("block.agrestic.tank.drained", "Drained %s mb %s");

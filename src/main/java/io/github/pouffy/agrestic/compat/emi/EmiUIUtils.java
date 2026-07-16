@@ -2,10 +2,12 @@ package io.github.pouffy.agrestic.compat.emi;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import dev.emi.emi.api.stack.EmiStack;
 import io.github.pouffy.agrestic.client.ClientFluidHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.joml.Matrix4f;
 
@@ -20,6 +22,13 @@ public class EmiUIUtils {
         context.fill(x, y, x + w, y + h, -2130706433);
         RenderSystem.colorMask(true, true, true, true);
         context.pose().popPose();
+    }
+
+    public static void renderFluid(PoseStack matrices, EmiStack stack, int x, int areaY, float areaHeight, float fluidHeight, float fluidWidth) {
+        if (stack.getKey() instanceof Fluid fluid) {
+            FluidStack fluidStack = new FluidStack(fluid.builtInRegistryHolder(), (int) stack.getAmount(), stack.getComponentChanges());
+            renderFluid(matrices, fluidStack, x, areaY, areaHeight, fluidHeight, fluidWidth);
+        }
     }
 
     public static void renderFluid(PoseStack matrices, FluidStack fluid, int x, int areaY, float areaHeight, float fluidHeight, float fluidWidth) {

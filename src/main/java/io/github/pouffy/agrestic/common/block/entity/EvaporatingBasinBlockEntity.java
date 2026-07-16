@@ -1,43 +1,34 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
+import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
 import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferHelper;
 import io.github.pouffy.agrestic.core.item.DisplayedItemContainer;
-import io.github.pouffy.agrestic.core.item.StoredFluidStack;
-import io.github.pouffy.agrestic.core.item.StoredItemStack;
+import io.github.pouffy.agrestic.core.recipe.FluidRecipeInput;
 import io.github.pouffy.agrestic.core.recipe.RecipeSearch;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
-import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -46,21 +37,19 @@ import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-
-public class CrushingTubBlockEntity extends BlockEntity {
-
+public class EvaporatingBasinBlockEntity extends BlockEntity {
     @Getter
     protected final AgresticFluidTank tank;
     @Getter
     protected final DisplayedItemContainer container;
+    private FluidStack evaporatedFluid;
+    private int age = 0;
+    private int remainder = 0;
 
-
-    public CrushingTubBlockEntity(BlockPos pos, BlockState blockState) {
-        super(AgresticBlockEntities.CRUSHING_TUB.get(), pos, blockState);
-        tank = new AgresticFluidTank(getCapacity(), this::onFluidStackChanged).forbidInsertion();
-        container = new DisplayedItemContainer(1, (stack) -> this.markUpdated());
+    public EvaporatingBasinBlockEntity(BlockPos pos, BlockState blockState) {
+        super(AgresticBlockEntities.EVAPORATING_BASIN.get(), pos, blockState);
+        tank = new AgresticFluidTank(getCapacity(), this::onFluidStackChanged);
+        container = new DisplayedItemContainer(1, (stack) -> this.markUpdated()).forbidInsertion();
     }
 
     protected void onFluidStackChanged(FluidStack newFluids) {
@@ -74,50 +63,65 @@ public class CrushingTubBlockEntity extends BlockEntity {
     }
 
     public int getCapacity() {
-        return 8000;
+        return 6000;
     }
 
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AgresticBlockEntities.CRUSHING_TUB.get(), (be, context) -> be.tank);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AgresticBlockEntities.CRUSHING_TUB.get(), (be, context) -> be.container);
-    }
-
-    @Override
-    public final void setRemoved() {
-        super.setRemoved();
-        invalidateCapabilities();
-    }
-
-    public void crush() {
+    public void serverTick() {
         if (level == null) return;
-        boolean noRecipe = false;
-        if (hasStack()) {
-            ItemStack stack = getStack();
-            var input = new SingleRecipeInput(stack);
-            var recipe = RecipeSearch.search(level, AgresticRecipeTypes.CRUSHING_TUB.get()).findRecipe(input);
-            if (recipe != null) {
-                FluidStack output = recipe.finish(input, level.registryAccess());
-                if (this.getFluidStack().getAmount() <= this.getCapacity() - output.getAmount()) {
-                    if (!this.level.isClientSide) {
-                        this.tank.forceFill(output, IFluidHandler.FluidAction.EXECUTE);
-                        this.container.extractItem(0, 1, false);
-                        ItemStack by = recipe.getByproduct().rollOutput(this.level.random, 0);
-                        if (!by.isEmpty()) {
-                            Block.popResource(level, worldPosition, by);
-                        }
-                        this.level.playSound(null, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, SoundEvents.SLIME_BLOCK_FALL, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
-                        level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
-                        setChanged();
+        age++;
+        if (age >= 1000000) {
+            age = 0;
+        }
+        if (this.age % 20 == 0) {
+            if (this.getFluidStack().isEmpty()  || (this.evaporatedFluid != null && this.evaporatedFluid.getFluid() != this.getFluidStack().getFluid())) {
+                // change of recipe - reset
+                this.evaporatedFluid = null;
+                this.remainder = 0;
+            }
+            int to_drain = 0;
+            EvaporatingBasinRecipe recipe;
+            if (!this.getFluidStack().isEmpty()) {
+                var input = new FluidRecipeInput(this.getFluidStack());
+                recipe = RecipeSearch.search(level, AgresticRecipeTypes.EVAPORATING_BASIN.get()).findRecipe(input);
+                if (recipe != null) {
+                    int temp = 20 * recipe.getInput().amount() + this.remainder;
+                    to_drain = temp / recipe.getTime();
+                    this.remainder = temp % recipe.getTime();
+                }
+            }
+
+            FluidStack drained = tank.drain(to_drain, IFluidHandler.FluidAction.EXECUTE);
+
+            if (!drained.isEmpty()) {
+                if (evaporatedFluid == null) {
+                    evaporatedFluid = drained;
+                } else {
+                    if (!evaporatedFluid.getFluid().equals(drained.getFluid())) {
+                        evaporatedFluid = drained;
                     } else {
-                        RandomSource random = this.level.random;
-                        for (int i = 0; i < random.nextInt(8) + 8; ++i) {
-                            ItemParticleOption particleOption = new ItemParticleOption(ParticleTypes.ITEM, stack);
-                            this.level.addParticle(particleOption, this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5, ((random.nextDouble() * 0.1) - 0.05), ((random.nextDouble() * 0.05) + 0.05), ((random.nextDouble() * 0.1) - 0.05));
-                        }
+                        evaporatedFluid.setAmount(evaporatedFluid.getAmount() + drained.getAmount());
                     }
+                }
+                level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
+                setChanged();
+            }
+
+            if (evaporatedFluid != null && evaporatedFluid.getAmount() > 0) {
+                var input = new FluidRecipeInput(evaporatedFluid);
+                recipe = RecipeSearch.search(level, AgresticRecipeTypes.EVAPORATING_BASIN.get()).findRecipe(input);
+                ItemStack result = recipe.getResultItem(level.registryAccess());
+                if (evaporatedFluid.getAmount() >= recipe.getInput().amount() && container.insertItem(0, result, true).isEmpty()) {
+                    evaporatedFluid.setAmount(evaporatedFluid.getAmount() - recipe.getInput().amount());
+                    container.insertItem(0, result, false);
+                    level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
+                    setChanged();
                 }
             }
         }
+    }
+
+    public void clientTick() {
+
     }
 
     public ItemInteractionResult interact(Player player, InteractionHand hand, Direction side) {
@@ -126,18 +130,6 @@ public class CrushingTubBlockEntity extends BlockEntity {
         if (heldItem != ItemStack.EMPTY) {
             if (FluidTransferHelper.interactWithTank(level, worldPosition, player, hand, side, side)) {
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
-            } else {
-                if (this.container.getStackInSlot(0).isEmpty()) {
-                    player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
-                    markUpdated();
-                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                } else {
-                    if (this.container.getStackInSlot(0).is(heldItem.getItem())) {
-                        player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
-                        markUpdated();
-                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                    } else return ItemInteractionResult.FAIL;
-                }
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -164,6 +156,17 @@ public class CrushingTubBlockEntity extends BlockEntity {
         return InteractionResult.PASS;
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AgresticBlockEntities.EVAPORATING_BASIN.get(), (be, context) -> be.tank);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AgresticBlockEntities.EVAPORATING_BASIN.get(), (be, context) -> be.container);
+    }
+
+    @Override
+    public final void setRemoved() {
+        super.setRemoved();
+        invalidateCapabilities();
+    }
+
     public static void updateLight(BlockEntity be, IFluidTank tank) {
         Level level = be.getLevel();
         if (level != null && !level.isClientSide) {
@@ -174,34 +177,6 @@ public class CrushingTubBlockEntity extends BlockEntity {
                 level.setBlock(be.getBlockPos(), state.setValue(ILightEmitting.LIGHT, light), Block.UPDATE_CLIENTS);
             }
         }
-    }
-
-    @Override
-    protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
-        super.applyImplicitComponents(componentInput);
-        this.container.setStackInSlot(0, ItemStack.EMPTY);
-        StoredItemStack storedItem = componentInput.getOrDefault(AgresticDataComponents.ITEM_STACK, new StoredItemStack(ItemStack.EMPTY));
-        if (!storedItem.isEmpty()) {
-            this.container.setStackInSlot(0, storedItem.stack());
-        }
-        StoredFluidStack storedFluid = componentInput.getOrDefault(AgresticDataComponents.FLUID_STACK, new StoredFluidStack(FluidStack.EMPTY, 0));
-        if (!storedFluid.isEmpty()) {
-            this.tank.setFluid(storedFluid.stack());
-        }
-    }
-
-    @Override
-    protected void collectImplicitComponents(DataComponentMap.Builder components) {
-        super.collectImplicitComponents(components);
-        components.set(AgresticDataComponents.ITEM_STACK, new StoredItemStack(this.container.getStackInSlot(0)));
-        components.set(AgresticDataComponents.FLUID_STACK, new StoredFluidStack(this.getFluidStack(), getCapacity()));
-    }
-
-    @Override
-    public void removeComponentsFromTag(CompoundTag tag) {
-        super.removeComponentsFromTag(tag);
-        tag.remove("Tank");
-        tag.remove("Container");
     }
 
     public FluidStack getFluidStack() {

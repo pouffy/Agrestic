@@ -1,0 +1,12 @@
+{
+  "type": "agrestic:evaporating_basin",
+  "input": {
+    "amount": 500,
+    "fluid": "agrestic:ironberry_juice"
+  },
+  "output": {
+    "count": 1,
+    "id": "agrestic:tiny_iron_dust"
+  },
+  "time": 500
+}

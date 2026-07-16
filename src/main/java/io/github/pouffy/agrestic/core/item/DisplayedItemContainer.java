@@ -1,27 +1,55 @@
 package io.github.pouffy.agrestic.core.item;
 
+import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
+
+import java.util.function.Consumer;
 
 public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
     protected NonNullList<DisplayedItemStack> stacks;
 
+    private final Consumer<ItemStack> updateCallback;
+    private boolean forbidInsertion = false;
+    private boolean forbidExtraction = false;
+
     public DisplayedItemContainer() {
-        this(1);
+        this(1, (stack) -> {});
     }
 
-    public DisplayedItemContainer(int size) {
+    public DisplayedItemContainer(int size, Consumer<ItemStack> updateCallback) {
         this.stacks = NonNullList.withSize(size, DisplayedItemStack.EMPTY);
+        this.updateCallback = updateCallback;
     }
 
-    public DisplayedItemContainer(NonNullList<DisplayedItemStack> stacks) {
+    public DisplayedItemContainer(NonNullList<DisplayedItemStack> stacks, Consumer<ItemStack> updateCallback) {
         this.stacks = stacks;
+        this.updateCallback = updateCallback;
+    }
+
+    public DisplayedItemContainer forbidInsertion() {
+        this.forbidInsertion = true;
+        return this;
+    }
+
+    public DisplayedItemContainer forbidExtraction() {
+        this.forbidExtraction = true;
+        return this;
+    }
+
+    public boolean canInsert() {
+        return !this.forbidInsertion;
+    }
+
+    public boolean canExtract() {
+        return !this.forbidExtraction;
     }
 
     public void setSize(int size) {
@@ -50,6 +78,8 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
     }
 
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        if (forbidInsertion)
+            return stack;
         if (stack.isEmpty()) {
             return ItemStack.EMPTY;
         } else if (!this.isItemValid(slot, stack)) {
@@ -86,6 +116,8 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
     }
 
     public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        if (forbidExtraction)
+            return ItemStack.EMPTY;
         if (amount == 0) {
             return ItemStack.EMPTY;
         } else {
@@ -169,5 +201,6 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
     }
 
     protected void onContentsChanged(int slot) {
+        updateCallback.accept(getStackInSlot(slot));
     }
 }
