@@ -119,6 +119,10 @@ dependencies {
     compileOnlyApi("dev.emi:emi-neoforge:${property("emi_version")}:api")
     localRuntime("dev.emi:emi-neoforge:${property("emi_version")}")
 
+    runtimeOnly("maven.modrinth:emi-loot:${property("emiLoot")}+1.21+neoforge")
+    runtimeOnly("maven.modrinth:fzzy-config:${property("fzzyConfig")}+1.21+neoforge")
+    runtimeOnly("maven.modrinth:kotlin-for-forge:${property("kotlin")}")
+
     runtimeOnly("maven.modrinth:jade:15.10.5+neoforge")
     compileOnly("maven.modrinth:jade:15.10.5+neoforge")
 
