@@ -63,15 +63,20 @@ public class AppleCropBlock extends CropBlock {
         }
     }
 
+    @Override
+    public boolean isRandomlyTicking(BlockState state) {
+        return true;
+    }
+
     public void growCrops(Level level, BlockPos pos, BlockState state) {
-        if (state.getValue(AGE) < getMaxAge()) {
+        if (state.getValue(AGE) < 3) {
             int i = level.random.nextBoolean() ? 1 : 2;
             int j = Math.min(state.getValue(AGE) + i, getMaxAge());
 
-            level.setBlock(pos, state.setValue(AGE, j), Block.UPDATE_NEIGHBORS);
-
-            if (j == MAX_AGE) {
+            if (state.getValue(AGE) + i >= MAX_AGE) {
                 transformToSapling(level, pos);
+            } else {
+                level.setBlock(pos, state.setValue(AGE, j), Block.UPDATE_NEIGHBORS);
             }
         } else {
             transformToSapling(level, pos);

@@ -2,15 +2,20 @@ package io.github.pouffy.agrestic;
 
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidType;
+import io.github.pouffy.agrestic.init.AgresticBlocks;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -18,6 +23,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -76,5 +82,19 @@ public class AgresticClient {
         Item.TooltipContext context = event.getContext();
         List<Component> tooltip = event.getToolTip();
         TooltipFlag flag = event.getFlags();
+    }
+
+    @SubscribeEvent
+    public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, color) -> {BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();return event.getBlockColors().getColor(blockstate, null, null, color);},
+                AgresticBlocks.APPLE_LEAVES.get()
+        );
+    }
+
+    @SubscribeEvent
+    public static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+        event.register((state, tintGetter, pos, color) -> tintGetter != null && pos != null ? BiomeColors.getAverageFoliageColor(tintGetter, pos) : FoliageColor.getDefaultColor(),
+                AgresticBlocks.APPLE_LEAVES.get()
+        );
     }
 }

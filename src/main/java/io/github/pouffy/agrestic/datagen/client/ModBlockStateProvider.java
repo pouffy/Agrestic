@@ -313,7 +313,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         String name = this.name(block.get());
         BiFunction<Integer, Boolean, ModelFile> ageModel = (age, alt) -> this.models().getExistingFile(Agrestic.location("block/" + name + "/" + age + (alt ? "_alt" : "")));
         getMultipartBuilder(block.get()).part()
-                .modelFile(this.models().getExistingFile(ResourceLocation.withDefaultNamespace("block/oak_leaves"))).addModel().condition(AppleLeavesBlock.AGE, 0).end()
+                .modelFile(this.models().getExistingFile(ResourceLocation.withDefaultNamespace("block/oak_leaves"))).addModel().end()
                 .part()
                 .modelFile(ageModel.apply(1, false)).modelFile(ageModel.apply(1, false)).rotationY(90).nextModel().modelFile(ageModel.apply(1, false)).rotationY(180).nextModel().modelFile(ageModel.apply(1, false)).rotationY(270).nextModel()
                 .modelFile(ageModel.apply(1, true)).nextModel().modelFile(ageModel.apply(1, true)).rotationY(90).nextModel().modelFile(ageModel.apply(1, true)).rotationY(180).nextModel().modelFile(ageModel.apply(1, true)).rotationY(270)

@@ -3,9 +3,6 @@
     {
       "apply": {
         "model": "minecraft:block/oak_leaves"
-      },
-      "when": {
-        "age": "0"
       }
     },
     {
