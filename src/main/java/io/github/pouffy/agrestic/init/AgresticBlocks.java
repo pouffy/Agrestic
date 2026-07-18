@@ -6,13 +6,13 @@ import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefi
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.common.block.*;
+import io.github.pouffy.agrestic.core.SharedTag;
 import io.github.pouffy.agrestic.core.block.DoorBlockLootType;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.block.SlabBlockLootType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -149,11 +149,13 @@ public class AgresticBlocks {
         private final BlockDefinition<WallSignBlock> WALL_SIGN;
         private final BlockDefinition<CeilingHangingSignBlock> HANGING_SIGN;
         private final BlockDefinition<WallHangingSignBlock> HANGING_WALL_SIGN;
+        private final SharedTag LOG_TAG;
 
         public Woodset(String name) {
             BlockSetType blockSetType = BlockSetType.register(new BlockSetType("agrestic:" + name));
             WoodType woodType = WoodType.register(new WoodType("agrestic:" + name, blockSetType));
             AgresticBlocks.WOODSETS.add(this);
+            this.LOG_TAG = new SharedTag(name + "_logs");
             this.PLANKS = register(name + "_planks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)), Properties.planks());
             this.STAIRS = register(name + "_stairs", () -> new StairBlock(this.PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(this.PLANKS.get())), Properties.woodenStairs(this.PLANKS));
             this.SLAB = register(name + "_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(this.PLANKS.get())), Properties.woodenSlab(this.PLANKS));
@@ -178,6 +180,10 @@ public class AgresticBlocks {
                 Block hangingSignBlock = this.HANGING_SIGN.get();
                 return new WallHangingSignBlock(woodType, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WALL_HANGING_SIGN).lootFrom(() -> hangingSignBlock));
             }, BlockProperties.custom(null));
+        }
+
+        public SharedTag logTag() {
+            return this.LOG_TAG;
         }
 
         public BlockDefinition<Block> planks() {

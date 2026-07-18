@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "agrestic:crafting/gold_dust_from_tiny_gold_dust"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_tiny_gold_dust": {
+      "conditions": {
+        "items": [
+          {
+            "items": "agrestic:tiny_gold_dust"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tiny_gold_dust"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "agrestic:crafting/gold_dust_from_tiny_gold_dust"
+    ]
+  }
+}
