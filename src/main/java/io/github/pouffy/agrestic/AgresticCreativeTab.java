@@ -43,8 +43,8 @@ public class AgresticCreativeTab {
         }
         add(AgresticBlocks.OLIVE.leaves());
         add(AgresticBlocks.IRONWOOD.leaves());
-        ///add(AgresticBlocks.APPLE_LEAVES);
-        ///add(AgresticBlocks.APPLE_SAPLING);
+        add(AgresticBlocks.APPLE_LEAVES);
+        add(AgresticBlocks.APPLE_SAPLING);
         add(AgresticBlocks.OLIVE_SAPLING);
         add(AgresticBlocks.IRONWOOD_SAPLING);
         add(AgresticBlocks.CRUSHING_TUB);
@@ -57,7 +57,7 @@ public class AgresticCreativeTab {
         add(AgresticItems.CHILLI_PEPPER_SEEDS);
         ///add(AgresticItems.TOMATO_SEEDS);
         ///add(AgresticItems.GRAPE_SEEDS);
-        ///add(AgresticItems.APPLE_SEEDS);
+        add(AgresticBlocks.APPLE_SEEDS);
         //Crops
         add(AgresticItems.OLIVES);
         add(AgresticItems.IRONBERRIES);

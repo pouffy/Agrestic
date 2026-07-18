@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.Supplier;
 
@@ -35,6 +36,10 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
 
         this.blockItem(AgresticBlocks.IRONWOOD_SAPLING::asItem, "wooden/ironwood/sapling");
         this.blockItem(AgresticBlocks.OLIVE_SAPLING::asItem, "wooden/olive/sapling");
+        this.blockItem(AgresticBlocks.APPLE_SAPLING::asItem, "apple_sapling");
+
+        this.basicItem(AgresticBlocks.APPLE_SEEDS::asItem);
+        this.customModel(AgresticBlocks.APPLE_LEAVES::asItem, ResourceLocation.withDefaultNamespace("item/oak_leaves"));
 
         this.basicItem(AgresticItems.IRONBERRIES);
         this.basicItem(AgresticItems.OLIVES);
@@ -73,6 +78,10 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.blockItem(AgresticBlocks.MOONCAP::asItem, "herbs/mooncap_6");
         this.herb(AgresticBlocks.VANTA_LILY::asItem);
         this.herb(AgresticBlocks.WIND_THISTLE::asItem);
+    }
+
+    public ItemModelBuilder customModel(Supplier<? extends Item> item, ResourceLocation parent) {
+        return this.getBuilder(itemName(item.get())).parent(new ModelFile.UncheckedModelFile(parent));
     }
 
     public ItemModelBuilder blockItem(Supplier<? extends Item> item, String texture) {

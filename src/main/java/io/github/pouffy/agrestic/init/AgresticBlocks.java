@@ -42,6 +42,10 @@ public class AgresticBlocks {
     public static final BlockDefinition<SaplingBlock> OLIVE_SAPLING = register("olive_sapling", () -> new SaplingBlock(AgresticTreeGrowers.OLIVE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final BlockDefinition<SaplingBlock> IRONWOOD_SAPLING = register("ironwood_sapling", () -> new SaplingBlock(AgresticTreeGrowers.IRONWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 
+    public static final BlockDefinition<AppleCropBlock> APPLE_SEEDS = register("apple_seeds", () -> new AppleCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
+    public static final BlockDefinition<SaplingBlock> APPLE_SAPLING = register("apple_sapling", () -> new SaplingBlock(AgresticTreeGrowers.APPLE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final BlockDefinition<AppleLeavesBlock> APPLE_LEAVES = register("apple_leaves", () -> new AppleLeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
+
     public static final BlockDefinition<HerbBlock> ALOE_VERA = register("aloe_vera", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS), (state) -> state.is(Blocks.SAND), true, true) {
         @Override
         public @NotNull Supplier<? extends Item> getHerb() {

@@ -27,10 +27,10 @@ public class AgresticPlacedFeatures {
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> featureLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
-        // Ironwood
+        // Ironwood Tree
         register(context, IRONWOOD_TREE, featureLookup.getOrThrow(AgresticConfiguredFeatures.IRONWOOD_TREE), VegetationPlacements.treePlacement(PlacementUtils.countExtra(0, 0.05f, 1), AgresticBlocks.IRONWOOD_SAPLING.block()));
 
-        // Olive
+        // Olive Tree
         register(context, OLIVE_TREE, featureLookup.getOrThrow(AgresticConfiguredFeatures.OLIVE_TREE), VegetationPlacements.treePlacement(PlacementUtils.countExtra(0, 0.05f, 1), AgresticBlocks.OLIVE_SAPLING.block()));
     }
 

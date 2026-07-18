@@ -1,6 +1,8 @@
 package io.github.pouffy.agrestic.datagen.client;
 
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.common.block.AppleCropBlock;
+import io.github.pouffy.agrestic.common.block.AppleLeavesBlock;
 import io.github.pouffy.agrestic.common.block.ChilliPepperBlock;
 import io.github.pouffy.agrestic.common.block.HerbBlock;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
@@ -17,6 +19,7 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -54,6 +57,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleExisting(AgresticBlocks.FLUID_BARREL, Agrestic.location("block/fluid_barrel"));
         sapling(AgresticBlocks.OLIVE_SAPLING, Agrestic.location("block/wooden/olive/sapling"));
         sapling(AgresticBlocks.IRONWOOD_SAPLING, Agrestic.location("block/wooden/ironwood/sapling"));
+        sapling(AgresticBlocks.APPLE_SAPLING, Agrestic.location("block/apple_sapling"));
         herbCrop(AgresticBlocks.ALOE_VERA);
         herbCrop(AgresticBlocks.BLOOD_ORCHID);
         herbCrop(AgresticBlocks.CHAMOMILE);
@@ -68,6 +72,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         herbCrop(AgresticBlocks.VANTA_LILY);
         herbCrop(AgresticBlocks.WIND_THISTLE);
         chilliPeppers();
+        appleCrop(AgresticBlocks.APPLE_SEEDS);
+        appleLeaves(AgresticBlocks.APPLE_LEAVES);
     }
 
     private void leaves(Supplier<? extends LeavesBlock> leaves, ResourceLocation texture) {
@@ -291,6 +297,35 @@ public class ModBlockStateProvider extends BlockStateProvider {
             };
             return ConfiguredModel.builder().modelFile(modelFile).build();
         });
+    }
+
+    private void appleCrop(Supplier<? extends Block> block) {
+        String name = this.name(block.get());
+        Function<Integer, ResourceLocation> texture = (age) -> Agrestic.location("block/crops/" + name + "_" + age);
+        Function<Integer, ModelFile> ageModel = (age) -> this.models().withExistingParent(name + "_" + age, Agrestic.location("block/template/crop_cross")).texture("cross", texture.apply(age)).renderType("cutout");
+        getVariantBuilder(block.get()).forAllStatesExcept((state) -> {
+            int age = state.getValue(AppleCropBlock.AGE);
+            return ConfiguredModel.builder().modelFile(ageModel.apply(age)).build();
+        });
+    }
+
+    private void appleLeaves(Supplier<? extends Block> block) {
+        String name = this.name(block.get());
+        BiFunction<Integer, Boolean, ModelFile> ageModel = (age, alt) -> this.models().getExistingFile(Agrestic.location("block/" + name + "/" + age + (alt ? "_alt" : "")));
+        getMultipartBuilder(block.get()).part()
+                .modelFile(this.models().getExistingFile(ResourceLocation.withDefaultNamespace("block/oak_leaves"))).addModel().condition(AppleLeavesBlock.AGE, 0).end()
+                .part()
+                .modelFile(ageModel.apply(1, false)).modelFile(ageModel.apply(1, false)).rotationY(90).nextModel().modelFile(ageModel.apply(1, false)).rotationY(180).nextModel().modelFile(ageModel.apply(1, false)).rotationY(270).nextModel()
+                .modelFile(ageModel.apply(1, true)).nextModel().modelFile(ageModel.apply(1, true)).rotationY(90).nextModel().modelFile(ageModel.apply(1, true)).rotationY(180).nextModel().modelFile(ageModel.apply(1, true)).rotationY(270)
+                .addModel().condition(AppleLeavesBlock.AGE, 1).end()
+                .part()
+                .modelFile(ageModel.apply(2, false)).modelFile(ageModel.apply(2, false)).rotationY(90).nextModel().modelFile(ageModel.apply(2, false)).rotationY(180).nextModel().modelFile(ageModel.apply(2, false)).rotationY(270).nextModel()
+                .modelFile(ageModel.apply(2, true)).nextModel().modelFile(ageModel.apply(2, true)).rotationY(90).nextModel().modelFile(ageModel.apply(2, true)).rotationY(180).nextModel().modelFile(ageModel.apply(2, true)).rotationY(270)
+                .addModel().condition(AppleLeavesBlock.AGE, 2).end()
+                .part()
+                .modelFile(ageModel.apply(3, false)).modelFile(ageModel.apply(3, false)).rotationY(90).nextModel().modelFile(ageModel.apply(3, false)).rotationY(180).nextModel().modelFile(ageModel.apply(3, false)).rotationY(270).nextModel()
+                .modelFile(ageModel.apply(3, true)).nextModel().modelFile(ageModel.apply(3, true)).rotationY(90).nextModel().modelFile(ageModel.apply(3, true)).rotationY(180).nextModel().modelFile(ageModel.apply(3, true)).rotationY(270)
+                .addModel().condition(AppleLeavesBlock.AGE, 3).end();
     }
 
     private ResourceLocation extend(ResourceLocation rl, String suffix) {return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);}

@@ -1,0 +1,43 @@
+{
+  "format_version": "1.9.0",
+  "textures": {
+    "0": "agrestic:block/apple"
+  },
+  "render_type": "minecraft:cutout",
+  "elements": [
+    {
+      "name": "Cube",
+      "from": [3, 3, 5],
+      "to": [6, 6, 8],
+      "faces": {
+        "north": {"uv": [5, 13, 8, 16], "texture": "#0"},
+        "east": {"uv": [5, 13, 8, 16], "texture": "#0"},
+        "south": {"uv": [5, 13, 8, 16], "texture": "#0"},
+        "west": {"uv": [5, 13, 8, 16], "texture": "#0"},
+        "up": {"uv": [8, 13, 11, 16], "texture": "#0"},
+        "down": {"uv": [8, 13, 11, 16], "texture": "#0"}
+      }
+    },
+    {
+      "name": "stem",
+      "from": [4, 6, 6],
+      "to": [5, 8, 7],
+      "rotation": {"angle": 0, "axis": "y", "origin": [4, 6, 6]},
+      "faces": {
+        "north": {"uv": [12, 3, 13, 5], "texture": "#0"},
+        "east": {"uv": [13, 3, 12, 5], "texture": "#0"},
+        "south": {"uv": [12, 3, 13, 5], "texture": "#0"},
+        "west": {"uv": [13, 3, 12, 5], "texture": "#0"},
+        "up": {"uv": [13, 4, 12, 3], "texture": "#0"}
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "group",
+      "origin": [4, 5.75, 6],
+      "color": 0,
+      "children": [0, 1]
+    }
+  ]
+}

@@ -40,6 +40,15 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .define('B', Items.BRICK)
                 .unlockedBy("has_brick", has(Items.BRICK))
                 .save(output, Agrestic.location("crafting/evaporating_basin"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AgresticBlocks.FLUID_BARREL)
+                .pattern("P P")
+                .pattern("I I")
+                .pattern("PSP")
+                .define('P', ItemTags.PLANKS)
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('S', ItemTags.WOODEN_SLABS)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(output, Agrestic.location("crafting/fluid_barrel"));
 
         ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticItems.ALE_WORT_BUCKET)
                 .requires(Tags.Items.BUCKETS_WATER)

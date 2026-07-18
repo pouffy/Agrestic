@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "agrestic:block/apple_seeds_0"
+    },
+    "age=1": {
+      "model": "agrestic:block/apple_seeds_1"
+    },
+    "age=2": {
+      "model": "agrestic:block/apple_seeds_2"
+    },
+    "age=3": {
+      "model": "agrestic:block/apple_seeds_3"
+    }
+  }
+}

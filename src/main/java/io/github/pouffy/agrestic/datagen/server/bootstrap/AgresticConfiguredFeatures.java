@@ -7,6 +7,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 public class AgresticConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> IRONWOOD_TREE = makeKey("ironwood_tree");
     public static final ResourceKey<ConfiguredFeature<?, ?>> OLIVE_TREE = makeKey("olive_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> APPLE_TREE = makeKey("apple_tree");
 
     private static ResourceKey<ConfiguredFeature<?, ?>> makeKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, Agrestic.location(name));
@@ -30,6 +32,9 @@ public class AgresticConfiguredFeatures {
 
         // Olive Tree
         register(context, OLIVE_TREE, Feature.TREE, createStraightBlobTree(AgresticBlocks.OLIVE.log().block(), AgresticBlocks.OLIVE.leaves().block(), 4, 3, 0, 2).ignoreVines().build());
+
+        // Apple Tree
+        register(context, APPLE_TREE, Feature.TREE, createStraightBlobTree(Blocks.OAK_LOG, AgresticBlocks.APPLE_LEAVES.block(), 4, 2, 0, 2).ignoreVines().build());
 
     }
 

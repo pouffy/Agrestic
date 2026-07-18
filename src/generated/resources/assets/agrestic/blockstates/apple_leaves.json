@@ -1,0 +1,114 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "minecraft:block/oak_leaves"
+      },
+      "when": {
+        "age": "0"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "agrestic:block/apple_leaves/1",
+          "y": 90
+        },
+        {
+          "model": "agrestic:block/apple_leaves/1",
+          "y": 180
+        },
+        {
+          "model": "agrestic:block/apple_leaves/1",
+          "y": 270
+        },
+        {
+          "model": "agrestic:block/apple_leaves/1_alt"
+        },
+        {
+          "model": "agrestic:block/apple_leaves/1_alt",
+          "y": 90
+        },
+        {
+          "model": "agrestic:block/apple_leaves/1_alt",
+          "y": 180
+        },
+        {
+          "model": "agrestic:block/apple_leaves/1_alt",
+          "y": 270
+        }
+      ],
+      "when": {
+        "age": "1"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "agrestic:block/apple_leaves/2",
+          "y": 90
+        },
+        {
+          "model": "agrestic:block/apple_leaves/2",
+          "y": 180
+        },
+        {
+          "model": "agrestic:block/apple_leaves/2",
+          "y": 270
+        },
+        {
+          "model": "agrestic:block/apple_leaves/2_alt"
+        },
+        {
+          "model": "agrestic:block/apple_leaves/2_alt",
+          "y": 90
+        },
+        {
+          "model": "agrestic:block/apple_leaves/2_alt",
+          "y": 180
+        },
+        {
+          "model": "agrestic:block/apple_leaves/2_alt",
+          "y": 270
+        }
+      ],
+      "when": {
+        "age": "2"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "agrestic:block/apple_leaves/3",
+          "y": 90
+        },
+        {
+          "model": "agrestic:block/apple_leaves/3",
+          "y": 180
+        },
+        {
+          "model": "agrestic:block/apple_leaves/3",
+          "y": 270
+        },
+        {
+          "model": "agrestic:block/apple_leaves/3_alt"
+        },
+        {
+          "model": "agrestic:block/apple_leaves/3_alt",
+          "y": 90
+        },
+        {
+          "model": "agrestic:block/apple_leaves/3_alt",
+          "y": 180
+        },
+        {
+          "model": "agrestic:block/apple_leaves/3_alt",
+          "y": 270
+        }
+      ],
+      "when": {
+        "age": "3"
+      }
+    }
+  ]
+}

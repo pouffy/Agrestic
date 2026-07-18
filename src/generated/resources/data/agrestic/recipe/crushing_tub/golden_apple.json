@@ -1,0 +1,16 @@
+{
+  "type": "agrestic:crushing_tub",
+  "byproduct": {
+    "item": {
+      "count": 1,
+      "id": "agrestic:apple_seeds"
+    }
+  },
+  "input": {
+    "item": "minecraft:golden_apple"
+  },
+  "output": {
+    "amount": 100,
+    "id": "agrestic:golden_apple_juice"
+  }
+}
