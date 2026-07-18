@@ -55,6 +55,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleExisting(AgresticBlocks.CRUSHING_TUB, Agrestic.location("block/crushing_tub"));
         simpleExisting(AgresticBlocks.EVAPORATING_BASIN, Agrestic.location("block/evaporating_basin"));
         simpleExisting(AgresticBlocks.FLUID_BARREL, Agrestic.location("block/fluid_barrel"));
+        horizontalBlock(AgresticBlocks.BREWING_BARREL.block(), this.models().getExistingFile(Agrestic.location("block/brewing_barrel")));
         sapling(AgresticBlocks.OLIVE_SAPLING, Agrestic.location("block/wooden/olive/sapling"));
         sapling(AgresticBlocks.IRONWOOD_SAPLING, Agrestic.location("block/wooden/ironwood/sapling"));
         sapling(AgresticBlocks.APPLE_SAPLING, Agrestic.location("block/apple_sapling"));

@@ -90,6 +90,7 @@ public class AgresticCreativeTab {
         add(AgresticItems.APPLE_JUICE_BUCKET);
         add(AgresticItems.SWEET_BERRY_JUICE_BUCKET);
         add(AgresticItems.GRAPE_JUICE_BUCKET);
+        add(AgresticBlocks.BREWING_BARREL);
         setCurrentTab(DECORATION.getKey());
         for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
             add(woodset.planks());

@@ -4,6 +4,7 @@ import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.client.renderer.CrushingTubRenderer;
 import io.github.pouffy.agrestic.client.renderer.EvaporatingBasinRenderer;
 import io.github.pouffy.agrestic.client.renderer.FluidBarrelRenderer;
+import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
 import io.github.pouffy.agrestic.common.block.entity.CrushingTubBlockEntity;
 import io.github.pouffy.agrestic.common.block.entity.EvaporatingBasinBlockEntity;
 import io.github.pouffy.agrestic.common.block.entity.FluidBarrelBlockEntity;
@@ -25,6 +26,7 @@ public class AgresticBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrushingTubBlockEntity>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> BlockEntityType.Builder.of(CrushingTubBlockEntity::new, AgresticBlocks.CRUSHING_TUB.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EvaporatingBasinBlockEntity>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> BlockEntityType.Builder.of(EvaporatingBasinBlockEntity::new, AgresticBlocks.EVAPORATING_BASIN.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidBarrelBlockEntity>> FLUID_BARREL = HELPER.register("fluid_barrel", () -> BlockEntityType.Builder.of(FluidBarrelBlockEntity::new, AgresticBlocks.FLUID_BARREL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrewingBarrelBlockEntity>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> BlockEntityType.Builder.of(BrewingBarrelBlockEntity::new, AgresticBlocks.BREWING_BARREL.get()).build(null));
 
     public static void addBlockEntities(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.SIGN, AgresticBlocks.OLIVE.sign().get(), AgresticBlocks.OLIVE.wallSign().get(), AgresticBlocks.IRONWOOD.sign().get(), AgresticBlocks.IRONWOOD.wallSign().get());
@@ -38,6 +40,7 @@ public class AgresticBlockEntities {
         CrushingTubBlockEntity.registerCapabilities(event);
         EvaporatingBasinBlockEntity.registerCapabilities(event);
         FluidBarrelBlockEntity.registerCapabilities(event);
+        BrewingBarrelBlockEntity.registerCapabilities(event);
     }
 
     @EventBusSubscriber(Dist.CLIENT)

@@ -40,6 +40,7 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
 
         this.basicItem(AgresticBlocks.APPLE_SEEDS::asItem);
         this.customModel(AgresticBlocks.APPLE_LEAVES::asItem, ResourceLocation.withDefaultNamespace("item/oak_leaves"));
+        this.customModel(AgresticBlocks.BREWING_BARREL::asItem, Agrestic.location("block/brewing_barrel"));
 
         this.basicItem(AgresticItems.IRONBERRIES);
         this.basicItem(AgresticItems.OLIVES);
