@@ -1,6 +1,7 @@
 {
   "type": "agrestic:crushing_tub",
   "byproduct": {
+    "chance": 0.75,
     "item": {
       "count": 1,
       "id": "agrestic:apple_seeds"
