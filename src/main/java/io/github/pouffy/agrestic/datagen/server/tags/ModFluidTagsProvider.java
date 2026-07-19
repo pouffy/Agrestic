@@ -21,14 +21,14 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
     }
 
     protected void addTags(HolderLookup.Provider provider) {
-        addToTag(AgresticTags.APPLE_JUICE, AgresticFluids.APPLE_JUICE, AgresticFluids.FLOWING_APPLE_JUICE);
-        addToTag(AgresticTags.GOLDEN_APPLE_JUICE, AgresticFluids.GOLDEN_APPLE_JUICE, AgresticFluids.FLOWING_GOLDEN_APPLE_JUICE);
-        addToTag(AgresticTags.GRAPE_JUICE, AgresticFluids.GRAPE_JUICE, AgresticFluids.FLOWING_GRAPE_JUICE);
-        addToTag(AgresticTags.SWEET_BERRY_JUICE, AgresticFluids.SWEET_BERRY_JUICE, AgresticFluids.FLOWING_SWEET_BERRY_JUICE);
-        addToTag(AgresticTags.IRONBERRY_JUICE, AgresticFluids.IRONBERRY_JUICE, AgresticFluids.FLOWING_IRONBERRY_JUICE);
-        addToTag(AgresticTags.ALE_WORT, AgresticFluids.ALE_WORT, AgresticFluids.FLOWING_ALE_WORT);
-        addToTag(AgresticTags.OLIVE_OIL, AgresticFluids.OLIVE_OIL, AgresticFluids.FLOWING_OLIVE_OIL);
-        addToTag(AgresticTags.VANTA_OIL, AgresticFluids.VANTA_OIL, AgresticFluids.FLOWING_VANTA_OIL);
+        addToTag(AgresticTags.APPLE_JUICE, AgresticFluids.APPLE_JUICE.get(), AgresticFluids.FLOWING_APPLE_JUICE.get());
+        addToTag(AgresticTags.GOLDEN_APPLE_JUICE, AgresticFluids.GOLDEN_APPLE_JUICE.get(), AgresticFluids.FLOWING_GOLDEN_APPLE_JUICE.get());
+        addToTag(AgresticTags.GRAPE_JUICE, AgresticFluids.GRAPE_JUICE.get(), AgresticFluids.FLOWING_GRAPE_JUICE.get());
+        addToTag(AgresticTags.SWEET_BERRY_JUICE, AgresticFluids.SWEET_BERRY_JUICE.get(), AgresticFluids.FLOWING_SWEET_BERRY_JUICE.get());
+        addToTag(AgresticTags.IRONBERRY_JUICE, AgresticFluids.IRONBERRY_JUICE.get(), AgresticFluids.FLOWING_IRONBERRY_JUICE.get());
+        addToTag(AgresticTags.ALE_WORT, AgresticFluids.ALE_WORT.get(), AgresticFluids.FLOWING_ALE_WORT.get());
+        addToTag(AgresticTags.OLIVE_OIL, AgresticFluids.OLIVE_OIL.get(), AgresticFluids.FLOWING_OLIVE_OIL.get());
+        addToTag(AgresticTags.VANTA_OIL, AgresticFluids.VANTA_OIL.get(), AgresticFluids.FLOWING_VANTA_OIL.get());
     }
 
     protected final void addToTag(TagKey<Fluid> tagKey, Fluid... fluids) {

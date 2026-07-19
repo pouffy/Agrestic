@@ -4,6 +4,7 @@ import com.pouffydev.krystal_core.foundation.registry.CreativeTabRegistryHelper;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
 import com.pouffydev.krystal_core.foundation.utility.CreativeTabManager;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticFluids;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
@@ -82,14 +83,14 @@ public class AgresticCreativeTab {
         add(AgresticItems.SWEET_BERRY_JUICE_BOTTLE);
         add(AgresticItems.GRAPE_JUICE_BOTTLE);
         //Buckets
-        add(AgresticItems.IRONBERRY_JUICE_BUCKET);
-        add(AgresticItems.VANTA_OIL_BUCKET);
-        add(AgresticItems.ALE_WORT_BUCKET);
-        add(AgresticItems.OLIVE_OIL_BUCKET);
-        add(AgresticItems.GOLDEN_APPLE_JUICE_BUCKET);
-        add(AgresticItems.APPLE_JUICE_BUCKET);
-        add(AgresticItems.SWEET_BERRY_JUICE_BUCKET);
-        add(AgresticItems.GRAPE_JUICE_BUCKET);
+        add(AgresticFluids.IRONBERRY_JUICE_BUCKET);
+        add(AgresticFluids.VANTA_OIL_BUCKET);
+        add(AgresticFluids.ALE_WORT_BUCKET);
+        add(AgresticFluids.OLIVE_OIL_BUCKET);
+        add(AgresticFluids.GOLDEN_APPLE_JUICE_BUCKET);
+        add(AgresticFluids.APPLE_JUICE_BUCKET);
+        add(AgresticFluids.SWEET_BERRY_JUICE_BUCKET);
+        add(AgresticFluids.GRAPE_JUICE_BUCKET);
         add(AgresticBlocks.BREWING_BARREL);
         setCurrentTab(DECORATION.getKey());
         for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {

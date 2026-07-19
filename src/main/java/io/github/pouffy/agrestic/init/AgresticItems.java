@@ -8,6 +8,7 @@ import io.github.pouffy.agrestic.common.item.DrinkableItem;
 import io.github.pouffy.agrestic.common.item.HerbItem;
 import io.github.pouffy.agrestic.common.item.TomatoItem;
 import io.github.pouffy.agrestic.core.TextUtils;
+import io.github.pouffy.agrestic.core.item.AgresticBucketItem;
 import io.github.pouffy.agrestic.core.item.AgresticFoodItem;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluid;
@@ -68,18 +69,6 @@ public class AgresticItems {
     public static final ItemDefinition<ChilliItem> GHOST_PEPPER = register("ghost_pepper", (p) -> new ChilliItem(p.food(AgresticFoodValues.GHOST_PEPPER), true));
 
     // =================================================
-    // ||                   BUCKETS                   ||
-    // =================================================
-    public static final ItemDefinition<BucketItem> APPLE_JUICE_BUCKET = registerBucket("apple_juice", AgresticFluids.APPLE_JUICE, p -> p);
-    public static final ItemDefinition<BucketItem> GOLDEN_APPLE_JUICE_BUCKET = registerBucket("golden_apple_juice", AgresticFluids.GOLDEN_APPLE_JUICE, p -> p);
-    public static final ItemDefinition<BucketItem> GRAPE_JUICE_BUCKET = registerBucket("grape_juice", AgresticFluids.GRAPE_JUICE, p -> p);
-    public static final ItemDefinition<BucketItem> SWEET_BERRY_JUICE_BUCKET = registerBucket("sweet_berry_juice", AgresticFluids.SWEET_BERRY_JUICE, p -> p);
-    public static final ItemDefinition<BucketItem> IRONBERRY_JUICE_BUCKET = registerBucket("ironberry_juice", AgresticFluids.IRONBERRY_JUICE, p -> p);
-    public static final ItemDefinition<BucketItem> ALE_WORT_BUCKET = registerBucket("ale_wort", AgresticFluids.ALE_WORT, p -> p);
-    public static final ItemDefinition<BucketItem> OLIVE_OIL_BUCKET = registerBucket("olive_oil", AgresticFluids.OLIVE_OIL, p -> p);
-    public static final ItemDefinition<BucketItem> VANTA_OIL_BUCKET = registerBucket("vanta_oil", AgresticFluids.VANTA_OIL, p -> p);
-
-    // =================================================
     // ||                   BOTTLES                   ||
     // =================================================
     public static final ItemDefinition<DrinkableItem> APPLE_JUICE_BOTTLE = registerBottle("apple_juice", (p) -> new DrinkableItem(p.food(AgresticFoodValues.APPLE_JUICE_BOTTLE).stacksTo(16)));
@@ -121,7 +110,7 @@ public class AgresticItems {
     public static <T extends Item> ItemDefinition<T> registerBottle(String name, Function<Item.Properties, T> constructor) {
         return register(name + "_bottle", (p) -> constructor.apply(p.craftRemainder(Items.GLASS_BOTTLE)), "Bottle of %s".formatted(TextUtils.transform(name)));
     }
-    public static ItemDefinition<BucketItem> registerBucket(String name, Fluid fluid, Function<Item.Properties, Item.Properties> properties) {
-        return register(name + "_bucket", (p) -> new BucketItem(fluid, properties.apply(p).craftRemainder(Items.BUCKET).stacksTo(1)), "Bucket of %s".formatted(TextUtils.transform(name)));
+    public static ItemDefinition<BucketItem> registerBucket(String name, Supplier<? extends Fluid> fluid, Function<Item.Properties, Item.Properties> properties) {
+        return register(name + "_bucket", (p) -> new AgresticBucketItem(fluid, properties.apply(p).craftRemainder(Items.BUCKET).stacksTo(1)), "Bucket of %s".formatted(TextUtils.transform(name)));
     }
 }

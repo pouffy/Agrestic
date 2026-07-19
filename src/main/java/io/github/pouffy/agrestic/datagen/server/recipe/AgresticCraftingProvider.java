@@ -4,6 +4,7 @@ import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.datagen.server.recipe.builder.AgresticRecipeProvider;
 import io.github.pouffy.agrestic.datagen.server.recipe.builder.ShapelessNoReturnRecipeBuilder;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticFluids;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
@@ -54,7 +55,7 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output, Agrestic.location("crafting/fluid_barrel"));
 
-        ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticItems.ALE_WORT_BUCKET)
+        ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticFluids.ALE_WORT_BUCKET)
                 .requires(Tags.Items.BUCKETS_WATER)
                 .requires(Items.SUGAR)
                 .requires(Tags.Items.FOODS_BREAD)

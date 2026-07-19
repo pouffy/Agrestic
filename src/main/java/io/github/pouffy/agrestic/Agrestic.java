@@ -40,6 +40,8 @@ public class Agrestic {
         INSTANCE = this;
         this.registryHelper = new RegistryHelper(MODID, modEventBus);
         AgresticCreativeTab.staticInit();
+        AgresticFluids.Types.staticInit(modEventBus);
+        AgresticFluids.staticInit(modEventBus);
         AgresticBlocks.staticInit(modEventBus);
         AgresticItems.staticInit(modEventBus);
         AgresticCreativeTab.populate();

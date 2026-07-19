@@ -24,8 +24,8 @@ public class AgresticEvaporatingProvider extends AgresticRecipeProvider {
     }
 
     protected void buildRecipes(RecipeOutput output) {
-        recipe(AgresticItems.TINY_IRON_DUST.stack(), SizedFluidIngredient.of(AgresticFluids.IRONBERRY_JUICE, 500), output, "ironberry_juice");
-        recipe(AgresticItems.GOLD_DUST.stack(), SizedFluidIngredient.of(AgresticFluids.GOLDEN_APPLE_JUICE, 100), output, "golden_apple_juice");
+        recipe(AgresticItems.TINY_IRON_DUST.stack(), SizedFluidIngredient.of(AgresticFluids.IRONBERRY_JUICE.get(), 500), output, "ironberry_juice");
+        recipe(AgresticItems.GOLD_DUST.stack(), SizedFluidIngredient.of(AgresticFluids.GOLDEN_APPLE_JUICE.get(), 100), output, "golden_apple_juice");
     }
 
     public void recipe(ItemStack output, SizedFluidIngredient ingredient, RecipeOutput recipeOutput, String path) {

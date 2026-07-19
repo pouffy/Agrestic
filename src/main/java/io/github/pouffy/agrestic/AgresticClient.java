@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic;
 
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
+import io.github.pouffy.agrestic.core.fluid.AgresticBucketWrapper;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidType;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.client.renderer.BiomeColors;
@@ -22,12 +23,14 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
@@ -82,6 +85,12 @@ public class AgresticClient {
         Item.TooltipContext context = event.getContext();
         List<Component> tooltip = event.getToolTip();
         TooltipFlag flag = event.getFlags();
+        if (stack.getCapability(Capabilities.FluidHandler.ITEM) instanceof FluidBucketWrapper wrapper) {
+            tooltip.add(Component.translatable("ui.agrestic.tooltip.fluid", wrapper.getFluid().getHoverName(), wrapper.getFluid().getAmount(), 1000));
+        }
+        if (stack.getCapability(Capabilities.FluidHandler.ITEM) instanceof AgresticBucketWrapper wrapper) {
+            tooltip.add(Component.translatable("ui.agrestic.tooltip.fluid", wrapper.getFluid().getHoverName(), wrapper.getFluid().getAmount(), 1000));
+        }
     }
 
     @SubscribeEvent

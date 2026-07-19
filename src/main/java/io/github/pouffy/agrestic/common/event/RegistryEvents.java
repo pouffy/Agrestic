@@ -56,12 +56,6 @@ public class RegistryEvents {
     }
 
     @SubscribeEvent
-    public static void registerExtra(RegisterEvent event) {
-        register(event, Registries.FLUID, AgresticFluids::registerAll);
-        register(event, NeoForgeRegistries.Keys.FLUID_TYPES, AgresticFluids.Types::registerAll);
-    }
-
-    @SubscribeEvent
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(Agrestic.MODID).versioned("1.0");
 
