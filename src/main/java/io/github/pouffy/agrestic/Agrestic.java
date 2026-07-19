@@ -17,8 +17,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 
+import java.util.UUID;
+
 @Mod(Agrestic.MODID)
 public class Agrestic {
+    public static final UUID KRYSTAL_UUID = UUID.fromString("37b8527a-8e9b-4b23-9d3b-6196c9d70551");
     public static Agrestic INSTANCE;
     public static final String MODID = "agrestic";
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting()

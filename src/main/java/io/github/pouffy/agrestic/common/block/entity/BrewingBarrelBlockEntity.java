@@ -11,6 +11,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -21,7 +23,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrewingBarrelBlockEntity extends AgresticBlockEntity {
+public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Container {
 
     @Getter
     protected final CombinedFluidTank tanks;
@@ -115,5 +117,51 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity {
             }
         }
         return stacks;
+    }
+
+    @Override
+    public int getContainerSize() {
+        return this.getContainer().getSlots();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.getContainer().isEmpty();
+    }
+
+    @Override
+    public ItemStack getItem(int index) {
+        return this.getContainer().getStackInSlot(index);
+    }
+
+    @Override
+    public ItemStack removeItem(int index, int count) {
+        ItemStack itemstack = this.getContainer().extractItem(index, count, false);
+        if (!itemstack.isEmpty()) {
+            this.setChanged();
+        }
+
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int index) {
+        return this.getContainer().extractItem(index, getContainer().getStackInSlot(index).getMaxStackSize(), false);
+    }
+
+    @Override
+    public void setItem(int index, ItemStack itemStack) {
+        this.getContainer().insertItem(index, itemStack, false);
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return Container.stillValidBlockEntity(this, player);
+    }
+
+    @Override
+    public void clearContent() {
+        this.getContainer().clear();
+        this.markUpdated();
     }
 }

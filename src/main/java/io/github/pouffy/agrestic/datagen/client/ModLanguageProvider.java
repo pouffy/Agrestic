@@ -80,10 +80,67 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         config("maxQualityChange.tooltip", "the maximum amount of increase that booze culture will provide to the new brew, in percent");
 
         config("section.agrestic.common.toml", "Agrestic Common Configuration");
+
+        quality("highest.0", "Heavenly");
+        quality("highest.1", "Exceptional");
+        quality("highest.2", "Improbably Delicious");
+        quality("highest.3", "Divine");
+        quality("highest.4", "Ambrosial");
+        quality("highest.5", "Tantalizing");
+        quality("highest.6", "Sensual");
+        quality("highest.7", "God-Tier");
+
+        quality("high.0", "Tasty");
+        quality("high.1", "Quite Good");
+        quality("high.2", "Enjoyable");
+        quality("high.3", "Agreeable");
+        quality("high.4", "Splendid");
+        quality("high.5", "Delightful");
+        quality("high.6", "Delectable");
+        quality("high.7", "Yummy");
+
+        quality("highish.0", "Acceptable");
+        quality("highish.1", "Fair");
+        quality("highish.2", "Drinkable");
+        quality("highish.3", "Moderate");
+        quality("highish.4", "Inoffensive");
+        quality("highish.5", "Tolerable");
+        quality("highish.6", "Palatable");
+        quality("highish.7", "Passable");
+
+        quality("lowish.0", "Dubious");
+        quality("lowish.1", "Bad");
+        quality("lowish.2", "Not Quite Drinkable");
+        quality("lowish.3", "Questionable");
+        quality("lowish.4", "Unpleasant");
+        quality("lowish.5", "Dodgy");
+        quality("lowish.6", "Disagreeable");
+        quality("lowish.7", "Suspicious");
+
+        quality("low.0", "Disgusting");
+        quality("low.1", "Really Quite Bad");
+        quality("low.2", "Repugnant");
+        quality("low.3", "Nauseating");
+        quality("low.4", "Sickening");
+        quality("low.5", "Foul");
+        quality("low.6", "Repellent");
+        quality("low.7", "Gross");
+
+        quality("lowest.0", "Atrocious");
+        quality("lowest.1", "Offensively Bad");
+        quality("lowest.2", "Undrinkable");
+        quality("lowest.3", "Vile");
+        quality("lowest.4", "Revolting");
+        quality("lowest.5", "Noxious");
+        quality("lowest.6", "Rancid");
+        quality("lowest.7", "Wants You Gone");
     }
 
     public void config(String key, String value) {
         add("agrestic.configuration." + key, value);
     }
 
+    public void quality(String key, String value) {
+        add("ui.agrestic.tooltip.quality." + key, value);
+    }
 }

@@ -2,12 +2,10 @@ package io.github.pouffy.agrestic.client;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import io.github.pouffy.agrestic.Agrestic;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -186,5 +184,47 @@ public class ClientFluidHelper {
                 .setLight(light)
                 .setNormal(peek.copy(), normal.getX(), normal.getY(), normal.getZ())
         ;
+    }
+
+    public static void renderTiledSprite(GuiGraphics guiGraphics, TextureAtlasSprite sprite, int x, int y, int width, int height, float red, float green, float blue, float alpha) {
+        int spriteWidth = sprite.contents().width();
+        int spriteHeight = sprite.contents().height();
+
+        int xCount = Mth.floor((float) width / spriteWidth);
+        int yCount = Mth.floor((float) height / spriteHeight);
+        int xRemainder = width % spriteWidth;
+        int yRemainder = height % spriteHeight;
+
+        for (int i = 0; i < xCount; i++) {
+            for (int j = 0; j < yCount; j++) {
+                int x1 = x + (i * spriteWidth);
+                int y1 = y + (j * spriteHeight);
+
+                guiGraphics.blit(x1, y1, 0, spriteWidth, spriteHeight, sprite, red, green, blue, alpha);
+            }
+
+            if(yRemainder > 0) {
+                int x1 = x + (i * spriteWidth);
+                int y1 = y + (yCount * spriteHeight);
+
+                guiGraphics.blit(x1, y1, 0, spriteWidth, yRemainder, sprite, red, green, blue, alpha);
+            }
+        }
+
+        if(xRemainder > 0) {
+            for (int j = 0; j < yCount; j++) {
+                int x1 = x + (xCount * spriteWidth);
+                int y1 = y + (j * spriteHeight);
+
+                guiGraphics.blit(x1, y1, 0, xRemainder, spriteHeight, sprite, red, green, blue, alpha);
+            }
+
+            if(yRemainder > 0) {
+                int x1 = x + (xCount * spriteWidth);
+                int y1 = y + (yCount * spriteHeight);
+
+                guiGraphics.blit(x1, y1, 0, xRemainder, yRemainder, sprite, red, green, blue, alpha);
+            }
+        }
     }
 }
