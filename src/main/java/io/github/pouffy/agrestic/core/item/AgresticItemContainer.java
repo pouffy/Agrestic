@@ -122,4 +122,19 @@ public class AgresticItemContainer extends ItemStackHandler {
     protected void onContentsChanged(int slot) {
         updateCallback.accept(getStackInSlot(slot));
     }
+
+    public void clear() {
+        for (int i = 0; i < this.getSlots(); i++) {
+            this.stacks.set(i, ItemStack.EMPTY);
+        }
+    }
+
+    public boolean isEmpty() {
+        for (int i = 0; i < this.getSlots(); i++) {
+            if (!this.stacks.get(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

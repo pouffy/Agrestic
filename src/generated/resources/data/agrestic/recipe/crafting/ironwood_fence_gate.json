@@ -1,6 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
+  "category": "redstone",
+  "group": "wooden_fence_gate",
   "key": {
     "#": {
       "item": "agrestic:ironwood_planks"

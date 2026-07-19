@@ -56,6 +56,6 @@ public class CrushingTubRecipeBuilder implements RecipeBuilder {
                 .rewards(AdvancementRewards.Builder.recipe(pId))
                 .requirements(AdvancementRequirements.Strategy.OR);
         CrushingTubRecipe recipe = new CrushingTubRecipe(output, ingredient, byproduct);
-        pRecipeOutput.accept(pId, recipe, advancement$builder.build(pId.withPrefix("recipes/crushing_tub/")));
+        pRecipeOutput.accept(pId, recipe, advancement$builder.build(pId.withPrefix("recipes/")));
     }
 }

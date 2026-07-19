@@ -2,7 +2,6 @@ package io.github.pouffy.agrestic.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.pouffy.agrestic.core.recipe.FluidRecipeInput;
 import io.github.pouffy.agrestic.core.recipe.InWorldRecipe;
 import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
 import lombok.Getter;

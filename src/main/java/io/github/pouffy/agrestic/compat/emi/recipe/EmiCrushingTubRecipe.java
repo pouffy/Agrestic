@@ -1,6 +1,5 @@
 package io.github.pouffy.agrestic.compat.emi.recipe;
 
-import com.mojang.datafixers.util.Either;
 import com.pouffydev.krystal_core.foundation.data.recipe.result.ChanceResult;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -48,12 +47,13 @@ public class EmiCrushingTubRecipe extends BasicEmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         ChanceResult byproduct = recipe.getByproduct();
         boolean hasByproduct = byproduct != ChanceResult.EMPTY;
-        widgets.addSlot(EmiIngredient.of(recipe.getInput()), 20, 23).recipeContext(this);
-        widgets.addTexture(AgresticEmiPlugin.ARROW, 42, 23);
-        widgets.add(FluidTankWidget.result(recipe.getResultFluid(this.registries), 70, hasByproduct ? 7 : 15, 8000)).recipeContext(this);
+        widgets.addSlot(EmiIngredient.of(recipe.getInput()), 20, 23);
+        widgets.addTexture(AgresticEmiPlugin.ARROW_BG, 42, 23);
+        FluidStack resultFluid = recipe.getResultFluid(this.registries);
+        widgets.add(FluidTankWidget.result(resultFluid, 70, hasByproduct ? 7 : 15, Math.min(resultFluid.getAmount() * 4, 8000))).recipeContext(this);
         if (hasByproduct) {
             SlotWidget byproductSlot = widgets.addSlot(EmiStack.of(byproduct.stack()), 70, 42).recipeContext(this);
-            byproductSlot.customBackground(Agrestic.location("textures/gui/emi/widgets.png"), 40, byproduct.chance() < 1 ? 18 : 0, 18, 18);
+            byproductSlot.customBackground(Agrestic.location("textures/gui/emi/widgets.png"), 42, byproduct.chance() < 1 ? 18 : 0, 18, 18);
             if (byproduct.chance() < 1) {
                 float chance = byproduct.chance() * 100;
                 String formattedChance = chance % 1 == 0 ? String.format("%d%%", (int) chance) : String.format("%.1f%%", chance);

@@ -1,8 +1,11 @@
 package io.github.pouffy.agrestic.core.fluid;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -31,10 +33,17 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import static net.neoforged.neoforge.fluids.FluidStack.FLUID_NON_EMPTY_CODEC;
+
 public class FluidHelper {
     public static final DecimalFormat COMMA_FORMAT = new DecimalFormat("#,###,###.##", DecimalFormatSymbols.getInstance(Locale.US));
     private static final String KEY_FILLED = Agrestic.makeDescriptionId("block", "tank.filled");
     private static final String KEY_DRAINED = Agrestic.makeDescriptionId("block", "tank.drained");
+
+    public static final Codec<FluidStack> CODEC_NO_SIZE = Codec.lazyInitialized(() -> RecordCodecBuilder.create((instance) -> instance.group(
+            FLUID_NON_EMPTY_CODEC.fieldOf("id").forGetter(FluidStack::getFluidHolder),
+            DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY).forGetter((stack) -> stack.getComponents().asPatch())
+    ).apply(instance, (id, components) -> new FluidStack(id, 1, components))));
 
     public static enum FluidExchange {
         ITEM_TO_TANK, TANK_TO_ITEM;

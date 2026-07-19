@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:brewing_barrel",
+  "input": {
+    "id": "krystal_core:honey"
+  },
+  "output": {
+    "id": "agrestic:mead"
+  },
+  "time": 12000
+}

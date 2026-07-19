@@ -1,10 +1,7 @@
 package io.github.pouffy.agrestic.init;
 
 import io.github.pouffy.agrestic.Agrestic;
-import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
-import io.github.pouffy.agrestic.common.recipe.EmptyingRecipe;
-import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
-import io.github.pouffy.agrestic.common.recipe.FillingRecipe;
+import io.github.pouffy.agrestic.common.recipe.*;
 import io.github.pouffy.agrestic.core.recipe.ShapelessNoReturnRecipe;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeSerializer;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeType;
@@ -20,6 +17,8 @@ public class AgresticRecipeTypes {
 
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> registerRecipeType("crushing_tub"));
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> registerRecipeType("evaporating_basin"));
+    public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> registerRecipeType("brewing_barrel"));
+
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<EmptyingRecipe>> EMPTYING = HELPER.register("emptying", () -> registerRecipeType("emptying"));
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<FillingRecipe>> FILLING = HELPER.register("filling", () -> registerRecipeType("filling"));
 
@@ -36,6 +35,7 @@ public class AgresticRecipeTypes {
 
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> new SimpleRecipeSerializer<>(CrushingTubRecipe.CODEC));
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> new SimpleRecipeSerializer<>(EvaporatingBasinRecipe.CODEC));
+        public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> new SimpleRecipeSerializer<>(BrewingBarrelRecipe.CODEC));
 
         // Fluid Transfer
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<EmptyingRecipe>> EMPTYING = HELPER.register("emptying", () -> new SimpleRecipeSerializer<>(EmptyingRecipe.CODEC));

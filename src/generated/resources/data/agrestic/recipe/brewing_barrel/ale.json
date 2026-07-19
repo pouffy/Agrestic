@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:brewing_barrel",
+  "input": {
+    "id": "agrestic:ale_wort"
+  },
+  "output": {
+    "id": "agrestic:ale"
+  },
+  "time": 12000
+}

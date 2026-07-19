@@ -51,6 +51,6 @@ public class EvaporatingBasinRecipeBuilder implements RecipeBuilder {
                 .rewards(AdvancementRewards.Builder.recipe(pId))
                 .requirements(AdvancementRequirements.Strategy.OR);
         EvaporatingBasinRecipe recipe = new EvaporatingBasinRecipe(ingredient, output, time);
-        pRecipeOutput.accept(pId, recipe, advancement$builder.build(pId.withPrefix("recipes/evaporating_basin/")));
+        pRecipeOutput.accept(pId, recipe, advancement$builder.build(pId.withPrefix("recipes/")));
     }
 }

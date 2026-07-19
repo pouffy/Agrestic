@@ -2,6 +2,7 @@ package io.github.pouffy.agrestic.compat.emi;
 
 import com.mojang.datafixers.util.Either;
 import dev.emi.emi.api.render.EmiRender;
+import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
@@ -16,10 +17,11 @@ public class FluidTankWidget extends SlotWidget {
     private final long capacity;
     protected final float fluidFullness;
     protected final @Nullable Either<FluidStack, EmiIngredient> fluid;
-    public static int WIDTH = 18;
-    public static int HEIGHT = 34;
-    public static int FLUID_AREA_WIDTH = 16;
-    public static int FLUID_AREA_HEIGHT = 32;
+    public int WIDTH = 18;
+    public int HEIGHT = 34;
+    public int FLUID_AREA_WIDTH = 16;
+    public int FLUID_AREA_HEIGHT = 32;
+    public EmiTexture background = AgresticEmiPlugin.TANK;
 
     public FluidTankWidget(@Nullable Either<FluidStack, EmiIngredient> fluid, int x, int y, long capacity) {
         super(map(fluid), x, y);
@@ -35,6 +37,15 @@ public class FluidTankWidget extends SlotWidget {
 
     public static FluidTankWidget result(FluidStack fluidStack, int x, int y, long capacity) {
         return new FluidTankWidget(Either.left(fluidStack), x, y, capacity);
+    }
+
+    public FluidTankWidget size(int width, int height, int areaWidth, int areaHeight, EmiTexture background) {
+        WIDTH = width;
+        HEIGHT = height;
+        FLUID_AREA_WIDTH = areaWidth;
+        FLUID_AREA_HEIGHT = areaHeight;
+        this.background = background;
+        return this;
     }
 
     private static EmiIngredient map(@Nullable Either<FluidStack, EmiIngredient> fluid) {
@@ -57,7 +68,7 @@ public class FluidTankWidget extends SlotWidget {
 
     private void renderStack(FluidStack fluid, GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (drawBack) {
-            AgresticEmiPlugin.TANK.render(context, x, y, delta);
+            background.render(context, x, y, delta);
         }
 
         if (fluid != null) {

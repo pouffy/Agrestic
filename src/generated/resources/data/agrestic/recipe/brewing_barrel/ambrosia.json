@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:brewing_barrel",
+  "input": {
+    "id": "agrestic:golden_apple_juice"
+  },
+  "output": {
+    "id": "agrestic:ambrosia"
+  },
+  "time": 12000
+}

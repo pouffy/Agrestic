@@ -11,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -30,7 +31,7 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
     }
 
     protected void buildRecipes(RecipeOutput output) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AgresticBlocks.CRUSHING_TUB)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.CRUSHING_TUB)
                 .pattern("P P")
                 .pattern("I I")
                 .pattern("SSS")
@@ -39,13 +40,13 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .define('S', ItemTags.WOODEN_SLABS)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output, Agrestic.location("crafting/crushing_tub"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AgresticBlocks.EVAPORATING_BASIN)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.EVAPORATING_BASIN)
                 .pattern("B B")
                 .pattern("BBB")
                 .define('B', Items.BRICK)
                 .unlockedBy("has_brick", has(Items.BRICK))
                 .save(output, Agrestic.location("crafting/evaporating_basin"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, AgresticBlocks.FLUID_BARREL)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.FLUID_BARREL)
                 .pattern("P P")
                 .pattern("I I")
                 .pattern("PSP")
@@ -54,6 +55,15 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .define('S', ItemTags.WOODEN_SLABS)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output, Agrestic.location("crafting/fluid_barrel"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.BREWING_BARREL)
+                .pattern("PIP")
+                .pattern("S S")
+                .pattern("PIP")
+                .define('P', ItemTags.PLANKS)
+                .define('I', Tags.Items.INGOTS_IRON)
+                .define('S', ItemTags.WOODEN_SLABS)
+                .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
+                .save(output, Agrestic.location("crafting/brewing_barrel"));
 
         ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticFluids.ALE_WORT_BUCKET)
                 .requires(Tags.Items.BUCKETS_WATER)
@@ -71,15 +81,19 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
 
         for(AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
             String woodName = getItemName(woodset.planks()).replace("_planks", "");
-            ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, woodset.planks(), 4).requires(woodset.logTag().itemTag()).group("planks").unlockedBy("has_logs", has(woodset.logTag().itemTag())).save(output, Agrestic.location("crafting/" + woodName + "_planks"));
-            simpleStairs(woodset.stairs().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_stairs"));
-            simpleSlab(woodset.slab().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_slab"));
-            simpleFence(woodset.fence().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_fence"));
-            simpleFenceGate(woodset.fenceGate().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_fence_gate"));
-            simpleDoor(woodset.door().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_door"));
-            simpleTrapdoor(woodset.trapdoor().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_trapdoor"));
-            simpleSign(woodset.sign().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_sign"));
-            simpleHangingSign(woodset.hangingSign().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_hanging_sign"));
+            Wooden.planksFromLogs(woodset.planks(), woodset.logTag().itemTag()).save(output, Agrestic.location("crafting/" + woodName + "_planks"));
+            Wooden.woodFromLogs(woodset.wood(), woodset.log()).save(output, Agrestic.location("crafting/" + woodName + "_wood"));
+            Wooden.woodFromLogs(woodset.strippedWood(), woodset.strippedLog()).save(output, Agrestic.location("crafting/stripped" + woodName + "_wood"));
+            Wooden.stairs(woodset.stairs().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_stairs"));
+            Wooden.slab(woodset.slab().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_slab"));
+            Wooden.fence(woodset.fence().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_fence"));
+            Wooden.fenceGate(woodset.fenceGate().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_fence_gate"));
+            Wooden.door(woodset.door().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_door"));
+            Wooden.trapdoor(woodset.trapdoor().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_trapdoor"));
+            Wooden.sign(woodset.sign().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_sign"));
+            Wooden.hangingSign(woodset.hangingSign().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_hanging_sign"));
+            Wooden.button(woodset.button().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_button"));
+            Wooden.pressurePlate(woodset.pressurePlate().asItem(), woodset.planks()).save(output, Agrestic.location("crafting/" + woodName + "_pressure_plate"));
         }
         ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, AgresticItems.OLIVE_BOAT)
                 .pattern("P P")
@@ -133,47 +147,65 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
     }
     public static ShapedRecipeBuilder fullCompress(Item result, ItemLike input, int count) {
         String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, count).pattern("###").pattern("###").pattern("###").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        return ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, count).pattern("###").pattern("###").pattern("###").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
     }
     public static ShapedRecipeBuilder halfCompress(Item result, ItemLike input, int count) {
         String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, count).pattern("##").pattern("##").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        return ShapedRecipeBuilder.shaped(RecipeCategory.MISC, result, count).pattern("##").pattern("##").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
     }
 
-    public static ShapedRecipeBuilder simpleStairs(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4).pattern("#  ").pattern("## ").pattern("###").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
-    public static ShapedRecipeBuilder simpleSlab(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6).pattern("###").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
     public static ShapedRecipeBuilder simpleWall(Item result, ItemLike input) {
         String inputName = input.asItem().toString().split(":")[1];
         return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6).pattern("###").pattern("###").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
     }
-    public static ShapedRecipeBuilder simpleFence(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3).pattern("#S#").pattern("#S#").define('#', input).define('S', Items.STICK).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
-    public static ShapedRecipeBuilder simpleFenceGate(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 1).pattern("S#S").pattern("S#S").define('#', input).define('S', Items.STICK).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
-    public static ShapedRecipeBuilder simpleDoor(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3).pattern("##").pattern("##").pattern("##").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
-    public static ShapedRecipeBuilder simpleTrapdoor(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 2).pattern("###").pattern("###").define('#', input).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
-    public static ShapedRecipeBuilder simpleSign(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3).pattern("###").pattern("###").pattern(" S ").define('#', input).define('S', Items.STICK).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
-    }
-    public static ShapedRecipeBuilder simpleHangingSign(Item result, ItemLike input) {
-        String inputName = input.asItem().toString().split(":")[1];
-        return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6).pattern("C C").pattern("###").pattern("###").define('#', input).define('C', Items.CHAIN).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+
+
+    public static class Wooden {
+        public static ShapedRecipeBuilder woodFromLogs(ItemLike wood, ItemLike log) {
+            return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, wood, 3).define('#', log).pattern("##").pattern("##").group("bark").unlockedBy("has_log", has(log));
+        }
+        public static ShapelessRecipeBuilder planksFromLogs(ItemLike planks, TagKey<Item> logs) {
+            return ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, planks, 4).requires(logs).group("planks").unlockedBy("has_logs", has(logs));
+        }
+        public static ShapedRecipeBuilder stairs(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4).pattern("#  ").pattern("## ").pattern("###").define('#', input).group("wooden_stairs").unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder slab(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6).pattern("###").define('#', input).group("wooden_slab").unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder fence(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3).pattern("#S#").pattern("#S#").define('#', input).define('S', Items.STICK).group("wooden_fence").unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder fenceGate(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 1).pattern("S#S").pattern("S#S").define('#', input).define('S', Items.STICK).group("wooden_fence_gate").unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder door(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 3).pattern("##").pattern("##").pattern("##").define('#', input).group("wooden_door").unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder trapdoor(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result, 2).pattern("###").pattern("###").define('#', input).group("wooden_trapdoor").unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder sign(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3).pattern("###").pattern("###").pattern(" S ").define('#', input).define('S', Items.STICK).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapedRecipeBuilder hangingSign(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6).pattern("C C").pattern("###").pattern("###").define('#', input).define('C', Items.CHAIN).unlockedBy("has_" + inputName, InventoryChangeTrigger.TriggerInstance.hasItems(input));
+        }
+        public static ShapelessRecipeBuilder button(ItemLike result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, result, 1).requires(input).group("wooden_button").unlockedBy("has_" + inputName, has(input));
+        }
+        public static ShapedRecipeBuilder pressurePlate(Item result, ItemLike input) {
+            String inputName = input.asItem().toString().split(":")[1];
+            return ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result).pattern("##").define('#', input).group("wooden_pressure_plate").unlockedBy("has_" + inputName, has(input));
+        }
     }
 }

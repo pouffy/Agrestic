@@ -94,4 +94,27 @@ public class EmiUIUtils {
         bufferBuilder.addVertex(model, x1, y0, 1.0F).setUv(uMax, vMin).setColor(r, g, b, 1.0F);
         bufferBuilder.addVertex(model, x0, y0, 1.0F).setUv(uMin, vMin).setColor(r, g, b, 1.0F);
     }
+
+    public static String formatTime(int ticks) {
+        double seconds = ticks / 20.0;
+
+        if (seconds < 60) {
+            // Less than 1 minute = show seconds
+            if (seconds == (int) seconds) {
+                return String.format("%ds", (int) seconds);
+            } else {
+                return String.format("%.1fs", seconds);
+            }
+        } else {
+            // 1 minute or more = show minutes and seconds
+            int minutes = (int) (seconds / 60);
+            int remainingSeconds = (int) (seconds % 60);
+            if (remainingSeconds == 0) {
+                return String.format("%dm", minutes);
+
+            } else {
+                return String.format("%dm %ds", minutes, remainingSeconds);
+            }
+        }
+    }
 }

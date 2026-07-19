@@ -50,9 +50,12 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
         add("emi.category.agrestic.tub_crushing", "Tub Crushing");
         add("emi.category.agrestic.basin_evaporating", "Basin Evaporating");
+        add("emi.category.agrestic.brewing", "Booze Brewing");
         add("emi.category.agrestic.fluid_transfer", "Fluid Transfer");
         add("recipe.agrestic.chance", "Chance: %s");
         add("recipe.agrestic.time", "Time: %s");
+        add("recipe.agrestic.brewing.optional", "Starter culture fluid is optional");
+        add("recipe.agrestic.brewing.quality_change", "Quality can change between %s & %s with starter culture");
         add("block.agrestic.tank.drained", "Drained %s mb %s");
         add("block.agrestic.tank.filled", "Filled %s mb %s");
 
@@ -60,7 +63,27 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("ui.agrestic.tooltip.item", "%s x%s");
 
         NeoForgeRegistries.FLUID_TYPES.registryKeySet().stream().filter((key) -> key.location().getNamespace().equals(Agrestic.MODID)).forEach((key) -> add("fluid_type.agrestic.%s".formatted(key.location().getPath()), transform(key.location())));
+
+        config("title", "Agrestic");
+        config("all.general", "General");
+        config("all.general.button", "General");
+        config("all.general.tooltip", "General settings");
+
+        config("section.agrestic.client.toml", "Agrestic Client Configuration");
+        config("foodEffectTooltips", "Food Effect Tooltips");
+        config("foodEffectTooltips.tooltip", "whether to show tooltips for food effects on Agrestic foods");
+
+        config("section.agrestic.server.toml", "Agrestic Server Configuration");
+        config("minQualityChange", "Minimum Change To Brew Quality");
+        config("minQualityChange.tooltip", "the minimum amount of increase that booze culture will provide to the new brew, in percent");
+        config("maxQualityChange", "Maximum Change To Brew Quality");
+        config("maxQualityChange.tooltip", "the maximum amount of increase that booze culture will provide to the new brew, in percent");
+
+        config("section.agrestic.common.toml", "Agrestic Common Configuration");
     }
 
+    public void config(String key, String value) {
+        add("agrestic.configuration." + key, value);
+    }
 
 }

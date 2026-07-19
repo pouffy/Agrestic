@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:brewing_barrel",
+  "input": {
+    "id": "agrestic:sweet_berry_juice"
+  },
+  "output": {
+    "id": "agrestic:sweet_berry_wine"
+  },
+  "time": 12000
+}

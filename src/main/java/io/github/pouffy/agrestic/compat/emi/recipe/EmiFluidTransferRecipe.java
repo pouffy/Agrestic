@@ -64,7 +64,7 @@ public class EmiFluidTransferRecipe extends BasicEmiRecipe {
     @Override
     public List<EmiStack> getOutputs() {
         return List.of(
-                recipe.map(filling -> EmiStack.of(filling.getResultItem(registries)), emptying -> EmiStack.of(emptying.getResultItem(registries))),
+                recipe.map(filling -> EmiStack.of(filling.getResultItem(registries)), emptying -> EmiStack.EMPTY),
                 recipe.map(filling -> EmiStack.EMPTY, emptying -> EmiStack.of(emptying.getResultingFluid().getFluid(), emptying.getResultingFluid().getAmount()))
         );
     }
@@ -75,17 +75,17 @@ public class EmiFluidTransferRecipe extends BasicEmiRecipe {
     }
 
     private void addFilling(WidgetHolder widgets, FillingRecipe filling) {
-        widgets.add(FluidTankWidget.input(NeoForgeEmiIngredient.of(filling.getRequiredFluid()), 10, 15, filling.getRequiredFluid().amount())).recipeContext(this);
-        widgets.addSlot(EmiIngredient.of(filling.getInput()), 30, 23).recipeContext(this);
-        widgets.addTexture(AgresticEmiPlugin.ARROW, 53, 23);
+        widgets.add(FluidTankWidget.input(NeoForgeEmiIngredient.of(filling.getRequiredFluid()), 10, 15, filling.getRequiredFluid().amount()));
+        widgets.addSlot(EmiIngredient.of(filling.getInput()), 30, 23);
+        widgets.addTexture(AgresticEmiPlugin.ARROW_BG, 53, 23);
         widgets.addSlot(EmiStack.of(filling.getResultItem(registries)), 80, 23).recipeContext(this);
     }
 
     private void addEmptying(WidgetHolder widgets, EmptyingRecipe emptying) {
-        widgets.addSlot(EmiIngredient.of(emptying.getInput()), 10, 23).recipeContext(this);
-        widgets.addTexture(AgresticEmiPlugin.ARROW, 33, 23);
+        widgets.addSlot(EmiIngredient.of(emptying.getInput()), 10, 23);
+        widgets.addTexture(AgresticEmiPlugin.ARROW_BG, 33, 23);
         widgets.add(FluidTankWidget.result(emptying.getResultingFluid(), 60, 15, emptying.getResultingFluid().getAmount())).recipeContext(this);
-        widgets.addSlot(EmiStack.of(emptying.getResultItem(registries)), 80, 23).recipeContext(this);
+        widgets.addSlot(EmiStack.of(emptying.getResultItem(registries)), 80, 23);
     }
 
     public static void gatherFillings(EmiRegistry registry) {
