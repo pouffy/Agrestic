@@ -49,6 +49,20 @@ public class AgresticItemContainer extends ItemStackHandler {
         this.onContentsChanged(slot);
     }
 
+    public boolean canInsert(int slot, ItemStack stack) {
+        if (forbidInsertion) return false;
+        if (stack.isEmpty() || !this.isItemValid(slot, stack)) return false;
+        this.validateSlotIndex(slot);
+        ItemStack existing = this.stacks.get(slot);
+        int limit = this.getStackLimit(slot, stack);
+        if (limit <= 0) return false;
+        if (!existing.isEmpty()) {
+            return ItemStack.isSameItemSameComponents(stack, existing) && existing.getCount() + stack.getCount() <= limit;
+        } else {
+            return stack.getCount() <= limit;
+        }
+    }
+
     public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
         if (forbidInsertion)
             return stack;
@@ -58,7 +72,7 @@ public class AgresticItemContainer extends ItemStackHandler {
             return stack;
         } else {
             this.validateSlotIndex(slot);
-            ItemStack existing = (ItemStack)this.stacks.get(slot);
+            ItemStack existing = this.stacks.get(slot);
             int limit = this.getStackLimit(slot, stack);
             if (!existing.isEmpty()) {
                 if (!ItemStack.isSameItemSameComponents(stack, existing)) {
@@ -85,6 +99,14 @@ public class AgresticItemContainer extends ItemStackHandler {
                 return reachedLimit ? stack.copyWithCount(stack.getCount() - limit) : ItemStack.EMPTY;
             }
         }
+    }
+
+    public boolean canExtract(int slot, int amount) {
+        if (forbidExtraction) return false;
+        if (amount == 0) return false;
+        this.validateSlotIndex(slot);
+        ItemStack existing = this.stacks.get(slot);
+        return !existing.isEmpty();
     }
 
     public ItemStack extractItem(int slot, int amount, boolean simulate) {

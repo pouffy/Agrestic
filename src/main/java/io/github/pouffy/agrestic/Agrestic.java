@@ -54,6 +54,7 @@ public class Agrestic {
         AgresticDataComponents.staticInit();
         AgresticEffects.staticInit();
         AgresticAttachmentTypes.staticInit();
+        AgresticMenuTypes.staticInit();
 
         modEventBus.addListener(AgresticBlockEntities::addBlockEntities);
 

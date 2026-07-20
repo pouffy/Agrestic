@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class BrewingBarrelRecipe extends FluidRecipe<BrewingRecipeInput> {
-    private static final float DEFAULT_QUALITY = 0f;
+    public static final float DEFAULT_QUALITY = 0f;
     @Getter
     protected FluidStack input;
     @Getter

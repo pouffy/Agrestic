@@ -82,8 +82,6 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
         if(world == null)
             return;
 
-        TextureAtlasSprite sprite = ClientFluidHelper.getStillTextureOrMissing(this.fluidStorage.getFluid());
-
         int tintColor = ClientFluidHelper.getColor(this.fluidStorage.getFluid(), world, pos);
         float red = (tintColor >> 16 & 0xFF) / 255f;
         float green = (tintColor >> 8 & 0xFF) / 255f;
@@ -91,7 +89,7 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
 
-        ClientFluidHelper.renderTiledSprite(guiGraphics, sprite, this.x, this.y + this.height - fluidHeight, this.width, fluidHeight, red, green, blue, 1.0f);
+        ClientFluidHelper.renderUIFluid(guiGraphics.pose(), this.fluidStorage.getFluid(), red, green, blue, 1.0f, this.x, this.y, this.height, fluidHeight, this.width);
 
         if(isMouseOver(mouseX, mouseY)) {
             drawTooltip(guiGraphics, mouseX, mouseY);

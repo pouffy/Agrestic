@@ -6,13 +6,13 @@ import net.neoforged.neoforge.fluids.capability.templates.EmptyFluidHandler;
 
 public class CombinedFluidTank implements IFluidHandler {
 
-    protected final IFluidHandler[] itemHandler;
+    protected final IFluidHandler[] fluidHandler;
     protected final int[] baseIndex;
     protected final int tankCount;
     protected boolean enforceVariety;
 
     public CombinedFluidTank(IFluidHandler... fluidHandlers) {
-        this.itemHandler = fluidHandlers;
+        this.fluidHandler = fluidHandlers;
         this.baseIndex = new int[fluidHandlers.length];
         int index = 0;
         for (int i = 0; i < fluidHandlers.length; i++) {
@@ -66,7 +66,7 @@ public class CombinedFluidTank implements IFluidHandler {
 
         boolean fittingHandlerFound = false;
         Outer: for (boolean searchPass : new boolean[]{true, false}) {
-            for (IFluidHandler iFluidHandler : itemHandler) {
+            for (IFluidHandler iFluidHandler : fluidHandler) {
 
                 for (int i = 0; i < iFluidHandler.getTanks(); i++)
                     if (searchPass && FluidStack.isSameFluidSameComponents(iFluidHandler.getFluidInTank(i), resource))
@@ -97,7 +97,7 @@ public class CombinedFluidTank implements IFluidHandler {
         FluidStack drained = FluidStack.EMPTY;
         resource = resource.copy();
 
-        for (IFluidHandler iFluidHandler : itemHandler) {
+        for (IFluidHandler iFluidHandler : fluidHandler) {
             FluidStack drainedFromCurrent = iFluidHandler.drain(resource, action);
             int amount = drainedFromCurrent.getAmount();
             resource.shrink(amount);
@@ -116,7 +116,7 @@ public class CombinedFluidTank implements IFluidHandler {
     public FluidStack drain(int maxDrain, FluidAction action) {
         FluidStack drained = FluidStack.EMPTY;
 
-        for (IFluidHandler iFluidHandler : itemHandler) {
+        for (IFluidHandler iFluidHandler : fluidHandler) {
             FluidStack drainedFromCurrent = iFluidHandler.drain(maxDrain, action);
             int amount = drainedFromCurrent.getAmount();
             maxDrain -= amount;
@@ -141,9 +141,9 @@ public class CombinedFluidTank implements IFluidHandler {
     }
 
     protected IFluidHandler getHandlerFromIndex(int index) {
-        if (index < 0 || index >= itemHandler.length)
+        if (index < 0 || index >= fluidHandler.length)
             return EmptyFluidHandler.INSTANCE;
-        return itemHandler[index];
+        return fluidHandler[index];
     }
 
     protected int getSlotFromIndex(int slot, int index) {

@@ -2,10 +2,12 @@ package io.github.pouffy.agrestic.client;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import io.github.pouffy.agrestic.Agrestic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,6 +24,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.joml.Matrix4f;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.ExecutionException;
@@ -30,6 +33,8 @@ import java.util.concurrent.TimeUnit;
 import static net.minecraft.client.renderer.RenderStateShard.*;
 
 public class ClientFluidHelper {
+    public static final float FLUID_PATCH_WIDTH = 16f;
+    public static final float FLUID_PATCH_HEIGHT = 16f;
     private static final Cache<ResourceLocation, Material> CACHED_MATERIALS = CacheBuilder.newBuilder()
             .expireAfterAccess(2, TimeUnit.MINUTES)
             .build();
@@ -226,5 +231,60 @@ public class ClientFluidHelper {
                 guiGraphics.blit(x1, y1, 0, xRemainder, yRemainder, sprite, red, green, blue, alpha);
             }
         }
+    }
+
+    public static void renderUIFluid(PoseStack matrices, FluidStack fluid, float red, float green, float blue, float alpha, int x, int areaY, float areaHeight, float fluidHeight, float fluidWidth) {
+        renderUIFluid(matrices, getSpritesOrMissing(fluid), red, green, blue, alpha, x, areaY, areaHeight, fluidHeight, fluidWidth);
+    }
+
+    public static void renderUIFluid(PoseStack matrices, TextureAtlasSprite[] sprites, float red, float green, float blue, float alpha, int x, int areaY, float areaHeight, float fluidHeight, float fluidWidth) {
+        if (sprites == null || sprites.length < 1 || sprites[0] == null) {
+            return;
+        }
+        TextureAtlasSprite sprite = sprites[0];
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, sprite.atlasLocation());
+        Matrix4f model = matrices.last().pose();
+        Tesselator tess = Tesselator.getInstance();
+        BufferBuilder bufferBuilder = tess.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        int fluidStripCount = (int) (fluidHeight / FLUID_PATCH_HEIGHT);
+        for (int i = 0; i < fluidStripCount; i++) {
+            buildFluidHorizontalStrip(bufferBuilder, model, sprite, (float) x,
+                    (float) areaY + areaHeight - FLUID_PATCH_HEIGHT * (i + 1), fluidWidth, FLUID_PATCH_HEIGHT, red,
+                    green, blue, alpha);
+        }
+        float stripRemainder = fluidHeight % FLUID_PATCH_HEIGHT;
+        buildFluidHorizontalStrip(bufferBuilder, model, sprite, (float) x,
+                (float) areaY + areaHeight - FLUID_PATCH_HEIGHT * fluidStripCount - stripRemainder, fluidWidth,
+                stripRemainder, red, green, blue, alpha);
+
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+    }
+
+    private static void buildFluidHorizontalStrip(BufferBuilder bufferBuilder, Matrix4f model, TextureAtlasSprite sprite, float x0, float y0, float width, float height, float r, float g, float b, float alpha) {
+        int fluidPatchCount = (int) (width / FLUID_PATCH_WIDTH);
+        for (int i = 0; i < fluidPatchCount; i++) {
+            buildFluidPatch(bufferBuilder, model, sprite, x0 + FLUID_PATCH_WIDTH * i, y0, FLUID_PATCH_WIDTH, height, r,
+                    g, b, alpha);
+        }
+        float patchRemainder = width % FLUID_PATCH_WIDTH;
+        buildFluidPatch(bufferBuilder, model, sprite, x0 + FLUID_PATCH_WIDTH * fluidPatchCount, y0, patchRemainder,
+                height, r, g, b, alpha);
+    }
+
+    private static void buildFluidPatch(BufferBuilder bufferBuilder, Matrix4f model, TextureAtlasSprite sprite, float x0, float y0, float width, float height, float r, float g, float b, float alpha) {
+        float x1 = x0 + width;
+        float y1 = y0 + height;
+        float uMax = sprite.getU1();
+        float vMax = sprite.getV1();
+        float spriteWidth = sprite.getU1() - sprite.getU0();
+        float spriteHeight = sprite.getV1() - sprite.getV0();
+        float uMin = uMax - spriteWidth * width / 16f;
+        float vMin = vMax - spriteHeight * height / 16f;
+        bufferBuilder.addVertex(model, x0, y1, 1.0F).setUv(uMin, vMax).setColor(r, g, b, alpha);
+        bufferBuilder.addVertex(model, x1, y1, 1.0F).setUv(uMax, vMax).setColor(r, g, b, alpha);
+        bufferBuilder.addVertex(model, x1, y0, 1.0F).setUv(uMax, vMin).setColor(r, g, b, alpha);
+        bufferBuilder.addVertex(model, x0, y0, 1.0F).setUv(uMin, vMin).setColor(r, g, b, alpha);
     }
 }

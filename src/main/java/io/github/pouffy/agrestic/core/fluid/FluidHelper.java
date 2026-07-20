@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
+import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -174,8 +175,7 @@ public class FluidHelper {
         return true;
     }
 
-    public static boolean tryFillItemFromBE(Level world, Player player, InteractionHand handIn, ItemStack heldItem,
-                                            AgresticBlockEntity be) {
+    public static boolean tryFillItemFromBE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, AgresticBlockEntity be) {
         if (!ItemFilling.canItemBeFilled(world, heldItem))
             return false;
 
@@ -212,6 +212,70 @@ public class FluidHelper {
             return true;
         }
 
+        return false;
+    }
+
+    public static boolean tryEmptyItemIntoTank(Level worldIn, AgresticItemContainer container, int inSlot, int outSlot, ItemStack itemIn, AgresticBlockEntity be, AgresticFluidTank tank) {
+        if (!ItemEmptying.canItemBeEmptied(worldIn, itemIn))
+            return false;
+
+        Pair<FluidStack, ItemStack> emptyingResult = ItemEmptying.emptyItem(worldIn, itemIn, true);
+        FluidStack fluidStack = emptyingResult.getFirst();
+
+        if (fluidStack == null)
+            return false;
+
+        if (tank == null || fluidStack.getAmount() != tank.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE))
+            return false;
+        if (worldIn.isClientSide)
+            return true;
+
+        ItemStack copyOfIn = itemIn.copy();
+        emptyingResult = ItemEmptying.emptyItem(worldIn, copyOfIn.copy(), false);
+
+        if (container.canInsert(outSlot, emptyingResult.getSecond()) && container.canExtract(inSlot, 1)) {
+            container.extractItem(inSlot, 1, false);
+            tank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+            container.insertItem(outSlot, emptyingResult.getSecond(), false);
+            be.markUpdated();
+        }
+        return true;
+    }
+
+    public static boolean tryFillItemFromTank(Level world, AgresticItemContainer container, int inSlot, int outSlot, ItemStack itemIn, AgresticBlockEntity be, AgresticFluidTank tank) {
+        if (!ItemFilling.canItemBeFilled(world, itemIn))
+            return false;
+
+        if (tank == null)
+            return false;
+
+        for (int i = 0; i < tank.getTanks(); i++) {
+            FluidStack fluid = tank.getFluidInTank(i);
+            if (fluid.isEmpty())
+                continue;
+            int requiredAmountForItem = ItemFilling.getRequiredAmountForItem(world, itemIn, fluid.copy());
+            if (requiredAmountForItem == -1)
+                continue;
+            if (requiredAmountForItem > fluid.getAmount())
+                continue;
+
+            if (world.isClientSide)
+                return true;
+
+            ItemStack out = ItemFilling.fillItem(world, requiredAmountForItem, itemIn.copy(), fluid.copy());
+
+            FluidStack copy = fluid.copy();
+            copy.setAmount(requiredAmountForItem);
+
+            if (container.canInsert(outSlot, out) && container.canExtract(inSlot, 1)) {
+                container.extractItem(inSlot, 1, false);
+                tank.drain(copy, IFluidHandler.FluidAction.EXECUTE);
+                container.insertItem(outSlot, out, false);
+            }
+
+            be.markUpdated();
+            return true;
+        }
         return false;
     }
 

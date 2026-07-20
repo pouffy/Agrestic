@@ -1,18 +1,25 @@
 package io.github.pouffy.agrestic.client.ui;
 
 import io.github.pouffy.agrestic.client.AgresticSprites;
+import io.github.pouffy.agrestic.client.ui.slot.ResultSlot;
 import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
+import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
+import io.github.pouffy.agrestic.init.AgresticMenuTypes;
 import lombok.Getter;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.Objects;
 
 public class BrewingBarrelMenu extends AbstractContainerMenu {
     private final Container inventory;
@@ -20,24 +27,38 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
     @Getter
     public final BrewingBarrelBlockEntity blockEntity;
 
+    public BrewingBarrelMenu(int syncId, Inventory playerInventory, final FriendlyByteBuf data) {
+        this(syncId, playerInventory, getBlockEntity(playerInventory, data), new SimpleContainerData(2));
+    }
+
     public BrewingBarrelMenu(int syncId, Inventory playerInventory, BrewingBarrelBlockEntity blockEntity, ContainerData data) {
-        super(menuType, syncId);
+        super(AgresticMenuTypes.BREWING_BARREL.get(), syncId);
         this.inventory = blockEntity;
         this.blockEntity = blockEntity;
         this.data = data;
 
-        this.addSlot(new BucketSlot(inventory, 0, 62, 7));
-        this.addSlot(new BottleSlot(inventory, 1, 116, 7));
-        this.addSlot(new BoozeBottleSlot(inventory, 2, 26, 15));
+        this.addSlot(new Slot(inventory, 0, 62, 7));
+        this.addSlot(new Slot(inventory, 1, 116, 7));
+        this.addSlot(new Slot(inventory, 2, 26, 15));
 
-        this.addSlot(new OutputSlot(inventory, 3, 62, 63));
-        this.addSlot(new OutputSlot(inventory, 4, 116, 63));
-        this.addSlot(new OutputSlot(inventory, 5, 26, 55));
+        this.addSlot(new ResultSlot(inventory, 3, 62, 63));
+        this.addSlot(new ResultSlot(inventory, 4, 116, 63));
+        this.addSlot(new ResultSlot(inventory, 5, 26, 55));
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
 
         this.addDataSlots(data);
+    }
+
+    private static BrewingBarrelBlockEntity getBlockEntity(final Inventory playerInventory, final FriendlyByteBuf data) {
+        Objects.requireNonNull(playerInventory, "playerInventory cannot be null");
+        Objects.requireNonNull(data, "data cannot be null");
+        final BlockEntity blockEntity = playerInventory.player.level().getBlockEntity(data.readBlockPos());
+        if (blockEntity instanceof BrewingBarrelBlockEntity brewingBarrel) {
+            return brewingBarrel;
+        }
+        throw new IllegalStateException("Block entity is not correct! " + blockEntity);
     }
 
     @Override
@@ -50,15 +71,15 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (BucketSlot.matches(originalStack)) {
+                if (originalStack.getItem() instanceof BucketItem) {
                     if (!this.moveItemStackTo(originalStack, 0, 1, false))
                         return ItemStack.EMPTY;
                 }
-                else if (BottleSlot.matches(originalStack)) {
+                else if (originalStack.is(Items.GLASS_BOTTLE)) {
                     if (!this.moveItemStackTo(originalStack, 1, 2, false))
                         return ItemStack.EMPTY;
                 }
-                else if (BoozeBottleSlot.matches(originalStack)) {
+                else if ((originalStack.getItem() instanceof BoozeBottleItem)) {
                     if (!this.moveItemStackTo(originalStack, 2, 3, false))
                         return ItemStack.EMPTY;
                 }

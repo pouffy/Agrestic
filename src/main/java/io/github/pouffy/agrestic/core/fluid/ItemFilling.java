@@ -108,9 +108,10 @@ public class ItemFilling {
         if (recipe.isPresent()) {
             FillingRecipe fillingRecipe = recipe.get();
             ItemStack resultItem = fillingRecipe.getResultItem(world.registryAccess());
-            ItemStack resultingItem = resultItem.isEmpty() ? ItemStack.EMPTY : resultItem;
-            stack.shrink(1);
-            return resultingItem;
+            if (!resultItem.isEmpty()) {
+                stack.shrink(1);
+                return resultItem;
+            }
         }
 
         if (stack.getItem() == Items.GLASS_BOTTLE && canFillGlassBottleInternally(toFill)) {

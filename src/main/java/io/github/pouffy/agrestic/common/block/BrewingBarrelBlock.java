@@ -3,19 +3,28 @@ package io.github.pouffy.agrestic.common.block;
 import com.mojang.serialization.MapCodec;
 import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
 import io.github.pouffy.agrestic.common.block.entity.CrushingTubBlockEntity;
+import io.github.pouffy.agrestic.init.AgresticBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -78,6 +87,33 @@ public class BrewingBarrelBlock extends BaseEntityBlock {
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+        if (!level.isClientSide) {
+            if (level.getBlockEntity(pos) instanceof BrewingBarrelBlockEntity brewingBarrel) {
+                ItemStack filledStack = brewingBarrel.tryFillContainer(heldStack);
+                if (filledStack != ItemStack.EMPTY) {
+                    if (!player.getInventory().add(filledStack)) {
+                        player.drop(filledStack, false);
+                    }
+                    level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                } else {
+                    player.openMenu(brewingBarrel, pos);
+                }
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        if (!world.isClientSide()) {
+            return createTickerHelper(type, AgresticBlockEntities.BREWING_BARREL.get(), (l, pos, st, be) -> be.serverTick());
+        }
+        return createTickerHelper(type, AgresticBlockEntities.BREWING_BARREL.get(), (l, pos, st, be) -> be.clientTick());
     }
 
     @Override

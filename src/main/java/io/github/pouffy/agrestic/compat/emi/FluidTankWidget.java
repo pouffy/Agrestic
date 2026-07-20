@@ -17,8 +17,8 @@ public class FluidTankWidget extends SlotWidget {
     private final long capacity;
     protected final float fluidFullness;
     protected final @Nullable Either<FluidStack, EmiIngredient> fluid;
-    public int WIDTH = 18;
-    public int HEIGHT = 34;
+    public int WIDTH = AgresticEmiPlugin.TANK.width;
+    public int HEIGHT = AgresticEmiPlugin.TANK.height;
     public int FLUID_AREA_WIDTH = 16;
     public int FLUID_AREA_HEIGHT = 32;
     public EmiTexture background = AgresticEmiPlugin.TANK;
