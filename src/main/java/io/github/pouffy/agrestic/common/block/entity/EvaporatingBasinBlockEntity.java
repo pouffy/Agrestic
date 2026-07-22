@@ -1,6 +1,8 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
 import io.github.pouffy.agrestic.common.data.EvaporationBoosterManager;
+import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
+import io.github.pouffy.agrestic.common.recipe.BrewingRecipeInput;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingRecipeInput;
 import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
@@ -38,7 +40,12 @@ public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
     protected final AgresticFluidTank tank;
     @Getter
     protected final DisplayedItemContainer container;
-    private float progress = 0;
+    @Getter
+    protected float progress;
+    @Getter
+    protected float progressTotal;
+
+    protected EvaporatingBasinRecipe recipe = null;
 
     public EvaporatingBasinBlockEntity(BlockPos pos, BlockState blockState) {
         super(AgresticBlockEntities.EVAPORATING_BASIN.get(), pos, blockState);
@@ -61,7 +68,18 @@ public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
     }
 
     public void serverTick() {
+        if (!getTank().isEmpty()) {
+            this.tryEvaporate();
+        } else if (this.progress != 0 || this.progressTotal != 0){
+            this.progress = 0;
+            this.progressTotal = 0;
+            markUpdated();
+        }
+    }
+
+    public void tryEvaporate() {
         if (level == null) return;
+
         FluidStack fluid = getTank().getFluid();
         long amt = getTank().getFluidAmount();
 
@@ -74,32 +92,43 @@ public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
         var input = new EvaporatingRecipeInput(fluid, storedItem);
         EvaporatingBasinRecipe recipe = RecipeSearch.search(level, AgresticRecipeTypes.EVAPORATING_BASIN.get()).findRecipe(input);
 
-        if (recipe == null) {
+        if (recipe != null) {
+            this.recipe = recipe;
+        } else if (this.progress != 0 || this.progressTotal != 0) {
             this.progress = 0;
+            this.progressTotal = 0;
+            markUpdated();
             return;
         }
 
-        BlockPos below = worldPosition.below();
-        BlockState belowState = level.getBlockState(below);
-        float boosted = EvaporationBoosterManager.INSTANCE.getMultiplier(belowState);
-        float tickIncrement = 1 * boosted;
+        if (this.recipe != null) {
+            this.progressTotal = this.recipe.getTime();
 
-        this.progress += tickIncrement;
-        int craftTime = recipe.getTime();
+            if (getTank().getFluidAmount() > 0) {
+                BlockPos below = worldPosition.below();
+                BlockState belowState = level.getBlockState(below);
+                float boosted = EvaporationBoosterManager.INSTANCE.getMultiplier(belowState);
+                float tickIncrement = 1 * boosted;
 
-        if (this.progress >= craftTime) {
-            long extracted = getTank().drain(getFluidStack().copyWithAmount(recipe.getInput().amount()), IFluidHandler.FluidAction.SIMULATE).getAmount();
-            if (extracted == recipe.getInput().amount()) {
-                getTank().drain(getFluidStack().copyWithAmount(recipe.getInput().amount()), IFluidHandler.FluidAction.EXECUTE);
-                this.progress = 0;
-                this.spawnOrStore(recipe.getResultItem(level.registryAccess()).copy());
-                level.playSound(null, worldPosition, SoundEvents.WET_SPONGE_DRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
-                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_NEIGHBORS);
-            } else {
-                this.progress = 0;
+                this.progress += tickIncrement;
+
+                if (progress >= progressTotal) {
+                    evaporate(input);
+                    progress = 0;
+                    progressTotal = 0;
+                    markUpdated();
+                }
             }
         }
-        markUpdated();
+    }
+
+    private void evaporate(EvaporatingRecipeInput input) {
+        long extracted = getTank().drain(getFluidStack().copyWithAmount(recipe.getInput().amount()), IFluidHandler.FluidAction.SIMULATE).getAmount();
+        if (extracted == recipe.getInput().amount()) {
+            getTank().drain(getFluidStack().copyWithAmount(recipe.getInput().amount()), IFluidHandler.FluidAction.EXECUTE);
+            this.spawnOrStore(recipe.getResultItem(level.registryAccess()).copy());
+            level.playSound(null, worldPosition, SoundEvents.WET_SPONGE_DRIES, SoundSource.BLOCKS, 1.0F, 1.0F);
+        }
     }
 
     private void spawnOrStore(ItemStack stack) {
@@ -161,6 +190,7 @@ public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
         ILightEmitting.updateLight(this, this.tank.readFromNBT(registries, tag.getCompound("Tank")));
         this.container.deserializeNBT(registries, tag.getCompound("Container"));
         this.progress = tag.getFloat("Progress");
+        this.progressTotal = tag.getFloat("ProgressTotal");
     }
 
     @Override
@@ -169,6 +199,7 @@ public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
         tag.put("Tank", this.tank.writeToNBT(registries, new CompoundTag()));
         tag.put("Container", this.container.serializeNBT(registries));
         tag.putFloat("Progress", this.progress);
+        tag.putFloat("ProgressTotal", this.progressTotal);
     }
 
     @Override

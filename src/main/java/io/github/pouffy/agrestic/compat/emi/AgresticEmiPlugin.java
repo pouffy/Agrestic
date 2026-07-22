@@ -46,7 +46,7 @@ public class AgresticEmiPlugin implements EmiPlugin {
     public static final EmiRecipeCategory FLUID_TRANSFER = new EmiRecipeCategory(ResourceLocation.fromNamespaceAndPath(Agrestic.MODID, "fluid_transfer"), EmiStack.of(Items.BUCKET));
 
     private static EmiTexture fromSprite(AgresticSprites sprite) {
-        return new EmiTexture(sprite.location, 0, 0, sprite.width, sprite.height);
+        return new EmiTexture(sprite.location, 0, 0, sprite.width, sprite.height, sprite.width, sprite.height, sprite.width, sprite.height);
     }
 
     public AgresticEmiPlugin() {

@@ -54,7 +54,9 @@ public class BrewingBarrelBlockEntity extends AgresticContainerBlockEntity {
     @Getter
     protected final AgresticFluidTank auxiliaryTank;
 
+    @Getter
     protected int progress;
+    @Getter
     protected int progressTotal;
 
     protected BrewingBarrelRecipe recipe = null;
