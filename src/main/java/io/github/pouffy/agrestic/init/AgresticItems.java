@@ -23,6 +23,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static io.github.pouffy.agrestic.init.AgresticFoodValues.*;
+
 public class AgresticItems {
     public static final DeferredRegister.Items HELPER = DeferredRegister.createItems(Agrestic.MODID);
     public static List<ItemDefinition<?>> ITEM_DEFINITIONS = new ArrayList<>();
@@ -82,13 +84,13 @@ public class AgresticItems {
     public static final ItemDefinition<DrinkableItem> OLIVE_OIL_BOTTLE = registerBottle("olive_oil", (p) -> new DrinkableItem(p.food(AgresticFoodValues.OLIVE_OIL_BOTTLE).stacksTo(16)));
     public static final ItemDefinition<DrinkableItem> VANTA_OIL_BOTTLE = registerBottle("vanta_oil", (p) -> new DrinkableItem(p.food(AgresticFoodValues.VANTA_OIL_BOTTLE).stacksTo(16)));
 
-    public static final ItemDefinition<BoozeBottleItem> ALE_BOTTLE = register("ale_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::ale).setInebriationChance(0.5f), "Bottle of Ale");
-    public static final ItemDefinition<BoozeBottleItem> CIDER_BOTTLE = register("cider_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::cider).setInebriationChance(0.5f), "Bottle of Cider");
-    public static final ItemDefinition<BoozeBottleItem> IRON_WINE_BOTTLE = register("iron_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::ironWine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::ironWine), "Bottle of Iron Wine");
-    public static final ItemDefinition<BoozeBottleItem> MEAD_BOTTLE = register("mead_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::mead).setInebriationChance(0.5f), "Bottle of Mead");
-    public static final ItemDefinition<BoozeBottleItem> SWEET_BERRY_WINE_BOTTLE = register("sweet_berry_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::sweetBerryWine).setInebriationChance(0.85f).withRunnable(ExtraBoozeRunnables::sweetBerryWine), "Bottle of Sweet Berry Wine");
-    public static final ItemDefinition<BoozeBottleItem> WINE_BOTTLE = register("wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::wine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::wine), "Bottle of Wine");
-    public static final ItemDefinition<BoozeBottleItem> AMBROSIA_BOTTLE = register("ambrosia_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::ambrosia) {
+    public static final ItemDefinition<BoozeBottleItem> ALE_BOTTLE = register("ale_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::ale).setInebriationChance(0.5f), "Bottle of Ale");
+    public static final ItemDefinition<BoozeBottleItem> CIDER_BOTTLE = register("cider_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::cider).setInebriationChance(0.5f), "Bottle of Cider");
+    public static final ItemDefinition<BoozeBottleItem> IRON_WINE_BOTTLE = register("iron_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::ironWine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::ironWine), "Bottle of Iron Wine");
+    public static final ItemDefinition<BoozeBottleItem> MEAD_BOTTLE = register("mead_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::mead).setInebriationChance(0.5f), "Bottle of Mead");
+    public static final ItemDefinition<BoozeBottleItem> SWEET_BERRY_WINE_BOTTLE = register("sweet_berry_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::sweetBerryWine).setInebriationChance(0.85f).withRunnable(ExtraBoozeRunnables::sweetBerryWine), "Bottle of Sweet Berry Wine");
+    public static final ItemDefinition<BoozeBottleItem> WINE_BOTTLE = register("wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::wine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::wine), "Bottle of Wine");
+    public static final ItemDefinition<BoozeBottleItem> AMBROSIA_BOTTLE = register("ambrosia_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::ambrosia) {
         @Override
         public float getInebriationChance() {
             return 1.0F;

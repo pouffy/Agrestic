@@ -3,11 +3,13 @@
   "minVersion": "0.8",
   "package": "io.github.pouffy.agrestic.mixin",
   "compatibilityLevel": "JAVA_21",
+  "plugin": "io.github.pouffy.agrestic.mixin.plugin.AgresticMixinPlugin",
   "mixins": [
     "BoatItemAccessor",
     "MobEffectInstanceAccessor",
     "ModelBuilderMixin",
-    "RecipeManagerAccessor"
+    "RecipeManagerAccessor",
+    "appleskin.FoodHelperMixin"
   ],
   "client": [
     "PoseStackMixin"

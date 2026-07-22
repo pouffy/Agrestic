@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.datagen.server.tags;
 
 import com.pouffydev.krystal_core.datagen.server.KCDamageTagsProvider;
+import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.datagen.server.bootstrap.AgresticDamageTypes;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -14,8 +15,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModDamageTagsProvider extends DamageTypeTagsProvider {
 
-    public ModDamageTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, modId, existingFileHelper);
+    public ModDamageTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, lookupProvider, Agrestic.MODID, existingFileHelper);
     }
 
     protected void addTags(HolderLookup.Provider lookupProvider) {

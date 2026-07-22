@@ -44,6 +44,7 @@ public class ExampleDataGenerator {
         ModFluidTagsProvider fluidTags = new ModFluidTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModEntityTypeTagsProvider entityTypeTags = new ModEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModBiomeTagsProvider biomeTags = new ModBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper);
+        ModDamageTagsProvider damageTags = new ModDamageTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         AdvancementProvider advancements = new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new ModAdvancementProvider()));
         ModLootGenerator lootGenerator = new ModLootGenerator(packOutput, lookupProvider);
@@ -59,6 +60,7 @@ public class ExampleDataGenerator {
         generator.addProvider(server, fluidTags);
         generator.addProvider(server, entityTypeTags);
         generator.addProvider(server, biomeTags);
+        generator.addProvider(server, damageTags);
 
         generator.addProvider(server, advancements);
         generator.addProvider(server, lootGenerator);
