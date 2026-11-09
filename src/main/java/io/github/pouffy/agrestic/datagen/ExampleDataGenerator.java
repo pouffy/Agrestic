@@ -52,6 +52,7 @@ public class ExampleDataGenerator {
         ModItemModelProvider itemModels = new ModItemModelProvider(packOutput, existingFileHelper);
         ModBlockStateProvider blockStates = new ModBlockStateProvider(packOutput, existingFileHelper);
         ModFluidTextureProvider fluidTextures = new ModFluidTextureProvider(packOutput);
+        ModRenderFluidProvider renderFluids = new ModRenderFluidProvider(packOutput);
 
         generator.addProvider(server, blockTags);
         generator.addProvider(server, itemTags);
@@ -69,5 +70,6 @@ public class ExampleDataGenerator {
         generator.addProvider(client, blockStates);
         generator.addProvider(client, language);
         generator.addProvider(client, fluidTextures);
+        generator.addProvider(client, renderFluids);
     }
 }

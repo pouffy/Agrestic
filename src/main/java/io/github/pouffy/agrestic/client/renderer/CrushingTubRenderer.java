@@ -28,6 +28,7 @@ import org.joml.Vector3f;
 import slimeknights.mantle.client.render.FluidCuboid;
 import slimeknights.mantle.client.render.FluidRenderer;
 
+import java.util.List;
 import java.util.Random;
 
 public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlockEntity> {
@@ -51,16 +52,11 @@ public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlock
 
         int capacity = blockEntity.getTank().getCapacity();
         FluidStack fluid = blockEntity.getFluidStack();
+        List<FluidCuboid> fluids = FluidCuboid.REGISTRY.get(blockEntity.getBlockState(), List.of());
         if (!fluid.isEmpty()) {
             light = FluidRenderer.withBlockLight(light, fluid.getFluid().getFluidType().getLightLevel(fluid));
-            IClientFluidTypeExtensions client = IClientFluidTypeExtensions.of(fluid.getFluid());
-            TextureAtlasSprite still = FluidRenderer.getBlockSprite(client.getStillTexture(fluid));
-            TextureAtlasSprite flowing = FluidRenderer.getBlockSprite(client.getFlowingTexture(fluid));
-            int color = client.getTintColor(fluid);
-            Vector3f from = new Vector3f(2f / 16f, 2f / 16f, 2f / 16f);
-            Vector3f to = new Vector3f(14f / 16f, (2f / 16f) + ((fluid.getAmount()) / (float)capacity) * (6f / 16f), 14f / 16f);
             ms.pushPose();
-            FluidRenderer.renderCuboid(ms, buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS)), FluidCuboid.builder().face(Direction.UP).build(), still, flowing, from, to, color, light, false);
+            FluidRenderer.renderScaledCuboid(ms, buffer, fluids.getFirst(), fluid, 0, capacity, light, false);
             ms.popPose();
         }
     }

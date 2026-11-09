@@ -6,19 +6,14 @@ import io.github.pouffy.agrestic.client.helper.pose.TransformStack;
 import io.github.pouffy.agrestic.common.block.entity.EvaporatingBasinBlockEntity;
 import io.github.pouffy.agrestic.core.item.DisplayedItemStack;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.Direction;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.joml.Vector3f;
 import slimeknights.mantle.client.render.FluidCuboid;
 import slimeknights.mantle.client.render.FluidRenderer;
 
+import java.util.List;
 import java.util.Random;
 
 import static io.github.pouffy.agrestic.client.renderer.CrushingTubRenderer.renderItem;
@@ -43,16 +38,11 @@ public class EvaporatingBasinRenderer implements BlockEntityRenderer<Evaporating
         }
         int capacity = blockEntity.getTank().getCapacity();
         FluidStack fluid = blockEntity.getFluidStack();
+        List<FluidCuboid> fluids = FluidCuboid.REGISTRY.get(blockEntity.getBlockState(), List.of());
         if (!fluid.isEmpty()) {
             light = FluidRenderer.withBlockLight(light, fluid.getFluid().getFluidType().getLightLevel(fluid));
-            IClientFluidTypeExtensions client = IClientFluidTypeExtensions.of(fluid.getFluid());
-            TextureAtlasSprite still = FluidRenderer.getBlockSprite(client.getStillTexture(fluid));
-            TextureAtlasSprite flowing = FluidRenderer.getBlockSprite(client.getFlowingTexture(fluid));
-            int color = client.getTintColor(fluid);
-            Vector3f from = new Vector3f(2f / 16f, 2f / 16f, 2f / 16f);
-            Vector3f to = new Vector3f(14f / 16f, (2f / 16f) + ((fluid.getAmount()) / (float)capacity) * (4f / 16f), 14f / 16f);
             ms.pushPose();
-            FluidRenderer.renderCuboid(ms, buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS)), FluidCuboid.builder().face(Direction.UP).build(), still, flowing, from, to, color, light, false);
+            FluidRenderer.renderScaledCuboid(ms, buffer, fluids.getFirst(), fluid, 0, capacity, light, false);
             ms.popPose();
         }
     }
