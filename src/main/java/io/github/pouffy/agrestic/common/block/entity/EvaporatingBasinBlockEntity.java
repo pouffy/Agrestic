@@ -34,6 +34,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import slimeknights.mantle.fluid.FluidTransferHelper;
 
 public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
     @Getter
@@ -157,7 +158,7 @@ public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
         if (level == null) return InteractionResult.PASS;
         if (player.isShiftKeyDown() && this.getFluidStack().getAmount() > 0) {
             FluidStack drained = this.tank.drain(getCapacity(), IFluidHandler.FluidAction.EXECUTE);
-            SoundEvent soundevent = FluidHelper.getEmptySound(drained);
+            SoundEvent soundevent = FluidTransferHelper.getEmptySound(drained);
             if (soundevent != null) {
                 level.playSound(null, this.worldPosition, soundevent, SoundSource.BLOCKS, 1F, 1F);
             }

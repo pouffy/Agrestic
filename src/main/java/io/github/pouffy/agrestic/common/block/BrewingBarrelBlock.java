@@ -29,6 +29,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.fluid.FluidTransferHelper;
 
 public class BrewingBarrelBlock extends BaseEntityBlock {
     public static final MapCodec<BrewingBarrelBlock> CODEC = simpleCodec(BrewingBarrelBlock::new);
@@ -93,13 +94,7 @@ public class BrewingBarrelBlock extends BaseEntityBlock {
     public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (!level.isClientSide) {
             if (level.getBlockEntity(pos) instanceof BrewingBarrelBlockEntity brewingBarrel) {
-                ItemStack filledStack = brewingBarrel.tryFillContainer(heldStack);
-                if (filledStack != ItemStack.EMPTY) {
-                    if (!player.getInventory().add(filledStack)) {
-                        player.drop(filledStack, false);
-                    }
-                    level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                } else {
+                if (!FluidTransferHelper.interactWithContainer(level, pos, brewingBarrel.getResultTank(), player, hand).hasContainer()) {
                     player.openMenu(brewingBarrel, pos);
                 }
                 return ItemInteractionResult.SUCCESS;

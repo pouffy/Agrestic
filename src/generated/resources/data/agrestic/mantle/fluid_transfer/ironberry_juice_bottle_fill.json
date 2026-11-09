@@ -1,0 +1,11 @@
+{
+  "type": "mantle:fill_item",
+  "fluid": {
+    "amount": 250,
+    "tag": "c:ironberry_juice"
+  },
+  "input": {
+    "item": "minecraft:glass_bottle"
+  },
+  "result": "agrestic:ironberry_juice_bottle"
+}

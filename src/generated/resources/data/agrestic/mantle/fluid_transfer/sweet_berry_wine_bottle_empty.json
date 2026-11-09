@@ -1,0 +1,12 @@
+{
+  "type": "mantle:empty_copy_data",
+  "copy": "agrestic:quality",
+  "fluid": {
+    "amount": 250,
+    "tag": "c:sweet_berry_wine"
+  },
+  "input": {
+    "item": "agrestic:sweet_berry_wine_bottle"
+  },
+  "result": "minecraft:glass_bottle"
+}

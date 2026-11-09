@@ -1,0 +1,5 @@
+{
+  "color": "FFFFFFFF",
+  "flowing": "agrestic:fluid/grape_juice_flowing",
+  "still": "agrestic:fluid/grape_juice_still"
+}

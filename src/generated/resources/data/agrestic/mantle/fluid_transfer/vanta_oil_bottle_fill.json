@@ -1,0 +1,11 @@
+{
+  "type": "mantle:fill_item",
+  "fluid": {
+    "amount": 250,
+    "tag": "c:vanta_oil"
+  },
+  "input": {
+    "item": "minecraft:glass_bottle"
+  },
+  "result": "agrestic:vanta_oil_bottle"
+}

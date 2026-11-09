@@ -1,5 +1,6 @@
 package io.github.pouffy.agrestic.datagen.server.recipe;
 
+import io.github.pouffy.agrestic.datagen.server.FluidTransferProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -24,7 +25,7 @@ public class AgresticRecipeCollector {
         generator.addProvider(server, new AgresticCrushingProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticEvaporatingProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticBrewingProvider(packOutput, lookupProvider));
-        generator.addProvider(server, new AgresticFluidTransferProvider(packOutput, lookupProvider));
+        generator.addProvider(server, new FluidTransferProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticEvaporationBoosters(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticCraftingProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticFurnaceProvider(packOutput, lookupProvider));

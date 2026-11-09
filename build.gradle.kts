@@ -115,10 +115,15 @@ repositories {
         name = "DevAuth Maven"
         url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
     }
+    maven { // Mantle
+        name = "Mod Maven"
+        url = uri("https://modmaven.dev")
+    }
 }
 
 dependencies {
     implementation("maven.modrinth:krystal-core:${property("krystal_version")}")
+    implementation("slimeknights.mantle:Mantle:${property("mantle_version")}")
 
     compileOnlyApi("dev.emi:emi-neoforge:${property("emi_version")}:api")
     localRuntime("dev.emi:emi-neoforge:${property("emi_version")}")

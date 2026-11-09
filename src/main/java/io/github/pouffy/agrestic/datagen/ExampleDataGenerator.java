@@ -1,10 +1,7 @@
 package io.github.pouffy.agrestic.datagen;
 
 import io.github.pouffy.agrestic.Agrestic;
-import io.github.pouffy.agrestic.datagen.client.ModBlockStateProvider;
-import io.github.pouffy.agrestic.datagen.client.ModItemModelProvider;
-import io.github.pouffy.agrestic.datagen.client.ModLanguageProvider;
-import io.github.pouffy.agrestic.datagen.client.ModSoundsProvider;
+import io.github.pouffy.agrestic.datagen.client.*;
 import io.github.pouffy.agrestic.datagen.server.AgresticDatapackProvider;
 import io.github.pouffy.agrestic.datagen.server.ModAdvancementProvider;
 import io.github.pouffy.agrestic.datagen.server.loot.ModLootGenerator;
@@ -54,6 +51,7 @@ public class ExampleDataGenerator {
         ModLanguageProvider language = new ModLanguageProvider(packOutput, sounds);
         ModItemModelProvider itemModels = new ModItemModelProvider(packOutput, existingFileHelper);
         ModBlockStateProvider blockStates = new ModBlockStateProvider(packOutput, existingFileHelper);
+        ModFluidTextureProvider fluidTextures = new ModFluidTextureProvider(packOutput);
 
         generator.addProvider(server, blockTags);
         generator.addProvider(server, itemTags);
@@ -70,5 +68,6 @@ public class ExampleDataGenerator {
         generator.addProvider(client, itemModels);
         generator.addProvider(client, blockStates);
         generator.addProvider(client, language);
+        generator.addProvider(client, fluidTextures);
     }
 }

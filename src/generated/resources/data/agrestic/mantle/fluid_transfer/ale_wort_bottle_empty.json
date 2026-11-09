@@ -1,0 +1,11 @@
+{
+  "type": "mantle:empty_item",
+  "fluid": {
+    "amount": 250,
+    "tag": "c:ale_wort"
+  },
+  "input": {
+    "item": "agrestic:ale_wort_bottle"
+  },
+  "result": "minecraft:glass_bottle"
+}

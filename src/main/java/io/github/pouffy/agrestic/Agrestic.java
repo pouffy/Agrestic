@@ -40,13 +40,13 @@ public class Agrestic {
 
     public Agrestic(IEventBus modEventBus, ModContainer modContainer) {
         KrystalCore.disableDebugFeatures();
-        KrystalCore.enableHoneyFluid();
+        //TODO: Drop Krystal Core dependency and just rely on Mantle
+        KrystalCore.enableHoneyFluid();//MantleFluids.registerHoney(modEventBus);
         EvaporationBoosterManager.INSTANCE.init();
         this.modEventBus = modEventBus;
         INSTANCE = this;
         this.registryHelper = new RegistryHelper(MODID, modEventBus);
         AgresticCreativeTab.staticInit();
-        AgresticFluids.Types.staticInit(modEventBus);
         AgresticFluids.staticInit(modEventBus);
         AgresticBlocks.staticInit(modEventBus);
         AgresticItems.staticInit(modEventBus);

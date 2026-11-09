@@ -10,8 +10,11 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.registration.object.FlowingFluidObject;
+import slimeknights.mantle.registration.object.FluidObject;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class ModFluidTagsProvider extends FluidTagsProvider {
@@ -21,27 +24,38 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
     }
 
     protected void addTags(HolderLookup.Provider provider) {
-        addToTag(AgresticTags.APPLE_JUICE, AgresticFluids.APPLE_JUICE.get(), AgresticFluids.FLOWING_APPLE_JUICE.get());
-        addToTag(AgresticTags.GOLDEN_APPLE_JUICE, AgresticFluids.GOLDEN_APPLE_JUICE.get(), AgresticFluids.FLOWING_GOLDEN_APPLE_JUICE.get());
-        addToTag(AgresticTags.GRAPE_JUICE, AgresticFluids.GRAPE_JUICE.get(), AgresticFluids.FLOWING_GRAPE_JUICE.get());
-        addToTag(AgresticTags.SWEET_BERRY_JUICE, AgresticFluids.SWEET_BERRY_JUICE.get(), AgresticFluids.FLOWING_SWEET_BERRY_JUICE.get());
-        addToTag(AgresticTags.IRONBERRY_JUICE, AgresticFluids.IRONBERRY_JUICE.get(), AgresticFluids.FLOWING_IRONBERRY_JUICE.get());
-        addToTag(AgresticTags.ALE_WORT, AgresticFluids.ALE_WORT.get(), AgresticFluids.FLOWING_ALE_WORT.get());
-        addToTag(AgresticTags.OLIVE_OIL, AgresticFluids.OLIVE_OIL.get(), AgresticFluids.FLOWING_OLIVE_OIL.get());
-        addToTag(AgresticTags.VANTA_OIL, AgresticFluids.VANTA_OIL.get(), AgresticFluids.FLOWING_VANTA_OIL.get());
+        addTags(AgresticFluids.APPLE_JUICE);
+        addTags(AgresticFluids.GOLDEN_APPLE_JUICE);
+        addTags(AgresticFluids.GRAPE_JUICE);
+        addTags(AgresticFluids.SWEET_BERRY_JUICE);
+        addTags(AgresticFluids.IRONBERRY_JUICE);
+        addTags(AgresticFluids.ALE_WORT);
+        addTags(AgresticFluids.OLIVE_OIL);
+        addTags(AgresticFluids.VANTA_OIL);
 
-        addToTag(AgresticTags.ALE, AgresticFluids.ALE.get(), AgresticFluids.FLOWING_ALE.get());
-        addToTag(AgresticTags.CIDER, AgresticFluids.CIDER.get(), AgresticFluids.FLOWING_CIDER.get());
-        addToTag(AgresticTags.IRON_WINE, AgresticFluids.IRON_WINE.get(), AgresticFluids.FLOWING_IRON_WINE.get());
-        addToTag(AgresticTags.MEAD, AgresticFluids.MEAD.get(), AgresticFluids.FLOWING_MEAD.get());
-        addToTag(AgresticTags.SWEET_BERRY_WINE, AgresticFluids.SWEET_BERRY_WINE.get(), AgresticFluids.FLOWING_SWEET_BERRY_WINE.get());
-        addToTag(AgresticTags.WINE, AgresticFluids.WINE.get(), AgresticFluids.FLOWING_WINE.get());
-        addToTag(AgresticTags.AMBROSIA, AgresticFluids.AMBROSIA.get(), AgresticFluids.FLOWING_AMBROSIA.get());
+        addTags(AgresticFluids.ALE);
+        addTags(AgresticFluids.CIDER);
+        addTags(AgresticFluids.IRON_WINE);
+        addTags(AgresticFluids.MEAD);
+        addTags(AgresticFluids.SWEET_BERRY_WINE);
+        addTags(AgresticFluids.WINE);
+        addTags(AgresticFluids.AMBROSIA);
 
     }
 
     protected final void addToTag(TagKey<Fluid> tagKey, Fluid... fluids) {
         var tag = this.tag(tagKey);
         List.of(fluids).forEach(tag::add);
+    }
+
+    /** Tags a fluid object in its common tag */
+    private void addTags(FluidObject<?> fluid) {
+        tag(Objects.requireNonNull(fluid.getCommonTag())).addOptional(fluid.id());
+    }
+
+    /** Tags a fluid object in its common tag */
+    private void addTags(FlowingFluidObject<?> fluid) {
+        tag(Objects.requireNonNull(fluid.getCommonTag())).addOptionalTag(fluid.getLocalTag());
+        tag(fluid.getLocalTag()).addOptional(fluid.id()).addOptional(fluid.id().withPrefix("flowing_"));
     }
 }
