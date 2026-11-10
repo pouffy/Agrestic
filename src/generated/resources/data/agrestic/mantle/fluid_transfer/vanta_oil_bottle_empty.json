@@ -2,7 +2,7 @@
   "type": "mantle:empty_item",
   "fluid": {
     "amount": 250,
-    "tag": "c:vanta_oil"
+    "fluid": "agrestic:vanta_oil"
   },
   "input": {
     "item": "agrestic:vanta_oil_bottle"

@@ -2,7 +2,7 @@
   "type": "mantle:empty_item",
   "fluid": {
     "amount": 250,
-    "tag": "c:grape_juice"
+    "fluid": "agrestic:grape_juice"
   },
   "input": {
     "item": "agrestic:grape_juice_bottle"

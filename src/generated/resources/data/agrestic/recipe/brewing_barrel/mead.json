@@ -1,7 +1,7 @@
 {
   "type": "agrestic:brewing_barrel",
   "input": {
-    "id": "krystal_core:honey"
+    "id": "mantle:honey"
   },
   "output": {
     "id": "agrestic:mead"

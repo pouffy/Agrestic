@@ -7,11 +7,18 @@ import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefini
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticEffects;
+import io.github.pouffy.agrestic.init.AgresticFluids;
 import io.github.pouffy.agrestic.init.AgresticItems;
+import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import slimeknights.mantle.registration.object.FluidObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModLanguageProvider extends KrystalLanguageProvider {
 
@@ -64,7 +71,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
         add("death.attack.bad_ambrosia", "%1$s tasted tainted divinity");
 
-        NeoForgeRegistries.FLUID_TYPES.registryKeySet().stream().filter((key) -> key.location().getNamespace().equals(Agrestic.MODID)).forEach((key) -> add("fluid_type.agrestic.%s".formatted(key.location().getPath()), transform(key.location())));
+        AgresticFluids.REGISTERED_FLUIDS.forEach(this::fluid);
 
         config("title", "Agrestic");
         config("all.general", "General");
@@ -144,5 +151,12 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
     public void quality(String key, String value) {
         add("ui.agrestic.tooltip.quality." + key, value);
+    }
+
+    public void fluid(FluidObject<?> fluid) {
+        add("fluid_type.agrestic.%s".formatted(NeoForgeRegistries.FLUID_TYPES.getKey(fluid.getType()).getPath()), transform(NeoForgeRegistries.FLUID_TYPES.getKey(fluid.getType())));
+        if (fluid.getBucket() != null) {
+            add("item.agrestic.%s_bucket".formatted(NeoForgeRegistries.FLUID_TYPES.getKey(fluid.getType()).getPath()), "Bucket of %s".formatted(transform(NeoForgeRegistries.FLUID_TYPES.getKey(fluid.getType()))));
+        }
     }
 }

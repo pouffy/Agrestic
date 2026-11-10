@@ -10,6 +10,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
+import slimeknights.mantle.fluid.MantleFluids;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -27,7 +28,7 @@ public class AgresticBrewingProvider extends AgresticRecipeProvider {
         brew(AgresticFluids.ALE.get(), AgresticFluids.ALE_WORT.get(), output, "ale");
         brew(AgresticFluids.CIDER.get(), AgresticFluids.APPLE_JUICE.get(), output, "cider");
         brew(AgresticFluids.IRON_WINE.get(), AgresticFluids.IRONBERRY_JUICE.get(), output, "iron_wine");
-        brew(AgresticFluids.MEAD.get(), KrystalCore.HONEY.get(), output, "mead");
+        brew(AgresticFluids.MEAD.get(), MantleFluids.honey.get(), output, "mead");
         brew(AgresticFluids.SWEET_BERRY_WINE.get(), AgresticFluids.SWEET_BERRY_JUICE.get(), output, "sweet_berry_wine");
         brew(AgresticFluids.WINE.get(), AgresticFluids.GRAPE_JUICE.get(), output, "wine");
         brew(AgresticFluids.AMBROSIA.get(), AgresticFluids.GOLDEN_APPLE_JUICE.get(), output, "ambrosia");

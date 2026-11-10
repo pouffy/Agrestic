@@ -17,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import slimeknights.mantle.fluid.MantleFluids;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -37,7 +38,7 @@ public class AgresticCrushingProvider extends AgresticRecipeProvider {
         recipe(new FluidStack(AgresticFluids.SWEET_BERRY_JUICE.get(), 250), Ingredient.of(Items.SWEET_BERRIES), output, "sweet_berries");
         recipe(new FluidStack(AgresticFluids.GRAPE_JUICE.get(), 250), Ingredient.of(AgresticItems.GRAPES), output, "grapes");
         recipe(new FluidStack(AgresticFluids.APPLE_JUICE.get(), 250), Ingredient.of(Items.APPLE), new ChanceResult(new ItemStack(AgresticBlocks.APPLE_SEEDS), 0.5f), output, "apple");
-        recipe(new FluidStack(KrystalCore.HONEY, 250), Ingredient.of(Items.HONEYCOMB), output, "honeycomb");
+        recipe(new FluidStack(MantleFluids.honey.getStill(), 250), Ingredient.of(Items.HONEYCOMB), output, "honeycomb");
         recipe(new FluidStack(AgresticFluids.GOLDEN_APPLE_JUICE.get(), 100), Ingredient.of(Items.GOLDEN_APPLE), new ChanceResult(new ItemStack(AgresticBlocks.APPLE_SEEDS), 0.75f), output, "golden_apple");
         recipe(new FluidStack(AgresticFluids.VANTA_OIL.get(), 250), Ingredient.of(AgresticBlocks.VANTA_LILY), output, "vanta_lily");
     }

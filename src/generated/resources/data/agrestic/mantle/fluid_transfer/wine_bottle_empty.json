@@ -1,9 +1,8 @@
 {
   "type": "mantle:empty_copy_data",
-  "copy": "agrestic:quality",
   "fluid": {
     "amount": 250,
-    "tag": "c:wine"
+    "fluid": "agrestic:wine"
   },
   "input": {
     "item": "agrestic:wine_bottle"

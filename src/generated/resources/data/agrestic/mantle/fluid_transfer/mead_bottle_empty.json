@@ -1,9 +1,8 @@
 {
   "type": "mantle:empty_copy_data",
-  "copy": "agrestic:quality",
   "fluid": {
     "amount": 250,
-    "tag": "c:mead"
+    "fluid": "agrestic:mead"
   },
   "input": {
     "item": "agrestic:mead_bottle"

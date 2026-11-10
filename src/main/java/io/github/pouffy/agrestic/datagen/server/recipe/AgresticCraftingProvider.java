@@ -65,7 +65,7 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output, Agrestic.location("crafting/brewing_barrel"));
 
-        ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticFluids.ALE_WORT_BUCKET)
+        ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticFluids.ALE_WORT.getBucket())
                 .requires(Tags.Items.BUCKETS_WATER)
                 .requires(Items.SUGAR)
                 .requires(Tags.Items.FOODS_BREAD)

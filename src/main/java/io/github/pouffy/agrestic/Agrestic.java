@@ -19,6 +19,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
+import slimeknights.mantle.fluid.MantleFluids;
 
 import java.util.UUID;
 
@@ -41,16 +42,15 @@ public class Agrestic {
     public Agrestic(IEventBus modEventBus, ModContainer modContainer) {
         KrystalCore.disableDebugFeatures();
         //TODO: Drop Krystal Core dependency and just rely on Mantle
-        KrystalCore.enableHoneyFluid();//MantleFluids.registerHoney(modEventBus);
+        MantleFluids.registerHoney(modEventBus);
         EvaporationBoosterManager.INSTANCE.init();
         this.modEventBus = modEventBus;
         INSTANCE = this;
         this.registryHelper = new RegistryHelper(MODID, modEventBus);
+        AgresticFluids.init(modEventBus);
         AgresticCreativeTab.staticInit();
-        AgresticFluids.staticInit(modEventBus);
         AgresticBlocks.staticInit(modEventBus);
         AgresticItems.staticInit(modEventBus);
-        AgresticCreativeTab.populate();
         AgresticBlockEntities.staticInit();
         AgresticRecipeTypes.staticInit();
         AgresticIngredientTypes.staticInit();

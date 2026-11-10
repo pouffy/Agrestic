@@ -1,9 +1,8 @@
 {
   "type": "mantle:empty_copy_data",
-  "copy": "agrestic:quality",
   "fluid": {
     "amount": 250,
-    "tag": "c:ambrosia"
+    "fluid": "agrestic:ambrosia"
   },
   "input": {
     "item": "agrestic:ambrosia_bottle"

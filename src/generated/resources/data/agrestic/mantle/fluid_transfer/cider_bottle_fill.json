@@ -1,6 +1,5 @@
 {
   "type": "mantle:fill_copy_data",
-  "copy": "agrestic:quality",
   "fluid": {
     "amount": 250,
     "tag": "c:cider"

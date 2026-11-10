@@ -16,6 +16,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import slimeknights.mantle.registration.deferred.ItemDeferredRegister;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.function.Supplier;
 import static io.github.pouffy.agrestic.init.AgresticFoodValues.*;
 
 public class AgresticItems {
-    public static final DeferredRegister.Items HELPER = DeferredRegister.createItems(Agrestic.MODID);
+    private static final ItemDeferredRegister ITEMS = new ItemDeferredRegister(Agrestic.MODID);
     public static List<ItemDefinition<?>> ITEM_DEFINITIONS = new ArrayList<>();
 
     // =================================================
@@ -119,11 +120,11 @@ public class AgresticItems {
     }, "Bottle of Ambrosia");
 
     public static void staticInit(IEventBus bus) {
-        HELPER.register(bus);
+        ITEMS.register(bus);
     }
 
     public static <T extends Item> ItemDefinition<T> registerWithoutTab(String name, Supplier<T> item, String customLang) {
-        DeferredItem<T> deferred = HELPER.register(name, item);
+        DeferredItem<T> deferred = ITEMS.register(name, item);
         ItemDefinition<T> definition = ItemDefinition.fromHolder(deferred, customLang);
         ITEM_DEFINITIONS.add(definition);
         return definition;

@@ -21,10 +21,7 @@ public class FluidBarrelRenderer implements BlockEntityRenderer<FluidBarrelBlock
         FluidStack fluid = blockEntity.getFluidStack();
         List<FluidCuboid> fluids = FluidCuboid.REGISTRY.get(blockEntity.getBlockState(), List.of());
         if (!fluid.isEmpty()) {
-            light = FluidRenderer.withBlockLight(light, fluid.getFluid().getFluidType().getLightLevel(fluid));
-            ms.pushPose();
             FluidRenderer.renderScaledCuboid(ms, buffer, fluids.getFirst(), fluid, 0, capacity, light, false);
-            ms.popPose();
         }
     }
 }

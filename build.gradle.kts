@@ -116,27 +116,39 @@ repositories {
         url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
     }
     maven { // Mantle
-        name = "Mod Maven"
-        url = uri("https://modmaven.dev")
+        name = "DVS1 Maven FS"
+        url = uri("https://dvs1.progwml6.com/files/maven")
     }
+    maven("https://maven.blamejared.com") // JEI, Vazkii's Mods
 }
 
 dependencies {
     implementation("maven.modrinth:krystal-core:${property("krystal_version")}")
     implementation("slimeknights.mantle:Mantle:${property("mantle_version")}")
 
-    compileOnlyApi("dev.emi:emi-neoforge:${property("emi_version")}:api")
-    localRuntime("dev.emi:emi-neoforge:${property("emi_version")}")
+
+
+    if (property("recipe_viewer") == "emi") {
+        compileOnlyApi("dev.emi:emi-neoforge:${property("emi_version")}:api")
+        localRuntime("dev.emi:emi-neoforge:${property("emi_version")}")
+        runtimeOnly("maven.modrinth:emi-loot:${property("emiLoot")}+1.21+neoforge")
+        runtimeOnly("maven.modrinth:fzzy-config:${property("fzzyConfig")}+1.21+neoforge")
+        runtimeOnly("maven.modrinth:kotlin-for-forge:${property("kotlin")}")
+    }
+    if (property("recipe_viewer") == "jei") {
+        compileOnly("mezz.jei:jei-${property("minecraft_version")}-neoforge:${property("jei_version")}")
+        localRuntime("mezz.jei:jei-${property("minecraft_version")}-neoforge:${property("jei_version")}")
+    }
+
 
     compileOnly("squeek.appleskin:appleskin-neoforge:${property("appleskin")}")
     localRuntime("squeek.appleskin:appleskin-neoforge:${property("appleskin")}")
 
-    runtimeOnly("maven.modrinth:emi-loot:${property("emiLoot")}+1.21+neoforge")
-    runtimeOnly("maven.modrinth:fzzy-config:${property("fzzyConfig")}+1.21+neoforge")
-    runtimeOnly("maven.modrinth:kotlin-for-forge:${property("kotlin")}")
-
     compileOnly("maven.modrinth:jade:15.10.5+neoforge")
     localRuntime("maven.modrinth:jade:15.10.5+neoforge")
+
+    compileOnly("maven.modrinth:ceramics:${property("ceramics_version")}")
+    localRuntime("maven.modrinth:ceramics:${property("ceramics_version")}")
 
     implementation("org.projectlombok:lombok:1.18.46")
     runtimeOnly("me.djtheredstoner:DevAuth-neoforge:1.2.1")

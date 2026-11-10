@@ -2,7 +2,7 @@
   "type": "mantle:empty_item",
   "fluid": {
     "amount": 250,
-    "tag": "c:ale_wort"
+    "fluid": "agrestic:ale_wort"
   },
   "input": {
     "item": "agrestic:ale_wort_bottle"

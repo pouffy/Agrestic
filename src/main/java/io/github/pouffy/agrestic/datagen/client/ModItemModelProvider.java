@@ -56,14 +56,14 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.IRON_DUST);
         this.basicItem(AgresticItems.TINY_IRON_DUST);
 
-        this.bucket(AgresticFluids.APPLE_JUICE_BUCKET);
-        this.bucket(AgresticFluids.GOLDEN_APPLE_JUICE_BUCKET);
-        this.bucket(AgresticFluids.GRAPE_JUICE_BUCKET);
-        this.bucket(AgresticFluids.SWEET_BERRY_JUICE_BUCKET);
-        this.bucket(AgresticFluids.IRONBERRY_JUICE_BUCKET);
-        this.bucket(AgresticFluids.ALE_WORT_BUCKET);
-        this.bucket(AgresticFluids.OLIVE_OIL_BUCKET);
-        this.bucket(AgresticFluids.VANTA_OIL_BUCKET);
+        this.bucket(AgresticFluids.APPLE_JUICE::getBucket);
+        this.bucket(AgresticFluids.GOLDEN_APPLE_JUICE::getBucket);
+        this.bucket(AgresticFluids.GRAPE_JUICE::getBucket);
+        this.bucket(AgresticFluids.SWEET_BERRY_JUICE::getBucket);
+        this.bucket(AgresticFluids.IRONBERRY_JUICE::getBucket);
+        this.bucket(AgresticFluids.ALE_WORT::getBucket);
+        this.bucket(AgresticFluids.OLIVE_OIL::getBucket);
+        this.bucket(AgresticFluids.VANTA_OIL::getBucket);
 
         this.bottle(AgresticItems.APPLE_JUICE_BOTTLE);
         this.bottle(AgresticItems.GOLDEN_APPLE_JUICE_BOTTLE);

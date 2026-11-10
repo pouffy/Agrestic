@@ -7,11 +7,7 @@ import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
 import io.github.pouffy.agrestic.common.item.BoozeItemColor;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.core.fluid.AgresticBucketWrapper;
-import io.github.pouffy.agrestic.core.fluid.AgresticFluidType;
-import io.github.pouffy.agrestic.init.AgresticBlocks;
-import io.github.pouffy.agrestic.init.AgresticDataComponents;
-import io.github.pouffy.agrestic.init.AgresticItems;
-import io.github.pouffy.agrestic.init.AgresticMenuTypes;
+import io.github.pouffy.agrestic.init.*;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -39,8 +35,10 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import slimeknights.mantle.fluid.texture.ClientTextureFluidType;
+import slimeknights.mantle.registration.object.FluidObject;
 
 import java.util.List;
 
@@ -59,12 +57,7 @@ public class AgresticClient {
 
     @SubscribeEvent
     static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-        NeoForgeRegistries.FLUID_TYPES.registryKeySet().forEach((key) -> {
-            var type = NeoForgeRegistries.FLUID_TYPES.get(key);
-            if (type instanceof AgresticFluidType agresticFluidType) {
-                event.registerFluidType(agresticFluidType.getExtension(), agresticFluidType);
-            }
-        });
+        AgresticFluids.REGISTERED_FLUIDS.forEach((fluid) -> textureExtension(event, fluid));
     }
 
     @SubscribeEvent
@@ -97,9 +90,6 @@ public class AgresticClient {
         if (stack.getCapability(Capabilities.FluidHandler.ITEM) instanceof FluidBucketWrapper wrapper) {
             tooltip.add(Component.translatable("ui.agrestic.tooltip.fluid", wrapper.getFluid().getHoverName(), wrapper.getFluid().getAmount(), 1000));
         }
-        if (stack.getCapability(Capabilities.FluidHandler.ITEM) instanceof AgresticBucketWrapper wrapper) {
-            tooltip.add(Component.translatable("ui.agrestic.tooltip.fluid", wrapper.getFluid().getHoverName(), wrapper.getFluid().getAmount(), 1000));
-        }
         if (stack.has(AgresticDataComponents.QUALITY)) {
             tooltip.add(ClientTextHelper.getQualityTooltip(stack.getOrDefault(AgresticDataComponents.QUALITY, BrewingBarrelRecipe.DEFAULT_QUALITY)));
         }
@@ -129,5 +119,12 @@ public class AgresticClient {
         event.register((state, tintGetter, pos, tintIndex) -> tintGetter != null && pos != null ? BiomeColors.getAverageFoliageColor(tintGetter, pos) : FoliageColor.getDefaultColor(),
                 AgresticBlocks.APPLE_LEAVES.get()
         );
+    }
+
+    private static void textureExtension(RegisterClientExtensionsEvent event, FluidObject<?> fluid) {
+        if (fluid.isBound()) {
+            FluidType type = fluid.getType();
+            event.registerFluidType(new ClientTextureFluidType(type), type);
+        }
     }
 }

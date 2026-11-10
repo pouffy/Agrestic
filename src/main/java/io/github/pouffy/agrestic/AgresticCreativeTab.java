@@ -25,129 +25,124 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@EventBusSubscriber
 public class AgresticCreativeTab {
     private static final CreativeTabRegistryHelper HELPER = Agrestic.getRegistryHelper().getCreativeTabHelper();
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> AGRICULTURE = registerTab("agriculture", () -> AgresticItems.OLIVES, (params, output) -> {}, RegistryHelper.noAction());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> AGRICULTURE = registerTab("agriculture", () -> AgresticItems.OLIVES, AgresticCreativeTab::popAgriculture, RegistryHelper.noAction());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECORATION = registerTab("decoration", AgresticBlocks.OLIVE::planks, (params, output) -> {}, RegistryHelper.noAction());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECORATION = registerTab("decoration", AgresticBlocks.OLIVE::planks, AgresticCreativeTab::popDecoration, RegistryHelper.noAction());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ALCHEMY = registerTab("alchemy", () -> AgresticBlocks.ALOE_VERA, (params, output) -> {}, RegistryHelper.noAction());
-
-    @Setter
-    private static ResourceKey<CreativeModeTab> currentTab = AGRICULTURE.getKey();
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ALCHEMY = registerTab("alchemy", () -> AgresticBlocks.ALOE_VERA, AgresticCreativeTab::popAlchemy, RegistryHelper.noAction());
 
     public static void staticInit() {}
 
-    public static void populate() {
-        setCurrentTab(AGRICULTURE.getKey());
-        ///add(AgresticItems.CATALOG);
-        ///add(AgresticBlocks.FERTILE_SOIL);
+    private static void popAgriculture(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        Consumer<ItemStack> consumer = output::accept;
+        ///consumer.accept(AgresticItems.CATALOG.stack());
+        ///consumer.accept(AgresticBlocks.FERTILE_SOIL.stack());
+
         for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
-            add(woodset.log());
-            add(woodset.wood());
-            add(woodset.strippedLog());
-            add(woodset.strippedWood());
+            consumer.accept(woodset.log().stack());
+            consumer.accept(woodset.wood().stack());
+            consumer.accept(woodset.strippedLog().stack());
+            consumer.accept(woodset.strippedWood().stack());
+            consumer.accept(woodset.leaves().stack());
         }
-        add(AgresticBlocks.OLIVE.leaves());
-        add(AgresticBlocks.IRONWOOD.leaves());
-        add(AgresticBlocks.APPLE_LEAVES);
-        add(AgresticBlocks.APPLE_SAPLING);
-        add(AgresticBlocks.OLIVE_SAPLING);
-        add(AgresticBlocks.IRONWOOD_SAPLING);
-        add(AgresticBlocks.CRUSHING_TUB);
-        add(AgresticBlocks.EVAPORATING_BASIN);
-        add(AgresticBlocks.FLUID_BARREL);
-        ///add(AgresticBlocks.UNFIRED_DRYING_BASIN);
-        ///add(AgresticBlocks.STAKE);
-        ///add(AgresticBlocks.ROPE);
+        consumer.accept(AgresticBlocks.APPLE_LEAVES.stack());
+        consumer.accept(AgresticBlocks.APPLE_SAPLING.stack());
+        consumer.accept(AgresticBlocks.OLIVE_SAPLING.stack());
+        consumer.accept(AgresticBlocks.IRONWOOD_SAPLING.stack());
+        consumer.accept(AgresticBlocks.CRUSHING_TUB.stack());
+        consumer.accept(AgresticBlocks.EVAPORATING_BASIN.stack());
+        consumer.accept(AgresticBlocks.FLUID_BARREL.stack());
+        ///consumer.accept(AgresticBlocks.UNFIRED_DRYING_BASIN.stack());
+        ///consumer.accept(AgresticBlocks.STAKE.stack());
+        ///consumer.accept(AgresticBlocks.ROPE.stack());
         //Seeds
-        add(AgresticItems.CHILLI_PEPPER_SEEDS);
-        ///add(AgresticItems.TOMATO_SEEDS);
-        ///add(AgresticItems.GRAPE_SEEDS);
-        add(AgresticBlocks.APPLE_SEEDS);
+        consumer.accept(AgresticItems.CHILLI_PEPPER_SEEDS.stack());
+        ///consumer.accept(AgresticItems.TOMATO_SEEDS.stack());
+        ///consumer.accept(AgresticItems.GRAPE_SEEDS.stack());
+        consumer.accept(AgresticBlocks.APPLE_SEEDS.stack());
         //Crops
-        add(AgresticItems.OLIVES);
-        add(AgresticItems.IRONBERRIES);
-        add(AgresticItems.GRAPES);
-        add(AgresticItems.TOMATO);
-        add(AgresticItems.CHILLI_PEPPER);
-        add(AgresticItems.GHOST_PEPPER);
+        consumer.accept(AgresticItems.OLIVES.stack());
+        consumer.accept(AgresticItems.IRONBERRIES.stack());
+        consumer.accept(AgresticItems.GRAPES.stack());
+        consumer.accept(AgresticItems.TOMATO.stack());
+        consumer.accept(AgresticItems.CHILLI_PEPPER.stack());
+        consumer.accept(AgresticItems.GHOST_PEPPER.stack());
         //Ingredients
-        add(AgresticItems.TALLOW);
-        add(AgresticItems.GOLD_DUST);
-        add(AgresticItems.TINY_GOLD_DUST);
-        add(AgresticItems.IRON_DUST);
-        add(AgresticItems.TINY_IRON_DUST);
-        ///add(AgresticItems.TINY_GLOWSTONE_DUST);
+        consumer.accept(AgresticItems.TALLOW.stack());
+        consumer.accept(AgresticItems.GOLD_DUST.stack());
+        consumer.accept(AgresticItems.TINY_GOLD_DUST.stack());
+        consumer.accept(AgresticItems.IRON_DUST.stack());
+        consumer.accept(AgresticItems.TINY_IRON_DUST.stack());
+        ///consumer.accept(AgresticItems.TINY_GLOWSTONE_DUST.stack());
         //Drinks
-        add(AgresticItems.IRONBERRY_JUICE_BOTTLE);
-        add(AgresticItems.VANTA_OIL_BOTTLE);
-        add(AgresticItems.ALE_WORT_BOTTLE);
-        add(AgresticItems.OLIVE_OIL_BOTTLE);
-        add(AgresticItems.GOLDEN_APPLE_JUICE_BOTTLE);
-        add(AgresticItems.APPLE_JUICE_BOTTLE);
-        add(AgresticItems.SWEET_BERRY_JUICE_BOTTLE);
-        add(AgresticItems.GRAPE_JUICE_BOTTLE);
+        consumer.accept(AgresticItems.IRONBERRY_JUICE_BOTTLE.stack());
+        consumer.accept(AgresticItems.VANTA_OIL_BOTTLE.stack());
+        consumer.accept(AgresticItems.ALE_WORT_BOTTLE.stack());
+        consumer.accept(AgresticItems.OLIVE_OIL_BOTTLE.stack());
+        consumer.accept(AgresticItems.GOLDEN_APPLE_JUICE_BOTTLE.stack());
+        consumer.accept(AgresticItems.APPLE_JUICE_BOTTLE.stack());
+        consumer.accept(AgresticItems.SWEET_BERRY_JUICE_BOTTLE.stack());
+        consumer.accept(AgresticItems.GRAPE_JUICE_BOTTLE.stack());
         //Buckets
-        add(AgresticFluids.IRONBERRY_JUICE_BUCKET);
-        add(AgresticFluids.VANTA_OIL_BUCKET);
-        add(AgresticFluids.ALE_WORT_BUCKET);
-        add(AgresticFluids.OLIVE_OIL_BUCKET);
-        add(AgresticFluids.GOLDEN_APPLE_JUICE_BUCKET);
-        add(AgresticFluids.APPLE_JUICE_BUCKET);
-        add(AgresticFluids.SWEET_BERRY_JUICE_BUCKET);
-        add(AgresticFluids.GRAPE_JUICE_BUCKET);
-        add(AgresticBlocks.BREWING_BARREL);
-        setCurrentTab(DECORATION.getKey());
-        for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
-            add(woodset.planks());
-            add(woodset.stairs());
-            add(woodset.slab());
-            add(woodset.fence());
-            add(woodset.fenceGate());
-            add(woodset.door());
-            add(woodset.trapdoor());
-            add(woodset.pressurePlate());
-            add(woodset.button());
-        }
-        startChain(AgresticBlocks.OLIVE.button());
-        toChain(AgresticItems.OLIVE_SIGN);
-        toChain(AgresticItems.OLIVE_HANGING_SIGN);
-        toChain(AgresticItems.OLIVE_BOAT);
-        toChain(AgresticItems.OLIVE_CHEST_BOAT);
-        endChain();
-        startChain(AgresticBlocks.IRONWOOD.button());
-        toChain(AgresticItems.IRONWOOD_SIGN);
-        toChain(AgresticItems.IRONWOOD_HANGING_SIGN);
-        toChain(AgresticItems.IRONWOOD_BOAT);
-        toChain(AgresticItems.IRONWOOD_CHEST_BOAT);
-        endChain();
-        setCurrentTab(ALCHEMY.getKey());
-        add(AgresticBlocks.ALOE_VERA);
-        add(AgresticBlocks.BLOOD_ORCHID);
-        add(AgresticBlocks.CHAMOMILE);
-        add(AgresticItems.CLOUDSBLUFF);
-        add(AgresticBlocks.COHOSH);
-        add(AgresticBlocks.HORSETAIL);
-        add(AgresticBlocks.VANTA_LILY);
-        add(AgresticBlocks.WIND_THISTLE);
-        add(AgresticItems.CORE_ROOT);
-        add(AgresticItems.GINSENG);
-        add(AgresticItems.MARSH_MALLOW);
-        add(AgresticBlocks.MOONCAP);
-        add(AgresticBlocks.DEATHSTALK);
-        ///add(AgresticBlocks.BASIC_CONDENSER);
-        ///add(AgresticBlocks.BASIC_RETORT);
-        ///add(AgresticBlocks.ADVANCED_CONDENSER);
-        ///add(AgresticBlocks.ADVANCED_RETORT);
+        consumer.accept(AgresticFluids.IRONBERRY_JUICE.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.VANTA_OIL.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.ALE_WORT.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.OLIVE_OIL.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.GOLDEN_APPLE_JUICE.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.APPLE_JUICE.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.SWEET_BERRY_JUICE.getBucket().getDefaultInstance());
+        consumer.accept(AgresticFluids.GRAPE_JUICE.getBucket().getDefaultInstance());
+        consumer.accept(AgresticBlocks.BREWING_BARREL.stack());
+        generateBooze(output, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void populateExtra(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == AGRICULTURE.getKey())
-            generateBooze(event, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+    private static void popDecoration(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        Consumer<ItemStack> consumer = output::accept;
+        for (AgresticBlocks.Woodset woodset : AgresticBlocks.WOODSETS) {
+            consumer.accept(woodset.planks().stack());
+            consumer.accept(woodset.stairs().stack());
+            consumer.accept(woodset.slab().stack());
+            consumer.accept(woodset.fence().stack());
+            consumer.accept(woodset.fenceGate().stack());
+            consumer.accept(woodset.door().stack());
+            consumer.accept(woodset.trapdoor().stack());
+            consumer.accept(woodset.pressurePlate().stack());
+            consumer.accept(woodset.button().stack());
+        }
+        consumer.accept(AgresticBlocks.OLIVE.button().stack());
+        consumer.accept(AgresticItems.OLIVE_SIGN.stack());
+        consumer.accept(AgresticItems.OLIVE_HANGING_SIGN.stack());
+        consumer.accept(AgresticItems.OLIVE_BOAT.stack());
+        consumer.accept(AgresticItems.OLIVE_CHEST_BOAT.stack());
+        consumer.accept(AgresticBlocks.IRONWOOD.button().stack());
+        consumer.accept(AgresticItems.IRONWOOD_SIGN.stack());
+        consumer.accept(AgresticItems.IRONWOOD_HANGING_SIGN.stack());
+        consumer.accept(AgresticItems.IRONWOOD_BOAT.stack());
+        consumer.accept(AgresticItems.IRONWOOD_CHEST_BOAT.stack());
+    }
+
+    private static void popAlchemy(CreativeModeTab.ItemDisplayParameters parameters, CreativeModeTab.Output output) {
+        Consumer<ItemStack> consumer = output::accept;
+        consumer.accept(AgresticBlocks.ALOE_VERA.stack());
+        consumer.accept(AgresticBlocks.BLOOD_ORCHID.stack());
+        consumer.accept(AgresticBlocks.CHAMOMILE.stack());
+        consumer.accept(AgresticItems.CLOUDSBLUFF.stack());
+        consumer.accept(AgresticBlocks.COHOSH.stack());
+        consumer.accept(AgresticBlocks.HORSETAIL.stack());
+        consumer.accept(AgresticBlocks.VANTA_LILY.stack());
+        consumer.accept(AgresticBlocks.WIND_THISTLE.stack());
+        consumer.accept(AgresticItems.CORE_ROOT.stack());
+        consumer.accept(AgresticItems.GINSENG.stack());
+        consumer.accept(AgresticItems.MARSH_MALLOW.stack());
+        consumer.accept(AgresticBlocks.MOONCAP.stack());
+        consumer.accept(AgresticBlocks.DEATHSTALK.stack());
+        ///consumer.accept(AgresticBlocks.BASIC_CONDENSER.stack());
+        ///consumer.accept(AgresticBlocks.BASIC_RETORT.stack());
+        ///consumer.accept(AgresticBlocks.ADVANCED_CONDENSER.stack());
+        ///consumer.accept(AgresticBlocks.ADVANCED_RETORT.stack());
     }
 
     private static void generateBooze(CreativeModeTab.Output output, CreativeModeTab.TabVisibility tabVisibility) {
@@ -174,30 +169,6 @@ public class AgresticCreativeTab {
         set.add(sweetBerryWine);
         set.add(wine);
         output.acceptAll(set, tabVisibility);
-    }
-
-    private static void add(ItemLike itemLike) {
-        CreativeTabManager.addToTab(currentTab, itemLike);
-    }
-
-    private static void before(ItemLike itemLike, ItemLike target) {
-        CreativeTabManager.addNextToItem(currentTab, itemLike, target, true);
-    }
-
-    private static void after(ItemLike itemLike, ItemLike target) {
-        CreativeTabManager.addNextToItem(currentTab, itemLike, target, false);
-    }
-
-    private static void startChain(ItemLike parent) {
-        CreativeTabManager.startChain(currentTab, false, false, parent);
-    }
-
-    private static void toChain(ItemLike itemLike) {
-        CreativeTabManager.queryChain().addToChain(itemLike);
-    }
-
-    private static void endChain() {
-        CreativeTabManager.endChain();
     }
 
     public static DeferredHolder<CreativeModeTab, CreativeModeTab> registerTab(String name, Supplier<ItemLike> icon, BiConsumer<CreativeModeTab.ItemDisplayParameters, CreativeModeTab.Output> displayItems, Consumer<CreativeModeTab.Builder> additionalProperties) {

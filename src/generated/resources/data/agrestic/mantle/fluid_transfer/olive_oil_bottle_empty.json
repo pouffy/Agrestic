@@ -2,7 +2,7 @@
   "type": "mantle:empty_item",
   "fluid": {
     "amount": 250,
-    "tag": "c:olive_oil"
+    "fluid": "agrestic:olive_oil"
   },
   "input": {
     "item": "agrestic:olive_oil_bottle"
