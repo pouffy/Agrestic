@@ -240,7 +240,7 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
             Font font = Minecraft.getInstance().font;
 
             final List<Component> tooltip;
-            if (fluidCapacity > 0) {
+            if (fluidCapacity > 0 & !fluid.isEmpty()) {
                 tooltip = FluidTooltipHandler.getFluidTooltip(fluid);
             } else {
                 BiConsumer<Integer, List<Component>> formatter = Screen.hasShiftDown()

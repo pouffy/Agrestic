@@ -70,6 +70,9 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("gui.agrestic.fluid.bottle", "%s bottles");
         add("gui.agrestic.fluid.drop", "%s drops");
 
+        add("gui.agrestic.tank.capacity", "Capacity:");
+        add("gui.agrestic.tank.available", "Free:");
+
         add("ui.agrestic.tooltip.fluid", "%s %smb / %smb");
         add("ui.agrestic.tooltip.item", "%s x%s");
 

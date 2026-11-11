@@ -102,6 +102,8 @@
   "gui.agrestic.fluid.bottle": "%s bottles",
   "gui.agrestic.fluid.bucket": "%s buckets",
   "gui.agrestic.fluid.drop": "%s drops",
+  "gui.agrestic.tank.available": "Free:",
+  "gui.agrestic.tank.capacity": "Capacity:",
   "item.agrestic.ale_bottle": "Bottle of Ale",
   "item.agrestic.ale_wort_bottle": "Bottle of Ale Wort",
   "item.agrestic.ale_wort_bucket": "Bucket of Ale Wort",

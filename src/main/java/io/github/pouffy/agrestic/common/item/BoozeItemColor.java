@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 public class BoozeItemColor implements ItemColor {
     @Override
     public int getColor(ItemStack stack, int tintIndex) {
-        if (tintIndex == 2) {
+        if (tintIndex == 1) {
             float quality = stack.getOrDefault(AgresticDataComponents.QUALITY, BrewingBarrelRecipe.DEFAULT_QUALITY);
             return ClientTextHelper.getQualityLabelColor(quality);
         }
