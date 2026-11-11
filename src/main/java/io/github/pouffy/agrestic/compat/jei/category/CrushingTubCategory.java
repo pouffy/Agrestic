@@ -21,6 +21,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import slimeknights.mantle.plugin.jei.fluid.FluidTooltipCallback;
 
 public class CrushingTubCategory extends AbstractRecipeCategory<RecipeHolder<CrushingTubRecipe>> {
 
@@ -44,6 +45,7 @@ public class CrushingTubCategory extends AbstractRecipeCategory<RecipeHolder<Cru
                 .addIngredients(recipe.getInput());
 
         builder.addOutputSlot(70, hasByproduct ? 7 : 15)
+                .addRichTooltipCallback(FluidTooltipCallback.UNITS)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.TANK), -1, -1)
                 .setFluidRenderer(Math.min(recipe.getResultFluid(registryAccess).getAmount() * 4, 8000), false, 16, 32)
                 .addFluidStack(recipe.getResultFluid(registryAccess).getFluid(), recipe.getResultFluid(registryAccess).getAmount());

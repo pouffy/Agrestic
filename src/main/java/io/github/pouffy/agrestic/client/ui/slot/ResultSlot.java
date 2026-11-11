@@ -5,21 +5,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class ResultSlot extends Slot {
-    private int amount;
-
-    public ResultSlot(Container container, int slot, int x, int y) {
-        super(container, slot, x, y);
+    public ResultSlot(Container pContainer, int pSlot, int pX, int pY) {
+        super(pContainer, pSlot, pX, pY);
     }
 
-    public boolean mayPlace(ItemStack stack) {
+    @Override
+    public boolean mayPlace(ItemStack pStack) {
         return false;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 }

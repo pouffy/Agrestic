@@ -1,10 +1,11 @@
 package io.github.pouffy.agrestic.client.ui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.client.ClientFluidHelper;
-import io.github.pouffy.agrestic.client.ClientTextHelper;
+import io.github.pouffy.agrestic.core.GuiUtil;
+import io.github.pouffy.agrestic.core.IFluidTankScreen;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
-import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -19,28 +20,33 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.IAbstractWidgetExtension;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.Mantle;
+import slimeknights.mantle.fluid.tooltip.FluidTooltipHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class FluidWidget implements Renderable, GuiEventListener, LayoutElement, IAbstractWidgetExtension, NarratableEntry {
+public class FluidWidget implements Renderable, GuiEventListener, LayoutElement, IAbstractWidgetExtension, NarratableEntry, IFluidTankScreen {
     private final AgresticFluidTank fluidStorage;
+    private final AbstractContainerScreen<?> screen;
     private final Supplier<BlockPos> posSupplier;
 
     private final int width, height;
     private int x, y;
+    private final Rect2i fluidLoc;
 
     private Component message;
     @Getter
@@ -51,17 +57,22 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
     public boolean visible = true;
     private boolean focused;
 
-    public FluidWidget(AgresticFluidTank fluidStorage, int x, int y, int width, int height, Supplier<BlockPos> posSupplier) {
+    private final BiConsumer<Integer,List<Component>> formatter;
+
+    public FluidWidget(AgresticFluidTank fluidStorage, AbstractContainerScreen<?> screen, int x, int y, int width, int height, Supplier<BlockPos> posSupplier) {
         this.fluidStorage = fluidStorage;
+        this.screen = screen;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.fluidLoc = new Rect2i(x, y, width, height);
         this.posSupplier = posSupplier;
+        this.formatter = (amount, tooltip) -> FluidTooltipHandler.appendNamedList(Agrestic.location("tank"), amount, tooltip);
     }
 
-    public static Builder builder(AgresticFluidTank fluidStorage) {
-        return new Builder(fluidStorage);
+    public static Builder builder(AgresticFluidTank fluidStorage, AbstractContainerScreen<?> screen) {
+        return new Builder(fluidStorage, screen);
     }
 
     @Override
@@ -181,15 +192,25 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
         return this.isHovered() || this.isFocused();
     }
 
+    @Override
+    public @Nullable FluidLocation getFluidUnderMouse(int mouseX, int mouseY) {
+        if (isHovered()) {
+            return new FluidLocation(this.fluidStorage.getFluid(), this.fluidLoc);
+        }
+        return null;
+    }
+
 
     public static class Builder {
         private final AgresticFluidTank fluidStorage;
+        private final AbstractContainerScreen<?> screen;
         private Supplier<BlockPos> posSupplier = () -> null;
         private int x, y;
         private int width, height;
 
-        public Builder(AgresticFluidTank fluidStorage) {
+        public Builder(AgresticFluidTank fluidStorage, AbstractContainerScreen<?> screen) {
             this.fluidStorage = fluidStorage;
+            this.screen = screen;
         }
 
         public Builder bounds(int x, int y, int width, int height) {
@@ -206,38 +227,71 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
         }
 
         public FluidWidget build() {
-            return new FluidWidget(this.fluidStorage, this.x, this.y, this.width, this.height, this.posSupplier);
+            return new FluidWidget(this.fluidStorage, this.screen, this.x, this.y, this.width, this.height, this.posSupplier);
         }
     }
 
     protected void drawTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        FluidStack fluid = this.fluidStorage.getFluid();
-        long fluidAmount = this.fluidStorage.getFluidAmount();
-        long fluidCapacity = this.fluidStorage.getCapacity();
+        if (isHovered()) {
+            FluidStack fluid = this.fluidStorage.getFluid();
+            int fluidAmount = this.fluidStorage.getFluidAmount();
+            int fluidCapacity = this.fluidStorage.getCapacity();
 
-        Font font = Minecraft.getInstance().font;
-        if(!fluid.isEmpty() && fluidAmount > 0) {
-            List<Component> tooltipLines = new ArrayList<>();
+            Font font = Minecraft.getInstance().font;
 
-            tooltipLines.add(fluid.getHoverName());
-            DataComponentPatch patch = this.fluidStorage.getFluid().getComponentsPatch();
-            if (!patch.isEmpty()) {
-                try {
-                    Optional<?> qualityOpt = patch.get(AgresticDataComponents.QUALITY.get());
+            final List<Component> tooltip;
+            if (fluidCapacity > 0) {
+                tooltip = FluidTooltipHandler.getFluidTooltip(fluid);
+            } else {
+                BiConsumer<Integer, List<Component>> formatter = Screen.hasShiftDown()
+                        ? FluidTooltipHandler.BUCKET_FORMATTER
+                        : this.formatter;
 
-                    if (qualityOpt != null && qualityOpt.isPresent() && qualityOpt.get() instanceof Float quality) {
-                        tooltipLines.add(ClientTextHelper.getQualityTooltip(quality));
+                // add tooltips
+                tooltip = new ArrayList<>();
+                tooltip.add(Agrestic.makeTranslation("gui", "tank.capacity"));
+                if (fluidCapacity == 0) {
+                    tooltip.add(Component.translatable(Mantle.makeDescriptionId("gui", "fluid.millibucket"), 0).withStyle(ChatFormatting.GRAY));
+                } else {
+                    formatter.accept(fluidCapacity, tooltip);
+                    if (fluidCapacity != fluidAmount) {
+                        tooltip.add(Agrestic.makeTranslation("gui", "tank.available"));
+                        formatter.accept(fluidCapacity - fluidAmount, tooltip);
                     }
-                } catch (Exception ignored) {
-
+                    // add shift message
+                    if (formatter != FluidTooltipHandler.BUCKET_FORMATTER) {
+                        FluidTooltipHandler.appendShift(tooltip);
+                    }
                 }
             }
-            tooltipLines.add(Component.literal("%s/%s mB".formatted(fluidAmount, fluidCapacity)).withStyle(ChatFormatting.GRAY));
-            guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
-        } else {
-            List<Component> tooltipLines = new ArrayList<>();
-            tooltipLines.add(Component.literal("0/%s mB".formatted(fluidCapacity)).withStyle(ChatFormatting.GRAY));
-            guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
+
+            guiGraphics.renderComponentTooltip(font, tooltip, mouseX, mouseY);
         }
+
+
+
+        //if(!fluid.isEmpty() && fluidAmount > 0) {
+        //    List<Component> tooltipLines = new ArrayList<>();
+//
+        //    tooltipLines.add(fluid.getHoverName());
+        //    DataComponentPatch patch = this.fluidStorage.getFluid().getComponentsPatch();
+        //    if (!patch.isEmpty()) {
+        //        try {
+        //            Optional<?> qualityOpt = patch.get(AgresticDataComponents.QUALITY.get());
+//
+        //            if (qualityOpt != null && qualityOpt.isPresent() && qualityOpt.get() instanceof Float quality) {
+        //                tooltipLines.add(ClientTextHelper.getQualityTooltip(quality));
+        //            }
+        //        } catch (Exception ignored) {
+//
+        //        }
+        //    }
+        //    tooltipLines.add(Component.literal("%s/%s mB".formatted(fluidAmount, fluidCapacity)).withStyle(ChatFormatting.GRAY));
+        //    guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
+        //} else {
+        //    List<Component> tooltipLines = new ArrayList<>();
+        //    tooltipLines.add(Component.literal("0/%s mB".formatted(fluidCapacity)).withStyle(ChatFormatting.GRAY));
+        //    guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
+        //}
     }
 }

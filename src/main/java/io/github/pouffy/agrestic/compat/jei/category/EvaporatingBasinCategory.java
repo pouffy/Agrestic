@@ -27,6 +27,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import slimeknights.mantle.plugin.jei.fluid.FluidTooltipCallback;
 
 import java.util.Arrays;
 
@@ -47,6 +48,7 @@ public class EvaporatingBasinCategory extends AbstractRecipeCategory<RecipeHolde
         RegistryAccess registryAccess = level.registryAccess();
 
         builder.addInputSlot(20, 15)
+                .addRichTooltipCallback(FluidTooltipCallback.UNITS)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.TANK), -1, -1)
                 .setFluidRenderer(Math.min(recipe.getInput().amount() * 3, 6000), false, 16, 32)
                 .addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.getInput().getFluids()));

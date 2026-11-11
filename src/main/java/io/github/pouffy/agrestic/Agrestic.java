@@ -9,6 +9,7 @@ import io.github.pouffy.agrestic.compat.appleskin.AppleskinIntegration;
 import io.github.pouffy.agrestic.core.CompatManager;
 import io.github.pouffy.agrestic.init.*;
 import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -92,5 +93,9 @@ public class Agrestic {
 
     public static String makeDescriptionId(String base, String name) {
         return Util.makeDescriptionId(base, location(name));
+    }
+
+    public static Component makeTranslation(String base, String name) {
+        return Component.translatable(makeDescriptionId(base, name));
     }
 }

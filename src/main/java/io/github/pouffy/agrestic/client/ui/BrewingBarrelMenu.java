@@ -2,13 +2,17 @@ package io.github.pouffy.agrestic.client.ui;
 
 import io.github.pouffy.agrestic.client.AgresticSprites;
 import io.github.pouffy.agrestic.client.ui.slot.FluidTransferInputSlot;
+import io.github.pouffy.agrestic.client.ui.slot.FluidTransferResultSlot;
+import io.github.pouffy.agrestic.client.ui.slot.FluidTransferSlot;
 import io.github.pouffy.agrestic.client.ui.slot.ResultSlot;
 import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
 import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
+import io.github.pouffy.agrestic.core.fluid.TransferDirectionSupplier;
 import io.github.pouffy.agrestic.init.AgresticMenuTypes;
 import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,14 +23,19 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import slimeknights.mantle.fluid.transfer.IFluidContainerTransfer;
 
+import java.util.List;
 import java.util.Objects;
 
-public class BrewingBarrelMenu extends AbstractContainerMenu {
+public class BrewingBarrelMenu extends AbstractContainerMenu implements TransferDirectionSupplier {
     private final Container inventory;
     private final ContainerData data;
     @Getter
     public final BrewingBarrelBlockEntity blockEntity;
+
+    @Getter
+    private final Container container;
 
     public BrewingBarrelMenu(int syncId, Inventory playerInventory, final FriendlyByteBuf data) {
         this(syncId, playerInventory, getBlockEntity(playerInventory, data), new SimpleContainerData(2));
@@ -38,13 +47,25 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
         this.blockEntity = blockEntity;
         this.data = data;
 
-        this.addSlot(new FluidTransferInputSlot(blockEntity, 0, 3, 62, 7, blockEntity.getInputTank(), playerInventory.player));
-        this.addSlot(new FluidTransferInputSlot(blockEntity, 1, 4, 116, 7, blockEntity.getResultTank(), playerInventory.player));
-        this.addSlot(new FluidTransferInputSlot(blockEntity, 2, 5, 26, 15, blockEntity.getAuxiliaryTank(), playerInventory.player));
+        container = new SimpleContainer(6);
 
-        this.addSlot(new ResultSlot(inventory, 3, 62, 63));
-        this.addSlot(new ResultSlot(inventory, 4, 116, 63));
-        this.addSlot(new ResultSlot(inventory, 5, 26, 55));
+        if (!playerInventory.player.level().isClientSide) {
+            this.addSlot(new FluidTransferInputSlot(container, 0, 3, 62, 7, blockEntity.getInputTank(), this, playerInventory.player));
+            this.addSlot(new FluidTransferInputSlot(container, 1, 4, 116, 7, blockEntity.getResultTank(), this, playerInventory.player));
+            this.addSlot(new FluidTransferInputSlot(container, 2, 5, 26, 15, blockEntity.getAuxiliaryTank(), this, playerInventory.player));
+
+            this.addSlot(new FluidTransferResultSlot(container, 3, 0, 62, 63, blockEntity.getAuxiliaryTank(), this, playerInventory.player));
+            this.addSlot(new FluidTransferResultSlot(container, 4, 1, 116, 63, blockEntity.getAuxiliaryTank(), this, playerInventory.player));
+            this.addSlot(new FluidTransferResultSlot(container, 5, 2, 26, 55, blockEntity.getAuxiliaryTank(), this, playerInventory.player));
+        } else {
+            addSlot(new FluidTransferSlot(container, 0, 62, 7));
+            addSlot(new FluidTransferSlot(container, 1, 116, 7));
+            addSlot(new FluidTransferSlot(container, 2, 26, 15));
+
+            addSlot(new ResultSlot(container, 3, 62, 63));
+            addSlot(new ResultSlot(container, 4, 116, 63));
+            addSlot(new ResultSlot(container, 5, 26, 55));
+        }
 
         addPlayerInventory(playerInventory);
         addPlayerHotbar(playerInventory);
@@ -102,6 +123,19 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
         return inventory.stillValid(player);
     }
 
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        if (!player.level().isClientSide) {
+            this.clearContainer(player, container);
+        }
+    }
+
+    @Override
+    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
+        return !List.of(3, 4, 5).contains(pSlot.index) && super.canTakeItemForPickAll(pStack, pSlot);
+    }
+
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 9; l++) {
@@ -133,5 +167,10 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
         int maxProgress = this.data.get(1);
         int arrowProgressWidth = AgresticSprites.TINY_ARROW.width;
         return (maxProgress == 0 || progress == 0) ? 0 : progress * arrowProgressWidth / maxProgress;
+    }
+
+    @Override
+    public IFluidContainerTransfer.TransferDirection getTransferDirection() {
+        return IFluidContainerTransfer.TransferDirection.AUTO;
     }
 }

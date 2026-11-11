@@ -1,18 +1,21 @@
 package io.github.pouffy.agrestic.compat.jei;
 
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
 import io.github.pouffy.agrestic.compat.jei.category.BrewingBarrelCategory;
 import io.github.pouffy.agrestic.compat.jei.category.CrushingTubCategory;
 import io.github.pouffy.agrestic.compat.jei.category.EvaporatingBasinCategory;
+import io.github.pouffy.agrestic.compat.jei.util.GuiContainerTankHandler;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -25,6 +28,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.plugin.jei.MantleJEIConstants;
 
 @JeiPlugin
 public class AgresticJEIPlugin implements IModPlugin {
@@ -72,5 +76,12 @@ public class AgresticJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(AgresticBlocks.CRUSHING_TUB, AgresticJEIConstants.CRUSHING_TUB);
         registration.addRecipeCatalyst(AgresticBlocks.EVAPORATING_BASIN, AgresticJEIConstants.EVAPORATING_BASIN);
         registration.addRecipeCatalyst(AgresticBlocks.BREWING_BARREL, AgresticJEIConstants.BREWING_BARREL);
+
+        registration.addRecipeCatalyst(AgresticBlocks.FLUID_BARREL, MantleJEIConstants.FLUID_TRANSFER);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addGenericGuiContainerHandler(BrewingBarrelScreen.class, new GuiContainerTankHandler<>());
     }
 }

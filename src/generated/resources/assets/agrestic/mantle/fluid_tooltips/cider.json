@@ -1,0 +1,16 @@
+{
+  "fluid": {
+    "type": "mantle:tag",
+    "tag": "c:cider"
+  },
+  "units": [
+    {
+      "key": "gui.agrestic.fluid.bottle",
+      "needed": 250
+    },
+    {
+      "key": "gui.agrestic.fluid.drop",
+      "needed": 50
+    }
+  ]
+}

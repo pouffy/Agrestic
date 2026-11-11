@@ -1,10 +1,8 @@
 package io.github.pouffy.agrestic.common.block;
 
 import com.mojang.serialization.MapCodec;
-import io.github.pouffy.agrestic.common.block.entity.CrushingTubBlockEntity;
 import io.github.pouffy.agrestic.common.block.entity.EvaporatingBasinBlockEntity;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
-import io.github.pouffy.agrestic.core.fluid.FluidHelper;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;

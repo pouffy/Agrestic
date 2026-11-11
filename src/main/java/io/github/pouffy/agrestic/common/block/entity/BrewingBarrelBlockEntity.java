@@ -1,13 +1,8 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
-import com.mojang.datafixers.util.Pair;
-import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelMenu;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.common.recipe.BrewingRecipeInput;
-import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
-import io.github.pouffy.agrestic.core.TextUtils;
-import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.block.AgresticContainerBlockEntity;
 import io.github.pouffy.agrestic.core.fluid.*;
 import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
@@ -18,30 +13,18 @@ import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Container;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BrewingBarrelBlockEntity extends AgresticContainerBlockEntity {
 
@@ -243,11 +226,4 @@ public class BrewingBarrelBlockEntity extends AgresticContainerBlockEntity {
         return new BrewingBarrelMenu(syncId, inventory, this, this.data);
     }
 
-    public ItemStack tryFillContainer(ItemStack heldStack) {
-        if (ItemFilling.canItemBeFilled(level, heldStack) && !getResultTank().isEmpty()) {
-            int requiredAmount = ItemFilling.getRequiredAmountForItem(level, heldStack, getResultTank().getFluid());
-           return ItemFilling.fillItem(level, requiredAmount, heldStack, getResultTank().getFluid());
-        }
-        return ItemStack.EMPTY;
-    }
 }

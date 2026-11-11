@@ -2,14 +2,15 @@ package io.github.pouffy.agrestic.client.ui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.pouffy.agrestic.client.AgresticSprites;
+import io.github.pouffy.agrestic.core.IFluidTankScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.BrewingStandScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import org.jspecify.annotations.Nullable;
 
-public class BrewingBarrelScreen extends AbstractContainerScreen<BrewingBarrelMenu> {
+public class BrewingBarrelScreen extends AbstractContainerScreen<BrewingBarrelMenu> implements IFluidTankScreen {
     private static final int[] BUBBLE_PROGRESS = new int[]{0, 6, 13, 18, 22, 26, 32};
 
     private FluidWidget inputFluid;
@@ -37,15 +38,15 @@ public class BrewingBarrelScreen extends AbstractContainerScreen<BrewingBarrelMe
         super.init();
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        inputFluid = FluidWidget.builder(menu.getBlockEntity().getInputTank())
+        inputFluid = FluidWidget.builder(menu.getBlockEntity().getInputTank(), this)
                 .bounds(i + 62, j + 27, 16, 32)
                 .posSupplier(() -> menu.getBlockEntity().getBlockPos())
                 .build();
-        resultFluid = FluidWidget.builder(menu.getBlockEntity().getResultTank())
+        resultFluid = FluidWidget.builder(menu.getBlockEntity().getResultTank(), this)
                 .bounds(i + 116, j + 27, 16, 32)
                 .posSupplier(() -> menu.getBlockEntity().getBlockPos())
                 .build();
-        auxiliaryFluid = FluidWidget.builder(menu.getBlockEntity().getAuxiliaryTank())
+        auxiliaryFluid = FluidWidget.builder(menu.getBlockEntity().getAuxiliaryTank(), this)
                 .bounds(i + 26, j + 35, 16, 16)
                 .posSupplier(() -> menu.getBlockEntity().getBlockPos())
                 .build();
@@ -98,5 +99,21 @@ public class BrewingBarrelScreen extends AbstractContainerScreen<BrewingBarrelMe
                 AgresticSprites.BUBBLES.blit(guiGraphics, x + 136, y + 27 + 32 - n, 0, 32 - n, 16, n);
             }
         }
+    }
+
+    @Override
+    public @Nullable FluidLocation getFluidUnderMouse(int mouseX, int mouseY) {
+        int checkX = mouseX - leftPos;
+        int checkY = mouseY - topPos;
+
+        var input = inputFluid.getFluidUnderMouse(checkX, checkY);
+        if (input != null) {
+            return input;
+        }
+        var result = resultFluid.getFluidUnderMouse(checkX, checkY);
+        if (result != null) {
+            return result;
+        }
+        return auxiliaryFluid.getFluidUnderMouse(checkX, checkY);
     }
 }

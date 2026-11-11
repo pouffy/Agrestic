@@ -29,6 +29,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import slimeknights.mantle.plugin.jei.fluid.FluidTooltipCallback;
 
 import java.text.DecimalFormat;
 import java.util.Collections;
@@ -50,16 +51,19 @@ public class BrewingBarrelCategory extends AbstractRecipeCategory<RecipeHolder<B
         RegistryAccess registryAccess = level.registryAccess();
 
         builder.addInputSlot(39, 23)
+                .addRichTooltipCallback(FluidTooltipCallback.UNITS)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.TANK), -1, -1)
                 .setFluidRenderer(1, false, 16, 32)
                 .addIngredients(NeoForgeTypes.FLUID_STACK, Collections.singletonList(recipe.getInput()));
 
         builder.addOutputSlot(93, 23)
+                .addRichTooltipCallback(FluidTooltipCallback.UNITS)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.TANK), -1, -1)
                 .setFluidRenderer(1, false, 16, 32)
                 .addFluidStack(recipe.getOutput().getFluid(), 1);
 
         builder.addSlot(RecipeIngredientRole.CATALYST, 3, 31)
+                .addRichTooltipCallback(FluidTooltipCallback.UNITS)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.SLOT), -1, -1)
                 .setFluidRenderer(1, false, 16, 16)
                 .addRichTooltipCallback((view, tooltip) -> tooltip.add(Component.translatable("recipe.agrestic.brewing.optional").withStyle(ChatFormatting.GOLD)))

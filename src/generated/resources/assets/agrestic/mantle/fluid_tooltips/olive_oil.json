@@ -1,0 +1,20 @@
+{
+  "fluid": {
+    "type": "mantle:tag",
+    "tag": "c:olive_oil"
+  },
+  "units": [
+    {
+      "key": "gui.agrestic.fluid.bucket",
+      "needed": 1000
+    },
+    {
+      "key": "gui.agrestic.fluid.bottle",
+      "needed": 250
+    },
+    {
+      "key": "gui.agrestic.fluid.drop",
+      "needed": 50
+    }
+  ]
+}

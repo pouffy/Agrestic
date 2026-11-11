@@ -6,7 +6,6 @@ import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
 import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
 import io.github.pouffy.agrestic.common.item.BoozeItemColor;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
-import io.github.pouffy.agrestic.core.fluid.AgresticBucketWrapper;
 import io.github.pouffy.agrestic.init.*;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderer;

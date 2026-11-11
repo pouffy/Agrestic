@@ -3,13 +3,13 @@ package io.github.pouffy.agrestic.common.block.entity;
 import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
-import io.github.pouffy.agrestic.core.fluid.FluidHelper;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -22,6 +22,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import slimeknights.mantle.Mantle;
+import slimeknights.mantle.fluid.FluidTransferHelper;
+
+import static slimeknights.mantle.util.TranslationHelper.COMMA_FORMAT;
 
 public class FluidBarrelBlockEntity extends AgresticBlockEntity {
     @Getter
@@ -54,11 +58,11 @@ public class FluidBarrelBlockEntity extends AgresticBlockEntity {
         if (level == null) return InteractionResult.PASS;
         if (player.isShiftKeyDown() && this.getFluidStack().getAmount() > 0) {
             FluidStack drained = this.tank.drain(getCapacity(), IFluidHandler.FluidAction.EXECUTE);
-            SoundEvent soundevent = FluidHelper.getEmptySound(drained);
+            SoundEvent soundevent = FluidTransferHelper.getEmptySound(drained);
             if (soundevent != null) {
                 level.playSound(null, this.worldPosition, soundevent, SoundSource.BLOCKS, 1F, 1F);
             }
-            FluidHelper.displayDrained(player, drained);
+            player.displayClientMessage(Component.translatable(Mantle.makeDescriptionId("block", "tank.drained"), COMMA_FORMAT.format(drained.getAmount()), drained.getHoverName()), true);
             markUpdated();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
