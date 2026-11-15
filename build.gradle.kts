@@ -144,8 +144,8 @@ dependencies {
     compileOnly("squeek.appleskin:appleskin-neoforge:${property("appleskin")}")
     localRuntime("squeek.appleskin:appleskin-neoforge:${property("appleskin")}")
 
-    compileOnly("maven.modrinth:jade:15.10.5+neoforge")
-    localRuntime("maven.modrinth:jade:15.10.5+neoforge")
+    compileOnly("maven.modrinth:jade:15.10.6+neoforge")
+    localRuntime("maven.modrinth:jade:15.10.6+neoforge")
 
     compileOnly("maven.modrinth:ceramics:${property("ceramics_version")}")
     localRuntime("maven.modrinth:ceramics:${property("ceramics_version")}")
