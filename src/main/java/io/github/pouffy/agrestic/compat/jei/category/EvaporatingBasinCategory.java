@@ -53,7 +53,7 @@ public class EvaporatingBasinCategory extends AbstractRecipeCategory<RecipeHolde
                 .setFluidRenderer(Math.min(recipe.getInput().amount() * 3, 6000), false, 16, 32)
                 .addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.getInput().getFluids()));
 
-        builder.addInputSlot(70, 23)
+        builder.addOutputSlot(70, 23)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.SLOT), -1, -1)
                 .addItemStack(recipe.getResultItem(registryAccess));
     }

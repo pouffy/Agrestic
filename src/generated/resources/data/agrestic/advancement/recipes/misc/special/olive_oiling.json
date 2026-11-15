@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_olive_oil": {
+      "conditions": {
+        "items": [
+          {
+            "items": "agrestic:olive_oil_bottle"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "agrestic:special/olive_oiling"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_olive_oil"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "agrestic:special/olive_oiling"
+    ]
+  }
+}

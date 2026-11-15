@@ -1,12 +1,17 @@
 package io.github.pouffy.agrestic;
 
 import io.github.pouffy.agrestic.client.ClientTextHelper;
+import io.github.pouffy.agrestic.client.renderer.AgresticBoatRenderer;
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
+import io.github.pouffy.agrestic.common.entity.CustomBoat;
 import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
 import io.github.pouffy.agrestic.common.item.BoozeItemColor;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.init.*;
+import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -70,6 +75,22 @@ public class AgresticClient {
             if(renderer instanceof LivingEntityRenderer livingEntityRenderer)
                 livingEntityRenderer.addLayer(new FullmetalRenderLayer(livingEntityRenderer));
         });
+    }
+
+    @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        for (CustomBoat.Type type : CustomBoat.Type.values()) {
+            var layer = new ModelLayerLocation(Agrestic.location(type.getModelLocation()), "main");
+            var chestLayer = new ModelLayerLocation(Agrestic.location(type.getChestModelLocation()), "main");
+            event.registerLayerDefinition(layer, BoatModel::createBodyModel);
+            event.registerLayerDefinition(chestLayer, ChestBoatModel::createBodyModel);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(AgresticEntities.BOAT.get(), context -> new AgresticBoatRenderer(context, false));
+        event.registerEntityRenderer(AgresticEntities.CHEST_BOAT.get(), context -> new AgresticBoatRenderer(context, true));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

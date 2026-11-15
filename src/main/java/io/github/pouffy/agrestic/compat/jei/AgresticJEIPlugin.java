@@ -5,6 +5,7 @@ import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
+import io.github.pouffy.agrestic.common.recipe.OliveOilingRecipe;
 import io.github.pouffy.agrestic.compat.jei.category.BrewingBarrelCategory;
 import io.github.pouffy.agrestic.compat.jei.category.CrushingTubCategory;
 import io.github.pouffy.agrestic.compat.jei.category.EvaporatingBasinCategory;
@@ -15,10 +16,7 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.common.Internal;
 import mezz.jei.common.gui.textures.Textures;
@@ -83,5 +81,10 @@ public class AgresticJEIPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addGenericGuiContainerHandler(BrewingBarrelScreen.class, new GuiContainerTankHandler<>());
+    }
+
+    @Override
+    public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+        registration.getCraftingCategory().addExtension(OliveOilingRecipe.class, AgresticJEIConstants.oliveOiling());
     }
 }

@@ -6,6 +6,7 @@
   "plugin": "io.github.pouffy.agrestic.mixin.plugin.AgresticMixinPlugin",
   "mixins": [
     "BoatItemAccessor",
+    "DataComponentHolderMixin",
     "MobEffectInstanceAccessor",
     "ModelBuilderMixin",
     "RecipeManagerAccessor",

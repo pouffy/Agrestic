@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.common.event;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.common.item.AgresticBoatItem;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticFlammables;
 import io.github.pouffy.agrestic.init.AgresticFluids;
@@ -46,7 +47,7 @@ public class RegistryEvents {
                 Item item = definition.item();
 
                 if (item instanceof ProjectileItem) DispenserBlock.registerProjectileBehavior(item);
-                if (item instanceof BoatItem boat) DispenserBlock.registerBehavior(item, new BoatDispenseItemBehavior(((BoatItemAccessor) boat).type(), ((BoatItemAccessor) boat).hasChest()));
+                if (item instanceof AgresticBoatItem boat) boat.dispense();
             }
         });
     }

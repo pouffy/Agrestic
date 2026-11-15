@@ -6,9 +6,7 @@ import io.github.pouffy.agrestic.core.recipe.ShapelessNoReturnRecipe;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeSerializer;
 import io.github.pouffy.agrestic.core.recipe.SimpleRecipeType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -18,6 +16,7 @@ public class AgresticRecipeTypes {
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> registerRecipeType("crushing_tub"));
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> registerRecipeType("evaporating_basin"));
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> registerRecipeType("brewing_barrel"));
+    public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CraftingRecipe>> OLIVE_OILING = HELPER.register("olive_oiling", () -> registerRecipeType("olive_oiling"));
 
     public static void staticInit() {
         Serializers.staticInit();
@@ -36,6 +35,7 @@ public class AgresticRecipeTypes {
 
         // Crafting sub-types
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<ShapelessNoReturnRecipe>> SHAPELESS_NO_RETURN = HELPER.register("shapeless_no_return", () -> new SimpleRecipeSerializer<>(ShapelessNoReturnRecipe.CODEC));
+        public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<OliveOilingRecipe>> OLIVE_OILING = HELPER.register("olive_oiling", () -> new SimpleCraftingRecipeSerializer<>(OliveOilingRecipe::new));
 
         public static void staticInit() {}
     }

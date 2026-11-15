@@ -75,6 +75,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
         add("ui.agrestic.tooltip.fluid", "%s %smb / %smb");
         add("ui.agrestic.tooltip.item", "%s x%s");
+        add("ui.agrestic.tooltip.olive_oiled", "Olive Oiled");
 
         add("death.attack.bad_ambrosia", "%1$s tasted tainted divinity");
 
@@ -96,6 +97,9 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         config("maxQualityChange.tooltip", "the maximum amount of increase that booze culture will provide to the new brew, in percent");
 
         config("section.agrestic.common.toml", "Agrestic Common Configuration");
+
+        add("config.jade.plugin_agrestic.evaporating_basin", "Evaporating Basin");
+        add("config.jade.plugin_agrestic.brewing_barrel", "Brewing Barrel");
 
         quality("highest.0", "Heavenly");
         quality("highest.1", "Exceptional");

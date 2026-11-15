@@ -20,6 +20,8 @@ public class AgresticTags {
     public static final TagKey<Item> RENDER_UPRIGHT = createItemTag("render_upright");
     public static final SharedTag FERTILE_SOILS = createSharedTag("fertile_soils");
 
+    public static final TagKey<Item> OLIVE_OILING_WHITELIST = createItemTag("olive_oiling_whitelist");
+
     public static final TagKey<Block> HERBS_CAN_SURVIVE_ON = createBlockTag("herbs_can_survive_on");
     public static final TagKey<Block> EVAPORATION_BOOSTERS = createBlockTag("evaporation_boosters");
 

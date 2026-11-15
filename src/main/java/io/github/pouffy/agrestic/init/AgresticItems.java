@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.init;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.AgresticEnumParams;
+import io.github.pouffy.agrestic.common.entity.CustomBoat;
 import io.github.pouffy.agrestic.common.item.*;
 import io.github.pouffy.agrestic.core.TextUtils;
 import io.github.pouffy.agrestic.core.booze.ExtraBoozeRunnables;
@@ -35,16 +36,16 @@ public class AgresticItems {
     // =================================================
     public static final ItemDefinition<SignItem> OLIVE_SIGN = register("olive_sign", () -> new SignItem(new Item.Properties().stacksTo(16), AgresticBlocks.OLIVE.sign().get(), AgresticBlocks.OLIVE.wallSign().get()));
     public static final ItemDefinition<HangingSignItem> OLIVE_HANGING_SIGN = register("olive_hanging_sign", () -> new HangingSignItem(AgresticBlocks.OLIVE.hangingSign().get(), AgresticBlocks.OLIVE.hangingWallSign().get(), new Item.Properties().stacksTo(16)));
-    public static final ItemDefinition<Item> OLIVE_BOAT = register("olive_boat", (p) -> new BoatItem(false, AgresticEnumParams.OLIVE_BOAT_TYPE.getValue(), p.stacksTo(1)));
-    public static final ItemDefinition<Item> OLIVE_CHEST_BOAT = register("olive_chest_boat", (p) -> new BoatItem(true, AgresticEnumParams.OLIVE_BOAT_TYPE.getValue(), p.stacksTo(1)), "Olive Boat with Chest");
+    public static final ItemDefinition<BoatItem> OLIVE_BOAT = register("olive_boat", (p) -> new AgresticBoatItem(false, CustomBoat.Type.OLIVE, p.stacksTo(1)));
+    public static final ItemDefinition<BoatItem> OLIVE_CHEST_BOAT = register("olive_chest_boat", (p) -> new AgresticBoatItem(true, CustomBoat.Type.OLIVE, p.stacksTo(1)), "Olive Boat with Chest");
 
     // =================================================
     // ||                  IRONWOOD                   ||
     // =================================================
     public static final ItemDefinition<SignItem> IRONWOOD_SIGN = register("ironwood_sign", () -> new SignItem(new Item.Properties().stacksTo(16), AgresticBlocks.IRONWOOD.sign().get(), AgresticBlocks.IRONWOOD.wallSign().get()));
     public static final ItemDefinition<HangingSignItem> IRONWOOD_HANGING_SIGN = register("ironwood_hanging_sign", () -> new HangingSignItem(AgresticBlocks.IRONWOOD.hangingSign().get(), AgresticBlocks.IRONWOOD.hangingWallSign().get(), new Item.Properties().stacksTo(16)));
-    public static final ItemDefinition<Item> IRONWOOD_BOAT = register("ironwood_boat", (p) -> new BoatItem(false, AgresticEnumParams.IRONWOOD_BOAT_TYPE.getValue(), p.stacksTo(1)));
-    public static final ItemDefinition<Item> IRONWOOD_CHEST_BOAT = register("ironwood_chest_boat", (p) -> new BoatItem(true, AgresticEnumParams.IRONWOOD_BOAT_TYPE.getValue(), p.stacksTo(1)), "Ironwood Boat with Chest");
+    public static final ItemDefinition<BoatItem> IRONWOOD_BOAT = register("ironwood_boat", (p) -> new AgresticBoatItem(false, CustomBoat.Type.IRONWOOD, p.stacksTo(1)));
+    public static final ItemDefinition<BoatItem> IRONWOOD_CHEST_BOAT = register("ironwood_chest_boat", (p) -> new AgresticBoatItem(true, CustomBoat.Type.IRONWOOD, p.stacksTo(1)), "Ironwood Boat with Chest");
 
 
     public static final ItemDefinition<Item> IRON_DUST = register("iron_dust", Item::new);
@@ -85,6 +86,9 @@ public class AgresticItems {
     public static final ItemDefinition<DrinkableItem> OLIVE_OIL_BOTTLE = registerBottle("olive_oil", (p) -> new DrinkableItem(p.food(AgresticFoodValues.OLIVE_OIL_BOTTLE).stacksTo(16)));
     public static final ItemDefinition<DrinkableItem> VANTA_OIL_BOTTLE = registerBottle("vanta_oil", (p) -> new DrinkableItem(p.food(AgresticFoodValues.VANTA_OIL_BOTTLE).stacksTo(16)));
 
+    // =================================================
+    // ||                    BOOZE                    ||
+    // =================================================
     public static final ItemDefinition<BoozeBottleItem> ALE_BOTTLE = register("ale_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::ale).setInebriationChance(0.5f), "Bottle of Ale");
     public static final ItemDefinition<BoozeBottleItem> CIDER_BOTTLE = register("cider_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::cider).setInebriationChance(0.5f), "Bottle of Cider");
     public static final ItemDefinition<BoozeBottleItem> IRON_WINE_BOTTLE = register("iron_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE).food(ALWAYS_EAT), AgresticFoodValues::ironWine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::ironWine), "Bottle of Iron Wine");

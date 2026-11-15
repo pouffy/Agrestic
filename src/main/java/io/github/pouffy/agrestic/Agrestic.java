@@ -53,6 +53,7 @@ public class Agrestic {
         AgresticBlocks.staticInit(modEventBus);
         AgresticItems.staticInit(modEventBus);
         AgresticBlockEntities.staticInit();
+        AgresticEntities.staticInit();
         AgresticRecipeTypes.staticInit();
         AgresticIngredientTypes.staticInit();
         AgresticDataComponents.staticInit();

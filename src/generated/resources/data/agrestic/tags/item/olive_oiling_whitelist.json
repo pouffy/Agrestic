@@ -1,0 +1,17 @@
+{
+  "remove": [
+    "minecraft:chorus_fruit",
+    "minecraft:enchanted_golden_apple"
+  ],
+  "values": [
+    "#c:foods/berry",
+    "#c:foods/vegetable",
+    "#c:foods/bread",
+    "#c:foods/soup",
+    "#c:foods/fruit",
+    "#c:foods/raw_fish",
+    "#c:foods/cooked_fish",
+    "#c:foods/raw_meat",
+    "#c:foods/cooked_meat"
+  ]
+}

@@ -1,12 +1,17 @@
 package io.github.pouffy.agrestic.datagen.server.recipe;
 
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.common.recipe.OliveOilingRecipe;
 import io.github.pouffy.agrestic.datagen.server.recipe.builder.AgresticRecipeProvider;
 import io.github.pouffy.agrestic.datagen.server.recipe.builder.ShapelessNoReturnRecipeBuilder;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticFluids;
 import io.github.pouffy.agrestic.init.AgresticItems;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -14,6 +19,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -31,6 +37,14 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
     }
 
     protected void buildRecipes(RecipeOutput output) {
+        output.accept(Agrestic.location("special/olive_oiling"), new OliveOilingRecipe(CraftingBookCategory.MISC),
+                        output.advancement()
+                                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(Agrestic.location("special/olive_oiling")))
+                                .rewards(AdvancementRewards.Builder.recipe(Agrestic.location("special/olive_oiling")))
+                                .requirements(AdvancementRequirements.Strategy.OR)
+                                .addCriterion("has_olive_oil", has(AgresticItems.OLIVE_OIL_BOTTLE))
+                                .build(Agrestic.location("recipes/misc/special/olive_oiling")));
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.CRUSHING_TUB)
                 .pattern("P P")
                 .pattern("I I")
