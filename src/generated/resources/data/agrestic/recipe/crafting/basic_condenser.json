@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:bricks/normal"
+    },
+    "C": {
+      "item": "minecraft:white_terracotta"
+    },
+    "E": {
+      "tag": "c:buckets/empty"
+    }
+  },
+  "pattern": [
+    " B ",
+    "BEB",
+    "BCB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "agrestic:basic_condenser"
+  }
+}

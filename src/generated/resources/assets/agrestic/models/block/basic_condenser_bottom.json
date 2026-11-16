@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "agrestic:block/condenser/bottom",
+    "front": "agrestic:block/condenser/front",
+    "side": "agrestic:block/condenser/side",
+    "top": "agrestic:block/condenser/top"
+  }
+}

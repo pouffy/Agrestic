@@ -13,16 +13,19 @@ import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
@@ -41,6 +44,8 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import slimeknights.mantle.fluid.MantleFluids;
+import slimeknights.mantle.fluid.UnplaceableFluid;
 import slimeknights.mantle.fluid.texture.ClientTextureFluidType;
 import slimeknights.mantle.registration.object.FluidObject;
 
@@ -56,7 +61,10 @@ public class AgresticClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
-
+        RenderType translucent = RenderType.translucent();
+        AgresticFluids.REGISTERED_FLUIDS.forEach((fluid) -> {
+            ItemBlockRenderTypes.setRenderLayer(fluid.get(), translucent);
+        });
     }
 
     @SubscribeEvent
@@ -112,6 +120,21 @@ public class AgresticClient {
         }
         if (stack.has(AgresticDataComponents.QUALITY)) {
             tooltip.add(ClientTextHelper.getQualityTooltip(stack.getOrDefault(AgresticDataComponents.QUALITY, BrewingBarrelRecipe.DEFAULT_QUALITY)));
+        }
+        if (stack.is(Items.HONEY_BOTTLE)) {
+            var effect = new MobEffectInstance(MobEffects.REGENERATION, 75, 0, false, false, true);
+            MutableComponent text = Component.translatable(effect.getDescriptionId());
+
+            if (effect.getAmplifier() > 0) {
+                text = Component.translatable("potion.withAmplifier", text, Component.translatable("potion.potency." + effect.getAmplifier()));
+            }
+
+            if (!effect.endsWithin(20)) {
+                text = Component.translatable("potion.withDuration", text, MobEffectUtil.formatDuration(effect, 1.0F, context.tickRate()));
+            }
+
+            text.withStyle(effect.getEffect().value().getCategory().getTooltipFormatting());
+            tooltip.add(text);
         }
     }
 

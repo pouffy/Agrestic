@@ -95,6 +95,7 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.blockItem(AgresticBlocks.MOONCAP::asItem, "herbs/mooncap_6");
         this.herb(AgresticBlocks.VANTA_LILY::asItem);
         this.herb(AgresticBlocks.WIND_THISTLE::asItem);
+        this.customModel(AgresticBlocks.BASIC_RETORT::asItem, Agrestic.location("block/retort"));
     }
 
     public ItemModelBuilder customModel(Supplier<? extends Item> item, ResourceLocation parent) {

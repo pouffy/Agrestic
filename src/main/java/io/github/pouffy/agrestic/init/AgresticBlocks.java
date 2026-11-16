@@ -40,6 +40,9 @@ public class AgresticBlocks {
     public static final BlockDefinition<FluidBarrelBlock> FLUID_BARREL = register("fluid_barrel", () -> new FluidBarrelBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), new BlockProperties(new SelfBlockLootType(), ""));
     public static final BlockDefinition<BrewingBarrelBlock> BREWING_BARREL = register("brewing_barrel", () -> new BrewingBarrelBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion()), new BlockProperties(new SelfBlockLootType(), ""));
 
+    public static final BlockDefinition<CondenserBlock> BASIC_CONDENSER = register("basic_condenser", () -> new CondenserBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
+    public static final BlockDefinition<RetortBlock> BASIC_RETORT = register("basic_retort", () -> new RetortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
+
     public static final BlockDefinition<SaplingBlock> OLIVE_SAPLING = register("olive_sapling", () -> new SaplingBlock(AgresticTreeGrowers.OLIVE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final BlockDefinition<SaplingBlock> IRONWOOD_SAPLING = register("ironwood_sapling", () -> new SaplingBlock(AgresticTreeGrowers.IRONWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 

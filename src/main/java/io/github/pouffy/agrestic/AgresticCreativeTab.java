@@ -139,8 +139,8 @@ public class AgresticCreativeTab {
         consumer.accept(AgresticItems.MARSH_MALLOW.stack());
         consumer.accept(AgresticBlocks.MOONCAP.stack());
         consumer.accept(AgresticBlocks.DEATHSTALK.stack());
-        ///consumer.accept(AgresticBlocks.BASIC_CONDENSER.stack());
-        ///consumer.accept(AgresticBlocks.BASIC_RETORT.stack());
+        consumer.accept(AgresticBlocks.BASIC_CONDENSER.stack());
+        consumer.accept(AgresticBlocks.BASIC_RETORT.stack());
         ///consumer.accept(AgresticBlocks.ADVANCED_CONDENSER.stack());
         ///consumer.accept(AgresticBlocks.ADVANCED_RETORT.stack());
     }

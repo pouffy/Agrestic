@@ -4,10 +4,7 @@ import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.client.renderer.CrushingTubRenderer;
 import io.github.pouffy.agrestic.client.renderer.EvaporatingBasinRenderer;
 import io.github.pouffy.agrestic.client.renderer.FluidBarrelRenderer;
-import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
-import io.github.pouffy.agrestic.common.block.entity.CrushingTubBlockEntity;
-import io.github.pouffy.agrestic.common.block.entity.EvaporatingBasinBlockEntity;
-import io.github.pouffy.agrestic.common.block.entity.FluidBarrelBlockEntity;
+import io.github.pouffy.agrestic.common.block.entity.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.api.distmarker.Dist;
@@ -28,6 +25,8 @@ public class AgresticBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidBarrelBlockEntity>> FLUID_BARREL = HELPER.register("fluid_barrel", () -> BlockEntityType.Builder.of(FluidBarrelBlockEntity::new, AgresticBlocks.FLUID_BARREL.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrewingBarrelBlockEntity>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> BlockEntityType.Builder.of(BrewingBarrelBlockEntity::new, AgresticBlocks.BREWING_BARREL.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CondenserBlockEntity>> BASIC_CONDENSER = HELPER.register("basic_condenser", () -> BlockEntityType.Builder.of(CondenserBlockEntity::new, AgresticBlocks.BASIC_CONDENSER.get()).build(null));
+
     public static void addBlockEntities(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.SIGN, AgresticBlocks.OLIVE.sign().get(), AgresticBlocks.OLIVE.wallSign().get(), AgresticBlocks.IRONWOOD.sign().get(), AgresticBlocks.IRONWOOD.wallSign().get());
         event.modify(BlockEntityType.HANGING_SIGN, AgresticBlocks.OLIVE.hangingSign().get(), AgresticBlocks.OLIVE.hangingWallSign().get(), AgresticBlocks.IRONWOOD.hangingSign().get(), AgresticBlocks.IRONWOOD.hangingWallSign().get());
@@ -41,6 +40,7 @@ public class AgresticBlockEntities {
         EvaporatingBasinBlockEntity.registerCapabilities(event);
         FluidBarrelBlockEntity.registerCapabilities(event);
         BrewingBarrelBlockEntity.registerCapabilities(event);
+        CondenserBlockEntity.registerCapabilities(event);
     }
 
     @EventBusSubscriber(Dist.CLIENT)

@@ -1,10 +1,7 @@
 package io.github.pouffy.agrestic.datagen.client;
 
 import io.github.pouffy.agrestic.Agrestic;
-import io.github.pouffy.agrestic.common.block.AppleCropBlock;
-import io.github.pouffy.agrestic.common.block.AppleLeavesBlock;
-import io.github.pouffy.agrestic.common.block.ChilliPepperBlock;
-import io.github.pouffy.agrestic.common.block.HerbBlock;
+import io.github.pouffy.agrestic.common.block.*;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
@@ -14,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.Half;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -75,6 +73,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         chilliPeppers();
         appleCrop(AgresticBlocks.APPLE_SEEDS);
         appleLeaves(AgresticBlocks.APPLE_LEAVES);
+        basicCondenser(AgresticBlocks.BASIC_CONDENSER);
+        horizontalFacing(AgresticBlocks.BASIC_RETORT, "retort");
     }
 
     private void leaves(Supplier<? extends LeavesBlock> leaves, ResourceLocation texture) {
@@ -327,6 +327,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelFile(ageModel.apply(3, false)).modelFile(ageModel.apply(3, false)).rotationY(90).nextModel().modelFile(ageModel.apply(3, false)).rotationY(180).nextModel().modelFile(ageModel.apply(3, false)).rotationY(270).nextModel()
                 .modelFile(ageModel.apply(3, true)).nextModel().modelFile(ageModel.apply(3, true)).rotationY(90).nextModel().modelFile(ageModel.apply(3, true)).rotationY(180).nextModel().modelFile(ageModel.apply(3, true)).rotationY(270)
                 .addModel().condition(AppleLeavesBlock.AGE, 3).end();
+    }
+
+    private void basicCondenser(Supplier<? extends CondenserBlock> block) {
+        String name = this.name(block.get());
+        getVariantBuilder(block.get()).forAllStatesExcept((state) -> {
+            Half half = state.getValue(CondenserBlock.HALF);
+            int yRot = Mth.floor((state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360);
+            if (half == Half.TOP) {
+                return ConfiguredModel.builder().modelFile(this.models().withExistingParent(name + "_top", Agrestic.location("block/template/condenser_top"))
+                        .texture("side", Agrestic.location("block/condenser/upper_side"))
+                        .texture("top", Agrestic.location("block/condenser/top"))).rotationY(yRot).build();
+            }
+
+            return ConfiguredModel.builder().modelFile(this.models().orientableWithBottom(name + "_bottom",
+                    Agrestic.location("block/condenser/side"),
+                    Agrestic.location("block/condenser/front"),
+                    Agrestic.location("block/condenser/bottom"),
+                    Agrestic.location("block/condenser/top")
+            )).rotationY(yRot).build();
+        });
+        this.simpleBlockItem(block);
     }
 
     private ResourceLocation extend(ResourceLocation rl, String suffix) {return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);}

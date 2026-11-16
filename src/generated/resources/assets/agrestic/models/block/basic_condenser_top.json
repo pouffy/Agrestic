@@ -1,0 +1,7 @@
+{
+  "parent": "agrestic:block/template/condenser_top",
+  "textures": {
+    "side": "agrestic:block/condenser/upper_side",
+    "top": "agrestic:block/condenser/top"
+  }
+}
