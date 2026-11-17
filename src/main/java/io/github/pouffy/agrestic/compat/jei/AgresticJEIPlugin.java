@@ -2,6 +2,7 @@ package io.github.pouffy.agrestic.compat.jei;
 
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
+import io.github.pouffy.agrestic.client.ui.CondenserScreen;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
@@ -13,6 +14,8 @@ import io.github.pouffy.agrestic.compat.jei.util.GuiContainerTankHandler;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.category.IRecipeCategory;
@@ -76,11 +79,13 @@ public class AgresticJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(AgresticBlocks.BREWING_BARREL, AgresticJEIConstants.BREWING_BARREL);
 
         registration.addRecipeCatalyst(AgresticBlocks.FLUID_BARREL, MantleJEIConstants.FLUID_TRANSFER);
+        registration.addRecipeCatalyst(AgresticBlocks.BASIC_CONDENSER, RecipeTypes.FUELING);
     }
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addGenericGuiContainerHandler(BrewingBarrelScreen.class, new GuiContainerTankHandler<>());
+        registration.addGenericGuiContainerHandler(CondenserScreen.class, new GuiContainerTankHandler<>());
     }
 
     @Override

@@ -25,6 +25,7 @@ public class AgresticRecipeCollector {
         generator.addProvider(server, new AgresticCrushingProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticEvaporatingProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticBrewingProvider(packOutput, lookupProvider));
+        generator.addProvider(server, new AgresticCondensingProvider(packOutput, lookupProvider));
         generator.addProvider(server, new FluidTransferProvider(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticEvaporationBoosters(packOutput, lookupProvider));
         generator.addProvider(server, new AgresticCraftingProvider(packOutput, lookupProvider));

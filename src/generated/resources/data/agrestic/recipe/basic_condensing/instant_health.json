@@ -1,0 +1,35 @@
+{
+  "type": "agrestic:condensing",
+  "base": {
+    "amount": 250,
+    "tag": "c:water"
+  },
+  "ingredients": [
+    {
+      "item": "agrestic:chamomile"
+    },
+    {
+      "item": "minecraft:beef"
+    }
+  ],
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "custom_effects": [
+          {
+            "id": "minecraft:instant_health",
+            "neoforge:cures": [
+              "milk",
+              "protected_by_totem"
+            ],
+            "show_icon": true
+          }
+        ],
+        "potion": "minecraft:water"
+      }
+    },
+    "count": 1,
+    "id": "agrestic:elixir"
+  },
+  "time": 400
+}

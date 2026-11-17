@@ -12,6 +12,8 @@
   "agrestic.configuration.section.agrestic.common.toml": "Agrestic Common Configuration",
   "agrestic.configuration.section.agrestic.server.toml": "Agrestic Server Configuration",
   "agrestic.configuration.title": "Agrestic",
+  "agrestic.elixir.prefix": "Elixir of ",
+  "agrestic.elixir.separator": ", ",
   "block.agrestic.aloe_vera": "Aloe Vera",
   "block.agrestic.apple_leaves": "Apple Leaves",
   "block.agrestic.apple_sapling": "Apple Sapling",

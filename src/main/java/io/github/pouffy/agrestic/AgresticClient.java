@@ -4,29 +4,40 @@ import io.github.pouffy.agrestic.client.ClientTextHelper;
 import io.github.pouffy.agrestic.client.renderer.AgresticBoatRenderer;
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
+import io.github.pouffy.agrestic.client.ui.CondenserScreen;
 import io.github.pouffy.agrestic.common.entity.CustomBoat;
 import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
 import io.github.pouffy.agrestic.common.item.BoozeItemColor;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.init.*;
+import mezz.jei.library.color.ColorHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChestBoatModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -141,6 +152,7 @@ public class AgresticClient {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(AgresticMenuTypes.BREWING_BARREL.get(), BrewingBarrelScreen::new);
+        event.register(AgresticMenuTypes.BASIC_CONDENSER.get(), CondenserScreen::new);
     }
 
 
@@ -148,6 +160,11 @@ public class AgresticClient {
     public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((stack, tintIndex) -> {BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();return event.getBlockColors().getColor(blockstate, null, null, tintIndex);},
                 AgresticBlocks.APPLE_LEAVES.get()
+        );
+
+        event.register(
+                (stack, index) -> index == 1 ? stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor() : -1,
+                AgresticItems.ELIXIR
         );
 
         for (Item item : BuiltInRegistries.ITEM) {
@@ -169,5 +186,16 @@ public class AgresticClient {
             FluidType type = fluid.getType();
             event.registerFluidType(new ClientTextureFluidType(type), type);
         }
+    }
+
+    public static void spawnAlchemySmokeFX(int brewTime, double x, double y, double z, double xVel, double yVel, double zVel) {
+        Particle smoke = Minecraft.getInstance().particleEngine.createParticle(ParticleTypes.SMOKE, x, y, z, xVel, yVel, zVel);
+        float colorScale = 0.4F;
+        float r = colorScale * ((Mth.sin(30 + brewTime / 16F) * 0.5F) + 0.5F);
+        float g = colorScale * ((Mth.sin(brewTime / 16F) * 0.5F) + 0.5F);
+        float b = colorScale * ((Mth.sin(60 + brewTime / 16F) * 0.5F) + 0.5F);
+        smoke.setColor(r, g, b);
+        smoke.setLifetime(10);
+        Minecraft.getInstance().particleEngine.add(smoke);
     }
 }

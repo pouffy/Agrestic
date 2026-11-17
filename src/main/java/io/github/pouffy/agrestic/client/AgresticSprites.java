@@ -9,6 +9,7 @@ public enum AgresticSprites {
     TANK("tank", 18, 34),
     SLOT("slot", 18, 18),
     CHANCE_SLOT("chance_slot", 18, 18),
+    BIG_SLOT("big_slot", 26, 26),
 
     // Animated
     ARROW_BASE("animated/arrow_base", 24, 17),
@@ -17,11 +18,16 @@ public enum AgresticSprites {
     TINY_ARROW("animated/tiny_arrow", 12, 11),
     BUBBLES_BASE("animated/bubbles_base", 16, 32),
     BUBBLES("animated/bubbles", 16, 32),
+    ALCHEMY_ARROW_BASE("animated/alchemy_arrow_base", 50, 27),
+    ALCHEMY_ARROW("animated/alchemy_arrow", 50, 28),
+    LIT_BASE("animated/lit_base", 14, 14),
+    LIT("animated/lit", 14, 14),
 
     // Inventories
     PLAYER_INVENTORY("container/player_inventory", 256, 256, 176, 84),
     BLANK_CONTAINER("container/blank", 256, 256, 176, 83),
-    BREWING_BARREL("container/brewing_barrel", 176, 166)
+    BREWING_BARREL("container/brewing_barrel", 176, 166),
+    CONDENSER("container/condenser", 176, 166)
     ;
 
     public final ResourceLocation location;

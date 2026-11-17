@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic;
 import com.pouffydev.krystal_core.foundation.registry.CreativeTabRegistryHelper;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
 import com.pouffydev.krystal_core.foundation.utility.CreativeTabManager;
+import io.github.pouffy.agrestic.common.item.ElixirItem;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticFluids;
@@ -143,6 +144,7 @@ public class AgresticCreativeTab {
         consumer.accept(AgresticBlocks.BASIC_RETORT.stack());
         ///consumer.accept(AgresticBlocks.ADVANCED_CONDENSER.stack());
         ///consumer.accept(AgresticBlocks.ADVANCED_RETORT.stack());
+        ElixirItem.getElixirs().forEach(consumer);
     }
 
     private static void generateBooze(CreativeModeTab.Output output, CreativeModeTab.TabVisibility tabVisibility) {

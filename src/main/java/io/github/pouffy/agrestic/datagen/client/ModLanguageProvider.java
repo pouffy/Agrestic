@@ -53,6 +53,9 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
             }
         }
 
+        add("agrestic.elixir.prefix", "Elixir of ");
+        add("agrestic.elixir.separator", ", ");
+
         AgresticEffects.HELPER.getEntries().forEach((effect) -> this.add(effect.get().getDescriptionId(), transform(effect.getId())));
 
         add("emi.category.agrestic.tub_crushing", "Tub Crushing");

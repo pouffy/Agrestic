@@ -16,6 +16,9 @@ public class AgresticRecipeTypes {
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> registerRecipeType("crushing_tub"));
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> registerRecipeType("evaporating_basin"));
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> registerRecipeType("brewing_barrel"));
+
+    public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<BasicCondensingRecipe>> CONDENSING = HELPER.register("condensing", () -> registerRecipeType("condensing"));
+
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CraftingRecipe>> OLIVE_OILING = HELPER.register("olive_oiling", () -> registerRecipeType("olive_oiling"));
 
     public static void staticInit() {
@@ -32,6 +35,8 @@ public class AgresticRecipeTypes {
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<CrushingTubRecipe>> CRUSHING_TUB = HELPER.register("crushing_tub", () -> new SimpleRecipeSerializer<>(CrushingTubRecipe.CODEC));
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<EvaporatingBasinRecipe>> EVAPORATING_BASIN = HELPER.register("evaporating_basin", () -> new SimpleRecipeSerializer<>(EvaporatingBasinRecipe.CODEC));
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> new SimpleRecipeSerializer<>(BrewingBarrelRecipe.CODEC));
+
+        public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<BasicCondensingRecipe>> CONDENSING = HELPER.register("condensing", () -> new SimpleRecipeSerializer<>(BasicCondensingRecipe.CODEC));
 
         // Crafting sub-types
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<ShapelessNoReturnRecipe>> SHAPELESS_NO_RETURN = HELPER.register("shapeless_no_return", () -> new SimpleRecipeSerializer<>(ShapelessNoReturnRecipe.CODEC));

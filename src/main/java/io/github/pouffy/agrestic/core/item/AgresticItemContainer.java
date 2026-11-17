@@ -4,6 +4,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class AgresticItemContainer extends ItemStackHandler {
@@ -158,5 +159,9 @@ public class AgresticItemContainer extends ItemStackHandler {
             }
         }
         return true;
+    }
+
+    public List<ItemStack> getStacks() {
+        return this.stacks;
     }
 }

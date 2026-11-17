@@ -123,6 +123,9 @@ public class AgresticItems {
         }
     }, "Bottle of Ambrosia");
 
+    public static final ItemDefinition<ElixirItem> ELIXIR = register("elixir", (p) -> new ElixirItem(p.stacksTo(16)), null);
+
+
     public static void staticInit(IEventBus bus) {
         ITEMS.register(bus);
     }
