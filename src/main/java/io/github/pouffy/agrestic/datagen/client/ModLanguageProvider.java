@@ -69,6 +69,8 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("block.agrestic.tank.drained", "Drained %s mb %s");
         add("block.agrestic.tank.filled", "Filled %s mb %s");
 
+        add("container.agrestic.basic_condenser", "Basic Condenser");
+
         add("gui.agrestic.fluid.bucket", "%s buckets");
         add("gui.agrestic.fluid.bottle", "%s bottles");
         add("gui.agrestic.fluid.drop", "%s drops");
@@ -79,6 +81,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("ui.agrestic.tooltip.fluid", "%s %smb / %smb");
         add("ui.agrestic.tooltip.item", "%s x%s");
         add("ui.agrestic.tooltip.olive_oiled", "Olive Oiled");
+        add("ui.agrestic.missing_retorts", "Missing Retorts");
 
         add("death.attack.bad_ambrosia", "%1$s tasted tainted divinity");
 

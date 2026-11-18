@@ -8,7 +8,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-public record CondensingRecipeInput(FluidStack base, List<ItemStack> ingredients) implements RecipeInput {
+public record CondensingRecipeInput(FluidStack base, List<ItemStack> ingredients, ItemStack container) implements RecipeInput {
 
     public FluidStack getFluid() {
         return base;

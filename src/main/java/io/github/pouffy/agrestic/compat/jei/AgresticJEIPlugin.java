@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.compat.jei;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
 import io.github.pouffy.agrestic.client.ui.CondenserScreen;
+import io.github.pouffy.agrestic.common.item.ElixirItem;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
@@ -91,5 +92,10 @@ public class AgresticJEIPlugin implements IModPlugin {
     @Override
     public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
         registration.getCraftingCategory().addExtension(OliveOilingRecipe.class, AgresticJEIConstants.oliveOiling());
+    }
+
+    @Override
+    public void registerExtraIngredients(IExtraIngredientRegistration registration) {
+        registration.addExtraItemStacks(ElixirItem.getElixirs());
     }
 }

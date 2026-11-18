@@ -11,25 +11,26 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
     protected NonNullList<DisplayedItemStack> stacks;
 
-    private final Consumer<ItemStack> updateCallback;
+    private final BiConsumer<Integer, ItemStack> updateCallback;
     private boolean forbidInsertion = false;
     private boolean forbidExtraction = false;
 
     public DisplayedItemContainer() {
-        this(1, (stack) -> {});
+        this(1, (slot, stack) -> {});
     }
 
-    public DisplayedItemContainer(int size, Consumer<ItemStack> updateCallback) {
+    public DisplayedItemContainer(int size, BiConsumer<Integer, ItemStack> updateCallback) {
         this.stacks = NonNullList.withSize(size, DisplayedItemStack.EMPTY);
         this.updateCallback = updateCallback;
     }
 
-    public DisplayedItemContainer(NonNullList<DisplayedItemStack> stacks, Consumer<ItemStack> updateCallback) {
+    public DisplayedItemContainer(NonNullList<DisplayedItemStack> stacks, BiConsumer<Integer, ItemStack> updateCallback) {
         this.stacks = stacks;
         this.updateCallback = updateCallback;
     }
@@ -201,6 +202,6 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
     }
 
     protected void onContentsChanged(int slot) {
-        updateCallback.accept(getStackInSlot(slot));
+        updateCallback.accept(slot, getStackInSlot(slot));
     }
 }

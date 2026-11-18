@@ -5,23 +5,24 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class AgresticItemContainer extends ItemStackHandler {
-    private final Consumer<ItemStack> updateCallback;
+    private final BiConsumer<Integer, ItemStack> updateCallback;
     private boolean forbidInsertion = false;
     private boolean forbidExtraction = false;
 
     public AgresticItemContainer() {
-        this(1, (stack) -> {});
+        this(1, (slot, stack) -> {});
     }
 
-    public AgresticItemContainer(int size, Consumer<ItemStack> updateCallback) {
+    public AgresticItemContainer(int size, BiConsumer<Integer, ItemStack> updateCallback) {
         super(size);
         this.updateCallback = updateCallback;
     }
 
-    public AgresticItemContainer(NonNullList<ItemStack> stacks, Consumer<ItemStack> updateCallback) {
+    public AgresticItemContainer(NonNullList<ItemStack> stacks, BiConsumer<Integer, ItemStack> updateCallback) {
         super(stacks);
         this.updateCallback = updateCallback;
     }
@@ -143,7 +144,7 @@ public class AgresticItemContainer extends ItemStackHandler {
     }
 
     protected void onContentsChanged(int slot) {
-        updateCallback.accept(getStackInSlot(slot));
+        updateCallback.accept(slot, getStackInSlot(slot));
     }
 
     public void clear() {

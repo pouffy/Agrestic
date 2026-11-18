@@ -1,0 +1,39 @@
+{
+  "type": "agrestic:condensing",
+  "base": {
+    "amount": 250,
+    "tag": "c:water"
+  },
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "ingredients": [
+    {
+      "item": "agrestic:cohosh"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "custom_effects": [
+          {
+            "duration": 900,
+            "id": "minecraft:regeneration",
+            "neoforge:cures": [
+              "milk",
+              "protected_by_totem"
+            ],
+            "show_icon": true
+          }
+        ],
+        "potion": "minecraft:water"
+      }
+    },
+    "count": 1,
+    "id": "agrestic:elixir"
+  },
+  "time": 400
+}

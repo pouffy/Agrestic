@@ -16,15 +16,19 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class CondensingRecipeBuilder implements RecipeBuilder {
     private final NonNullList<Ingredient> ingredients;
     private final SizedFluidIngredient base;
+    private Optional<Ingredient> container;
     private final ItemStack output;
     private int time = 400;
 
     public CondensingRecipeBuilder(SizedFluidIngredient base, ItemStack output) {
         this.ingredients = NonNullList.create();
         this.base = base;
+        this.container = Optional.empty();
         this.output = output;
     }
 
@@ -36,6 +40,11 @@ public class CondensingRecipeBuilder implements RecipeBuilder {
     public CondensingRecipeBuilder require(Ingredient ingredient) {
         if ((this.ingredients.size() + 1) > 2) throw new IllegalArgumentException("Too many ingredients for condensing recipe");
         this.ingredients.add(ingredient);
+        return this;
+    }
+
+    public CondensingRecipeBuilder container(Ingredient ingredient) {
+        this.container = Optional.of(ingredient);
         return this;
     }
 
@@ -60,7 +69,7 @@ public class CondensingRecipeBuilder implements RecipeBuilder {
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(pId))
                 .rewards(AdvancementRewards.Builder.recipe(pId))
                 .requirements(AdvancementRequirements.Strategy.OR);
-        BasicCondensingRecipe recipe = new BasicCondensingRecipe(base, ingredients, output, time);
+        BasicCondensingRecipe recipe = new BasicCondensingRecipe(base, ingredients, container, output, time);
         recipeOutput.accept(pId, recipe, advancement$builder.build(pId.withPrefix("recipes/")));
     }
 }

@@ -30,10 +30,12 @@ public class AgresticCondensingProvider extends AgresticRecipeProvider {
 
     protected void buildRecipes(RecipeOutput output) {
         condense(ElixirItem.withEffect(MobEffects.HEAL, 0, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.CHAMOMILE), Ingredient.of(Items.BEEF), 400, output, "instant_health");
+
+        condense(ElixirItem.withEffect(MobEffects.REGENERATION, 900, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.COHOSH), Ingredient.of(Items.HONEYCOMB), 400, output, "regeneration");
     }
 
     public void condense(ItemStack result, SizedFluidIngredient base, Ingredient first, @Nullable Ingredient second, int time, RecipeOutput recipeOutput, String path) {
-        var builder = new CondensingRecipeBuilder(base, result).time(time).require(first);
+        var builder = new CondensingRecipeBuilder(base, result).time(time).require(first).container(Ingredient.of(Items.GLASS_BOTTLE));
         if (second != null)
             builder.require(second);
         builder.save(recipeOutput, Agrestic.location("basic_condensing/").withSuffix(path));

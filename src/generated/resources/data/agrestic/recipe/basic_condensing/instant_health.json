@@ -4,6 +4,9 @@
     "amount": 250,
     "tag": "c:water"
   },
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
   "ingredients": [
     {
       "item": "agrestic:chamomile"

@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
 import io.github.pouffy.agrestic.common.block.entity.CondenserBlockEntity;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
+import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -216,6 +217,33 @@ public class CondenserBlock extends BaseEntityBlock {
 
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    public boolean hasRetorts(Level world, BlockPos pos, BlockState state) {
+        if (state.getBlock() != this) {
+            return false;
+        }
+        switch (state.getValue(FACING)) {
+            case NORTH, SOUTH:
+                if (world.getBlockState(pos.east()).getBlock() != AgresticBlocks.BASIC_RETORT.block() || world.getBlockState(pos.west()).getBlock() != AgresticBlocks.BASIC_RETORT.block()) {
+                    return false;
+                }
+                if (world.getBlockState(pos.east()).getValue(RetortBlock.FACING) != Direction.EAST || world.getBlockState(pos.west()).getValue(RetortBlock.FACING) != Direction.WEST) {
+                    return false;
+                }
+                break;
+            case WEST, EAST:
+                if (world.getBlockState(pos.north()).getBlock() != AgresticBlocks.BASIC_RETORT.block() || world.getBlockState(pos.south()).getBlock() != AgresticBlocks.BASIC_RETORT.block()) {
+                    return false;
+                }
+                if (world.getBlockState(pos.north()).getValue(RetortBlock.FACING) != Direction.NORTH || world.getBlockState(pos.south()).getValue(RetortBlock.FACING) != Direction.SOUTH) {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
     @Override

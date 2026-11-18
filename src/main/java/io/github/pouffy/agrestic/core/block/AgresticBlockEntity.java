@@ -10,8 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-import java.util.function.Consumer;
-
 public abstract class AgresticBlockEntity extends BlockEntity {
 
 
@@ -31,7 +29,7 @@ public abstract class AgresticBlockEntity extends BlockEntity {
     public abstract void serverTick();
     public abstract void clientTick();
 
-    public void onItemsChanged(ItemStack stack) {
+    public void onItemsChanged(int slot, ItemStack stack) {
         this.markUpdated();
     }
 

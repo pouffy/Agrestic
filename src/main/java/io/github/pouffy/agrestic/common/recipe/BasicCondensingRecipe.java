@@ -20,6 +20,7 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class BasicCondensingRecipe implements Recipe<CondensingRecipeInput> {
 
@@ -27,13 +28,17 @@ public class BasicCondensingRecipe implements Recipe<CondensingRecipeInput> {
     protected SizedFluidIngredient base;
     protected List<Ingredient> ingredients;
     @Getter
+    protected Optional<Ingredient> container;
+
+    @Getter
     protected int time;
     @Getter
     public final ItemStack output;
 
-    public BasicCondensingRecipe(SizedFluidIngredient base, List<Ingredient> ingredients, ItemStack output, int time) {
+    public BasicCondensingRecipe(SizedFluidIngredient base, List<Ingredient> ingredients, Optional<Ingredient> container, ItemStack output, int time) {
         this.base = base;
         this.ingredients = ingredients;
+        this.container = container;
         this.output = output;
         this.time = time;
     }
@@ -41,6 +46,7 @@ public class BasicCondensingRecipe implements Recipe<CondensingRecipeInput> {
     public static final MapCodec<BasicCondensingRecipe> CODEC = RecordCodecBuilder.mapCodec((obj) -> obj.group(
             SizedFluidIngredient.FLAT_CODEC.fieldOf("base").forGetter((recipe) -> recipe.base),
             Ingredient.LIST_CODEC_NONEMPTY.fieldOf("ingredients").forGetter((recipe) -> recipe.ingredients),
+            Ingredient.CODEC_NONEMPTY.optionalFieldOf("container").forGetter((recipe) -> recipe.container),
             ItemStack.CODEC.fieldOf("output").forGetter((recipe) -> recipe.output),
             ExtraCodecs.POSITIVE_INT.fieldOf("time").forGetter((recipe) -> recipe.time)
     ).apply(obj, BasicCondensingRecipe::new));
@@ -57,7 +63,11 @@ public class BasicCondensingRecipe implements Recipe<CondensingRecipeInput> {
                 break;
             }
         }
-        return items && base.test(in);
+        boolean c = container.isEmpty();
+        if (container.isPresent()) {
+            c = container.get().test(input.container());
+        }
+        return items && base.test(in) && c;
     }
 
     @Override

@@ -14,14 +14,12 @@ import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import lombok.Getter;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -34,19 +32,11 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.RecipeCraftingHolder;
-import net.minecraft.world.inventory.StackedContentsCompatible;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -122,18 +112,34 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
     public InteractionResult interactEmpty(Player player) {
         if (level == null) return InteractionResult.PASS;
         if (!level.isClientSide) {
-            player.openMenu(this, worldPosition);
-            return InteractionResult.SUCCESS;
+            if (hasRetorts()) {
+                player.openMenu(this, worldPosition);
+                return InteractionResult.SUCCESS;
+            } else {
+                player.displayClientMessage(Component.translatable("ui.agrestic.missing_retorts").withStyle(ChatFormatting.DARK_RED), true);
+                return InteractionResult.PASS;
+            }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     public ItemInteractionResult interact(Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!hasRetorts()) {
+            player.displayClientMessage(Component.translatable("ui.agrestic.missing_retorts").withStyle(ChatFormatting.DARK_RED), true);
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         if (!FluidTransferHelper.interactWithTank(level, worldPosition, player, hand, hitResult)) {
             player.openMenu(this, worldPosition);
         }
         return ItemInteractionResult.SUCCESS;
+    }
+
+    private boolean hasRetorts() {
+        if (level == null) return false;
+        if (getBlockState().getBlock() instanceof CondenserBlock condenserBlock)
+            return condenserBlock.hasRetorts(level, worldPosition, getBlockState());
+        return false;
     }
 
     @Override
@@ -257,9 +263,21 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         return stacks;
     }
 
-    private static int getTotalCookTime(Level level, CondenserBlockEntity blockEntity) {
-        CondensingRecipeInput recipeInput = new CondensingRecipeInput(blockEntity.getTank().getFluid(), blockEntity.getInputStacks());
-        return blockEntity.quickCheck.getRecipeFor(recipeInput, level).map((holder) -> (holder.value()).getTime()).orElse(400);
+    public boolean hasInputStacks() {
+        if (!isController()) return false;
+        List<ItemStack> stacks = new ArrayList<>(getInputStacks());
+        stacks.removeIf(ItemStack::isEmpty);
+        return !stacks.isEmpty();
+    }
+
+    public ItemStack getContainerStack() {
+        if (!isController()) return ItemStack.EMPTY;
+        return getContainer().getStackInSlot(3);
+    }
+
+    private int getTotalCookTime(Level level) {
+        CondensingRecipeInput recipeInput = new CondensingRecipeInput(getTank().getFluid(), getInputStacks(), getContainerStack());
+        return quickCheck.getRecipeFor(recipeInput, level).map((holder) -> (holder.value()).getTime()).orElse(400);
     }
 
     public void setItem(int index, ItemStack stack) {
@@ -269,10 +287,21 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         this.container.setStackInSlot(index, stack);
         stack.limitSize(this.getMaxStackSize(stack));
         if ((index == 0 || index == 1) && !flag) {
-            this.progressTotal = getTotalCookTime(this.level, this);
+            this.progressTotal = getTotalCookTime(this.level);
             this.progress = 0;
             this.setChanged();
         }
+    }
+
+    public void onItemsChanged(int slot, ItemStack stack) {
+        if (!isController()) return;
+        ItemStack itemstack = this.container.getStackInSlot(slot);
+        boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, stack);
+        if ((slot == 0 || slot == 1) && !flag) {
+            this.progressTotal = getTotalCookTime(this.level);
+            this.progress = 0;
+        }
+        this.markUpdated();
     }
 
     public boolean canPlaceItem(int index, ItemStack stack) {
@@ -320,6 +349,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
 
     @Override
     public void serverTick() {
+        if (level == null) return;
         //Global shit
         if (updateCapability) {
             updateCapability = false;
@@ -328,9 +358,62 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
 
         //Everything under here is only done by the controller
         if (!isController()) return;
+        if (!hasRetorts()) return;
+
+        boolean update = false;
 
         if (isLit()) {
             --litTime;
+        }
+
+        ItemStack fuel = container.getStackInSlot(2);
+        boolean hasFuel = !fuel.isEmpty();
+
+        if (isLit() || hasFuel && hasInputStacks()) {
+            RecipeHolder<BasicCondensingRecipe> recipeholder;
+            if (hasInputStacks()) {
+                recipeholder = quickCheck.getRecipeFor(new CondensingRecipeInput(getTank().getFluid(), getInputStacks(), getContainerStack()), level).orElse(null);
+            } else {
+                recipeholder = null;
+            }
+
+            if (!isLit() && canBurn(level.registryAccess(), recipeholder)) {
+                litTime = getBurnDuration(fuel);
+                litDuration = litTime;
+                if (isLit()) {
+                    if (fuel.hasCraftingRemainingItem()) {
+                        container.setStackInSlot(2, fuel.getCraftingRemainingItem());
+                    } else if (!fuel.isEmpty()) {
+                        if (!container.getStackInSlot(2).isEmpty()) {
+                            container.getStackInSlot(2).shrink(1);
+                            if (container.getStackInSlot(2).isEmpty()) {
+                                container.setStackInSlot(2, container.getStackInSlot(2).getCraftingRemainingItem());
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (isLit() && canBurn(level.registryAccess(), recipeholder)) {
+                ++progress;
+                if (progress == progressTotal) {
+                    progress = 0;
+                    progressTotal = getTotalCookTime(level);
+                    if (condense(level.registryAccess(), recipeholder)) {
+                        setRecipeUsed(recipeholder);
+                    }
+
+                    update = true;
+                }
+            } else {
+                progress = 0;
+            }
+        } else if (!isLit() && progress > 0) {
+            progress = Mth.clamp(progress - 2, 0, progressTotal);
+        }
+
+        if (update) {
+            setChanged(level, worldPosition, getBlockState());
         }
     }
 
@@ -338,6 +421,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
     public void clientTick() {
         if (level == null) return;
         if (!isController()) return;
+        if (progress <= 0 || !hasRetorts()) return;
         if (level.getBlockState(worldPosition).getBlock() == AgresticBlocks.BASIC_CONDENSER.block()) {
             Direction blockFacing = level.getBlockState(worldPosition).getValue(CondenserBlock.FACING);
             double yVel = 0.125;
@@ -349,6 +433,45 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
                 AgresticClient.spawnAlchemySmokeFX(this.progress, this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 1.0625D, this.worldPosition.getZ() + 1.5D, 0, yVel, 0);
             }
         }
+    }
+
+    private boolean canBurn(RegistryAccess registryAccess, @Nullable RecipeHolder<BasicCondensingRecipe> recipe) {
+        if (hasInputStacks() && recipe != null) {
+            ItemStack resultStack = recipe.value().assemble(new CondensingRecipeInput(getTank().getFluid(), getInputStacks(), getContainerStack()), registryAccess);
+            if (resultStack.isEmpty()) {
+                return false;
+            } else {
+                return container.canInsert(4, resultStack);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private boolean condense(RegistryAccess registryAccess, @Nullable RecipeHolder<BasicCondensingRecipe> recipe) {
+        if (recipe != null && canBurn(registryAccess, recipe)) {
+            ItemStack resultStack = recipe.value().assemble(new CondensingRecipeInput(getTank().getFluid(), getInputStacks(), getContainerStack()), registryAccess);
+            ItemStack existingResult = container.getStackInSlot(4);
+            if (existingResult.isEmpty()) {
+                container.setStackInSlot(4, resultStack.copy());
+            } else if (container.canInsert(4, resultStack)) {
+                container.getStackInSlot(4).grow(resultStack.getCount());
+            }
+
+            container.getStackInSlot(0).shrink(1);
+            container.getStackInSlot(1).shrink(1);
+            getTank().drain(recipe.value().getBase().amount(), IFluidHandler.FluidAction.EXECUTE);
+            if (recipe.value().getContainer().isPresent()) {
+                container.getStackInSlot(3).shrink(1);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected int getBurnDuration(ItemStack fuel) {
+        return fuel.isEmpty() ? 0 : fuel.getBurnTime(AgresticRecipeTypes.CONDENSING.get());
     }
 
     public void awardUsedRecipes(ServerPlayer player) {

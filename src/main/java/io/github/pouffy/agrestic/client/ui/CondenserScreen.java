@@ -71,11 +71,11 @@ public class CondenserScreen extends AbstractContainerScreen<CondenserMenu> impl
         int j = this.topPos;
         int m = this.menu.getCondensingTime();
         if (m > 0) {
-            AgresticSprites.TINY_ARROW.blit(guiGraphics, x + 44, y + 29, 0, 0, menu.getScaledArrowProgress(), 28);
+            AgresticSprites.ALCHEMY_ARROW.blit(guiGraphics, x + 44, y + 28, 0, 0, menu.getScaledArrowProgress(), 28);
         }
         if (this.menu.isLit()) {
             int l = Mth.ceil(this.menu.getLitProgress() * 13.0F) + 1;
-            AgresticSprites.LIT.blit(guiGraphics, this.leftPos + 65, this.topPos + 44, 0, 0, 14, l);
+            AgresticSprites.LIT.blit(guiGraphics, this.leftPos + 66, this.topPos + 45 + 14 - l, 0, 14 - l, 14, l);
         }
     }
 
