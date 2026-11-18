@@ -20,6 +20,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.common.Internal;
 import mezz.jei.common.gui.elements.DrawableAnimated;
+import mezz.jei.common.gui.elements.DrawableResource;
 import mezz.jei.common.gui.elements.DrawableSprite;
 import mezz.jei.common.util.ErrorUtil;
 import net.minecraft.ChatFormatting;
@@ -75,18 +76,18 @@ public class BrewingBarrelCategory extends AbstractRecipeCategory<RecipeHolder<B
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<BrewingBarrelRecipe> recipe, IFocusGroup focuses) {
         builder.addDrawableWidget(AgresticJEIConstants.asDrawable(AgresticSprites.TINY_ARROW_BASE)).setPosition(23, 34);
-        IDrawableStatic tinyArrow = new DrawableSprite(Minecraft.getInstance().getGuiSprites(), AgresticSprites.TINY_ARROW.location, AgresticSprites.TINY_ARROW.width, AgresticSprites.TINY_ARROW.height);
-        builder.addDrawableWidget(new DrawableAnimated(tinyArrow, recipe.value().getTime(), IDrawableAnimated.StartDirection.LEFT, false)).setPosition(23, 33);
+        IDrawableStatic tinyArrow = new DrawableResource(AgresticSprites.TINY_ARROW.location, 0, 0, AgresticSprites.TINY_ARROW.width, AgresticSprites.TINY_ARROW.height, 0, 0, 0, 0, AgresticSprites.TINY_ARROW.width, AgresticSprites.TINY_ARROW.height);
+        builder.addDrawableWidget(new DrawableAnimated(tinyArrow, recipe.value().getTime() / 10, IDrawableAnimated.StartDirection.LEFT, false)).setPosition(23, 33);
 
         builder.addDrawableWidget(AgresticJEIConstants.asDrawable(AgresticSprites.ARROW_BASE)).setPosition(64, 31).setTooltip(Component.translatable("recipe.agrestic.time", formatTime(recipe.value().getTime())).withStyle(ChatFormatting.GOLD));
-        IDrawableStatic arrow = new DrawableSprite(Minecraft.getInstance().getGuiSprites(), AgresticSprites.ARROW.location, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height);
-        builder.addDrawableWidget(new DrawableAnimated(arrow, recipe.value().getTime(), IDrawableAnimated.StartDirection.LEFT, false)).setPosition(64, 30);
+        IDrawableStatic arrow = new DrawableResource(AgresticSprites.ARROW.location, 0, 0, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height, 0, 0, 0, 0, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height);
+        builder.addDrawableWidget(new DrawableAnimated(arrow, recipe.value().getTime() / 10, IDrawableAnimated.StartDirection.LEFT, false)).setPosition(64, 30);
 
         builder.addDrawableWidget(AgresticJEIConstants.asDrawable(AgresticSprites.BUBBLES_BASE)).setPosition(114, 24).setTooltip(Component.translatable("recipe.agrestic.brewing.quality_change",
                 PERCENT_FORMAT.format(AgresticConfig.SERVER.minBrewQualityChange.get() / 100.0),
                 PERCENT_FORMAT.format(AgresticConfig.SERVER.maxBrewQualityChange.get() / 100.0)).withStyle(ChatFormatting.GOLD));
-        IDrawableStatic bubbles = new DrawableSprite(Minecraft.getInstance().getGuiSprites(), AgresticSprites.BUBBLES.location, AgresticSprites.BUBBLES.width, AgresticSprites.BUBBLES.height);
-        builder.addDrawableWidget(new DrawableAnimated(bubbles, recipe.value().getTime(), IDrawableAnimated.StartDirection.BOTTOM, false)).setPosition(114, 24);
+        IDrawableStatic bubbles = new DrawableResource(AgresticSprites.BUBBLES.location, 0, 0, AgresticSprites.BUBBLES.width, AgresticSprites.BUBBLES.height, 0, 0, 0, 0, AgresticSprites.BUBBLES.width, AgresticSprites.BUBBLES.height);
+        builder.addDrawableWidget(new DrawableAnimated(bubbles, recipe.value().getTime() / 10, IDrawableAnimated.StartDirection.BOTTOM, false)).setPosition(114, 24);
     }
 
     @Override

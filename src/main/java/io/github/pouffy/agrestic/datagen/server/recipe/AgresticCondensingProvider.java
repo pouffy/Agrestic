@@ -8,11 +8,13 @@ import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.BlockTagIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
 import javax.annotation.Nullable;
@@ -32,6 +34,12 @@ public class AgresticCondensingProvider extends AgresticRecipeProvider {
         condense(ElixirItem.withEffect(MobEffects.HEAL, 0, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.CHAMOMILE), Ingredient.of(Items.BEEF), 400, output, "instant_health");
 
         condense(ElixirItem.withEffect(MobEffects.REGENERATION, 900, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.COHOSH), Ingredient.of(Items.HONEYCOMB), 400, output, "regeneration");
+
+        condense(ElixirItem.withEffect(MobEffects.WITHER, 900, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.DEATHSTALK), new BlockTagIngredient(BlockTags.WITHER_SUMMON_BASE_BLOCKS).toVanilla(), 400, output, "wither");
+
+        condense(ElixirItem.withEffect(MobEffects.NIGHT_VISION, 3600, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.MOONCAP), Ingredient.of(Items.SPIDER_EYE), 400, output, "night_vision");
+
+        condense(ElixirItem.withEffect(MobEffects.MOVEMENT_SPEED, 3600, 0), SizedFluidIngredient.of(Tags.Fluids.WATER, 250), Ingredient.of(AgresticBlocks.WIND_THISTLE), Ingredient.of(Items.SUGAR), 400, output, "speed");
     }
 
     public void condense(ItemStack result, SizedFluidIngredient base, Ingredient first, @Nullable Ingredient second, int time, RecipeOutput recipeOutput, String path) {

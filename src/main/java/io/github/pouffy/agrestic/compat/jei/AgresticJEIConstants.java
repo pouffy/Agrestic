@@ -1,10 +1,7 @@
 package io.github.pouffy.agrestic.compat.jei;
 
 import io.github.pouffy.agrestic.client.AgresticSprites;
-import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
-import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
-import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
-import io.github.pouffy.agrestic.common.recipe.OliveOilingRecipe;
+import io.github.pouffy.agrestic.common.recipe.*;
 import io.github.pouffy.agrestic.core.item.OliveOiled;
 import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticItems;
@@ -34,6 +31,7 @@ public class AgresticJEIConstants {
     public static final RecipeType<RecipeHolder<CrushingTubRecipe>> CRUSHING_TUB = RecipeType.createFromVanilla(AgresticRecipeTypes.CRUSHING_TUB.get());
     public static final RecipeType<RecipeHolder<EvaporatingBasinRecipe>> EVAPORATING_BASIN = RecipeType.createFromVanilla(AgresticRecipeTypes.EVAPORATING_BASIN.get());
     public static final RecipeType<RecipeHolder<BrewingBarrelRecipe>> BREWING_BARREL = RecipeType.createFromVanilla(AgresticRecipeTypes.BREWING_BARREL.get());
+    public static final RecipeType<RecipeHolder<BasicCondensingRecipe>> CONDENSING = RecipeType.createFromVanilla(AgresticRecipeTypes.CONDENSING.get());
 
     public static IDrawable asDrawable(AgresticSprites sprite) {
         return new IDrawable() {

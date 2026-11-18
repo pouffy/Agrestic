@@ -18,6 +18,7 @@ import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
 import mezz.jei.common.Internal;
 import mezz.jei.common.gui.elements.DrawableAnimated;
+import mezz.jei.common.gui.elements.DrawableResource;
 import mezz.jei.common.gui.elements.DrawableSprite;
 import mezz.jei.common.util.ErrorUtil;
 import net.minecraft.ChatFormatting;
@@ -61,8 +62,8 @@ public class EvaporatingBasinCategory extends AbstractRecipeCategory<RecipeHolde
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<EvaporatingBasinRecipe> recipe, IFocusGroup focuses) {
         builder.addDrawableWidget(AgresticJEIConstants.asDrawable(AgresticSprites.ARROW_BASE)).setPosition(42, 23).setTooltip(Component.translatable("recipe.agrestic.time", formatTime(recipe.value().getTime())).withStyle(ChatFormatting.GOLD));
-        IDrawableStatic arrow = new DrawableSprite(Minecraft.getInstance().getGuiSprites(), AgresticSprites.ARROW.location, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height);
-        builder.addDrawableWidget(new DrawableAnimated(arrow, recipe.value().getTime(), IDrawableAnimated.StartDirection.LEFT, false)).setPosition(42, 23);
+        IDrawableStatic arrow = new DrawableResource(AgresticSprites.ARROW.location, 0, 0, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height, 0, 0, 0, 0, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height);
+        builder.addDrawableWidget(new DrawableAnimated(arrow, recipe.value().getTime(), IDrawableAnimated.StartDirection.LEFT, false)).setPosition(42, 22);
     }
 
     @Override

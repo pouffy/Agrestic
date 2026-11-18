@@ -1,5 +1,6 @@
 package io.github.pouffy.agrestic.compat.jei;
 
+import io.github.pouffy.agrestic.common.recipe.BasicCondensingRecipe;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
@@ -35,6 +36,10 @@ public class AgresticJEIRecipes {
 
     public List<RecipeHolder<EvaporatingBasinRecipe>> getEvaporatingRecipes() {
         return getValidHandledRecipes(recipeManager, AgresticRecipeTypes.EVAPORATING_BASIN.get());
+    }
+
+    public List<RecipeHolder<BasicCondensingRecipe>> getCondensingRecipes() {
+        return getValidHandledRecipes(recipeManager, AgresticRecipeTypes.CONDENSING.get());
     }
 
     private static <C extends RecipeInput, T extends Recipe<C>> List<RecipeHolder<T>> getValidHandledRecipes(
