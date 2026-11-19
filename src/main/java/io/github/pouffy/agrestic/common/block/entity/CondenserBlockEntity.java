@@ -206,7 +206,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
             return;
         this.controller = controller;
         refreshCapability();
-        setChanged();
+        markUpdated();
         if (level instanceof ServerLevel serverLevel)
             serverLevel.getChunkSource().blockChanged(getBlockPos());
     }
@@ -289,7 +289,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         if ((index == 0 || index == 1) && !flag) {
             this.progressTotal = getTotalCookTime(this.level);
             this.progress = 0;
-            this.setChanged();
+            markUpdated();
         }
     }
 
@@ -402,9 +402,8 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
                     if (condense(level.registryAccess(), recipeholder)) {
                         setRecipeUsed(recipeholder);
                     }
-
-                    update = true;
                 }
+                update = true;
             } else {
                 progress = 0;
             }
@@ -413,7 +412,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         }
 
         if (update) {
-            setChanged(level, worldPosition, getBlockState());
+            markUpdated();
         }
     }
 

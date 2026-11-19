@@ -14,7 +14,6 @@ import io.github.pouffy.agrestic.init.AgresticBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.category.IRecipeCategory;
@@ -96,7 +95,16 @@ public class AgresticJEIPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addGenericGuiContainerHandler(BrewingBarrelScreen.class, new GuiContainerTankHandler<>());
+        registration.addRecipeClickArea(BrewingBarrelScreen.class, 85, 34, 24, 17, AgresticJEIConstants.BREWING_BARREL);
+
         registration.addGenericGuiContainerHandler(CondenserScreen.class, new GuiContainerTankHandler<>());
+        registration.addRecipeClickArea(CondenserScreen.class, 44, 29, 22, 27, AgresticJEIConstants.CONDENSING);
+        registration.addRecipeClickArea(CondenserScreen.class, 66, 35, 28, 15, AgresticJEIConstants.CONDENSING);
+    }
+
+    @Override
+    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        registration.addRecipeTransferHandler(new CondensingCategory.TransferInfo());
     }
 
     @Override
