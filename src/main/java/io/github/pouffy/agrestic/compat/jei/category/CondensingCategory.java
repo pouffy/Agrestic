@@ -76,7 +76,7 @@ public class CondensingCategory extends AbstractRecipeCategory<RecipeHolder<Basi
                     .addIngredients(recipe.getContainer().get());
         }
 
-        builder.addInputSlot(109, 23)
+        builder.addSlot(RecipeIngredientRole.CATALYST, 109, 23)
                 .addRichTooltipCallback(FluidTooltipCallback.UNITS)
                 .setBackground(AgresticJEIConstants.asDrawable(AgresticSprites.TANK), -1, -1)
                 .setFluidRenderer(Math.min(recipe.getBase().amount() * 4, 8000), false, 16, 32)
