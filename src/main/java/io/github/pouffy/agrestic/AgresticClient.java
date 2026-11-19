@@ -1,5 +1,7 @@
 package io.github.pouffy.agrestic;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import io.github.pouffy.agrestic.client.ClientTextHelper;
 import io.github.pouffy.agrestic.client.renderer.AgresticBoatRenderer;
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
@@ -19,6 +21,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SmokeParticle;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -61,6 +64,9 @@ import slimeknights.mantle.fluid.texture.ClientTextureFluidType;
 import slimeknights.mantle.registration.object.FluidObject;
 
 import java.util.List;
+import java.util.OptionalDouble;
+
+import static net.minecraft.client.renderer.RenderStateShard.*;
 
 @Mod(value = Agrestic.MODID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = Agrestic.MODID, value = Dist.CLIENT)
@@ -198,4 +204,17 @@ public class AgresticClient {
         smoke.setLifetime(10);
         Minecraft.getInstance().particleEngine.add(smoke);
     }
+
+    public static final RenderType ERROR_BLOCK = RenderType.create(
+            Agrestic.location("lines").toString(), DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256, false, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RENDERTYPE_LINES_SHADER)
+                    .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
+                    .setLayeringState(VIEW_OFFSET_Z_LAYERING)
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setOutputState(ITEM_ENTITY_TARGET)
+                    .setWriteMaskState(COLOR_DEPTH_WRITE)
+                    .setCullState(NO_CULL)
+                    .setDepthTestState(NO_DEPTH_TEST)
+                    .createCompositeState(false));
 }

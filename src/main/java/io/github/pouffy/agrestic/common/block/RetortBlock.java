@@ -22,7 +22,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RetortBlock extends HorizontalDirectionalBlock {
 
-    private static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 16, 12);
+    public static final VoxelShape SHAPE = Block.box(4, 0, 4, 12, 16, 12);
 
     public RetortBlock(Properties properties) {
         super(properties);

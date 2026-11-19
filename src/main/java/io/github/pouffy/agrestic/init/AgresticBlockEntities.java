@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.init;
 
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.client.renderer.CondenserRenderer;
 import io.github.pouffy.agrestic.client.renderer.CrushingTubRenderer;
 import io.github.pouffy.agrestic.client.renderer.EvaporatingBasinRenderer;
 import io.github.pouffy.agrestic.client.renderer.FluidBarrelRenderer;
@@ -50,6 +51,7 @@ public class AgresticBlockEntities {
             event.registerBlockEntityRenderer(CRUSHING_TUB.get(), CrushingTubRenderer::new);
             event.registerBlockEntityRenderer(EVAPORATING_BASIN.get(), EvaporatingBasinRenderer::new);
             event.registerBlockEntityRenderer(FLUID_BARREL.get(), FluidBarrelRenderer::new);
+            event.registerBlockEntityRenderer(BASIC_CONDENSER.get(), CondenserRenderer::new);
         }
     }
 }

@@ -1,9 +1,11 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
 import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import io.github.pouffy.agrestic.AgresticClient;
 import io.github.pouffy.agrestic.client.ui.CondenserMenu;
 import io.github.pouffy.agrestic.common.block.CondenserBlock;
+import io.github.pouffy.agrestic.common.block.RetortBlock;
 import io.github.pouffy.agrestic.common.recipe.BasicCondensingRecipe;
 import io.github.pouffy.agrestic.common.recipe.CondensingRecipeInput;
 import io.github.pouffy.agrestic.core.block.AgresticContainerBlockEntity;
@@ -45,6 +47,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
+import slimeknights.mantle.block.GaugeBlock;
 import slimeknights.mantle.fluid.FluidTransferHelper;
 
 import java.util.ArrayList;
@@ -72,6 +75,8 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
 
     private final Object2IntOpenHashMap<ResourceLocation> recipesUsed;
     private final RecipeManager.CachedCheck<CondensingRecipeInput, BasicCondensingRecipe> quickCheck;
+    @Getter
+    private Pair<Boolean, Boolean> retorts;
 
     public CondenserBlockEntity(BlockPos pos, BlockState blockState) {
         super(AgresticBlockEntities.BASIC_CONDENSER.get(), pos, blockState);
@@ -80,6 +85,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         refreshCapability();
         this.recipesUsed = new Object2IntOpenHashMap<>();
         this.quickCheck = RecipeManager.createCheck(AgresticRecipeTypes.CONDENSING.get());
+        this.retorts = Pair.of(false, false);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -102,9 +108,16 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
     }
 
     protected void onTankChanged(FluidStack newFluids) {
+        if (!isController()) return;
         if (tank != null) {
             tank.setCapacity(8000);
             if (tank.getSpace() < 0) tank.drain(-tank.getSpace(), IFluidHandler.FluidAction.EXECUTE);
+            FluidStack fluidStack = this.tank.getFluid();
+            boolean flag = !newFluids.isEmpty() && FluidStack.isSameFluidSameComponents(fluidStack, newFluids);
+            if (!flag) {
+                this.progressTotal = getTotalCookTime(this.level);
+                this.progress = 0;
+            }
         }
         markUpdated();
     }
@@ -137,9 +150,25 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
 
     private boolean hasRetorts() {
         if (level == null) return false;
-        if (getBlockState().getBlock() instanceof CondenserBlock condenserBlock)
-            return condenserBlock.hasRetorts(level, worldPosition, getBlockState());
-        return false;
+        evaluate();
+        return retorts.getFirst() && retorts.getSecond();
+    }
+
+    private void evaluate() {
+        if (level == null) return;
+        boolean left = false;
+        boolean right = false;
+        Direction facing = getBlockState().getValue(CondenserBlock.FACING);
+        Direction leftDir = facing.getClockWise();
+        Direction rightDir = facing.getCounterClockWise();
+        if (level.getBlockState(worldPosition.relative(leftDir)).getBlock() == AgresticBlocks.BASIC_RETORT.block() && level.getBlockState(worldPosition.relative(leftDir)).getValue(RetortBlock.FACING) == leftDir) {
+            left = true;
+        }
+        if (level.getBlockState(worldPosition.relative(rightDir)).getBlock() == AgresticBlocks.BASIC_RETORT.block() && level.getBlockState(worldPosition.relative(rightDir)).getValue(RetortBlock.FACING) == rightDir) {
+            right = true;
+        }
+        retorts = Pair.of(left, right);
+        markUpdated();
     }
 
     @Override
@@ -234,6 +263,8 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
             for(String s : usedRecipes.getAllKeys()) {
                 this.recipesUsed.put(ResourceLocation.parse(s), usedRecipes.getInt(s));
             }
+            CompoundTag retortsTag = tag.getCompound("Retorts");
+            this.retorts = Pair.of(retortsTag.getBoolean("Left"), retortsTag.getBoolean("Right"));
         }
         updateCapability = true;
     }
@@ -250,6 +281,10 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
             CompoundTag usedRecipes = new CompoundTag();
             this.recipesUsed.forEach((key, amount) -> usedRecipes.putInt(key.toString(), amount));
             tag.put("RecipesUsed", usedRecipes);
+            CompoundTag retortsTag = new CompoundTag();
+            retortsTag.putBoolean("Left", this.retorts.getFirst());
+            retortsTag.putBoolean("Right", this.retorts.getSecond());
+            tag.put("Retorts", retortsTag);
         } else {
             tag.put("Controller", NbtUtils.writeBlockPos(controller));
         }
@@ -297,7 +332,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         if (!isController()) return;
         ItemStack itemstack = this.container.getStackInSlot(slot);
         boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, stack);
-        if ((slot == 0 || slot == 1) && !flag) {
+        if ((slot == 0 || slot == 1 || slot == 3) && !flag) {
             this.progressTotal = getTotalCookTime(this.level);
             this.progress = 0;
         }
