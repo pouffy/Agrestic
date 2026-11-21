@@ -1,0 +1,45 @@
+{
+  "type": "agrestic:advanced_condensing",
+  "base": {
+    "amount": 250,
+    "tag": "c:water"
+  },
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "ingredients": [
+    {
+      "item": "agrestic:ginseng"
+    },
+    {
+      "tag": "c:bones"
+    },
+    {
+      "tag": "c:gunpowders"
+    }
+  ],
+  "modifier": {
+    "item": "agrestic:horsetail"
+  },
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "custom_effects": [
+          {
+            "duration": 9600,
+            "id": "minecraft:strength",
+            "neoforge:cures": [
+              "milk",
+              "protected_by_totem"
+            ],
+            "show_icon": true
+          }
+        ],
+        "potion": "minecraft:water"
+      }
+    },
+    "count": 1,
+    "id": "agrestic:elixir"
+  },
+  "time": 400
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "agrestic:block/advanced_retort",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "agrestic:block/advanced_retort"
+    },
+    "facing=south": {
+      "model": "agrestic:block/advanced_retort",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "agrestic:block/advanced_retort",
+      "y": 270
+    }
+  }
+}

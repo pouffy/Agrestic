@@ -78,6 +78,7 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .define('S', ItemTags.WOODEN_SLABS)
                 .unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON))
                 .save(output, Agrestic.location("crafting/brewing_barrel"));
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.BASIC_CONDENSER)
                 .pattern(" B ")
                 .pattern("BEB")
@@ -87,7 +88,6 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .define('C', Items.WHITE_TERRACOTTA)
                 .unlockedBy("has_bricks", has(Tags.Items.BRICKS_NORMAL))
                 .save(output, Agrestic.location("crafting/basic_condenser"));
-
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.BASIC_RETORT)
                 .pattern(" B ")
                 .pattern("IE ")
@@ -97,6 +97,25 @@ public class AgresticCraftingProvider extends AgresticRecipeProvider {
                 .define('I', Tags.Items.INGOTS_IRON)
                 .unlockedBy("has_bricks", has(Tags.Items.BRICKS_NORMAL))
                 .save(output, Agrestic.location("crafting/basic_retort"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.ADVANCED_CONDENSER)
+                .pattern(" B ")
+                .pattern("BEB")
+                .pattern("BIB")
+                .define('B', Tags.Items.BRICKS_NETHER)
+                .define('E', Tags.Items.BUCKETS_EMPTY)
+                .define('I', Tags.Items.STORAGE_BLOCKS_IRON)
+                .unlockedBy("has_bricks", has(Tags.Items.BRICKS_NETHER))
+                .save(output, Agrestic.location("crafting/advanced_condenser"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, AgresticBlocks.ADVANCED_RETORT)
+                .pattern(" B ")
+                .pattern("IE ")
+                .pattern(" B ")
+                .define('B', Tags.Items.BRICKS_NETHER)
+                .define('E', Tags.Items.BUCKETS_EMPTY)
+                .define('I', Tags.Items.INGOTS_IRON)
+                .unlockedBy("has_bricks", has(Tags.Items.BRICKS_NETHER))
+                .save(output, Agrestic.location("crafting/advanced_retort"));
 
         ShapelessNoReturnRecipeBuilder.shapeless(RecipeCategory.BREWING, AgresticFluids.ALE_WORT.getBucket())
                 .requires(Tags.Items.BUCKETS_WATER)

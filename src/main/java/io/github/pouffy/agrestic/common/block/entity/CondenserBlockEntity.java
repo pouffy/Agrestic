@@ -11,6 +11,7 @@ import io.github.pouffy.agrestic.common.recipe.CondensingRecipeInput;
 import io.github.pouffy.agrestic.core.block.AgresticContainerBlockEntity;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
 import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
+import io.github.pouffy.agrestic.core.item.CondenserContainer;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
@@ -27,10 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Clearable;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
@@ -39,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.FurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -53,7 +52,7 @@ import slimeknights.mantle.fluid.FluidTransferHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CondenserBlockEntity extends AgresticContainerBlockEntity implements RecipeCraftingHolder, StackedContentsCompatible, Clearable {
+public class CondenserBlockEntity extends AgresticContainerBlockEntity implements RecipeCraftingHolder, StackedContentsCompatible, WorldlyContainer {
 
     @Getter
     protected final AgresticFluidTank tank;
@@ -148,7 +147,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
         return ItemInteractionResult.SUCCESS;
     }
 
-    private boolean hasRetorts() {
+    public boolean hasRetorts() {
         if (level == null) return false;
         evaluate();
         return retorts.getFirst() && retorts.getSecond();
@@ -173,7 +172,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
 
     @Override
     public AgresticItemContainer newContainer() {
-        return new AgresticItemContainer(5, this::onItemsChanged);
+        return new CondenserContainer(this);
     }
 
     @Override
@@ -475,7 +474,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
             if (resultStack.isEmpty()) {
                 return false;
             } else {
-                return container.canInsert(4, resultStack);
+                return container.canForceInsert(4, resultStack);
             }
         } else {
             return false;
@@ -488,7 +487,7 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
             ItemStack existingResult = container.getStackInSlot(4);
             if (existingResult.isEmpty()) {
                 container.setStackInSlot(4, resultStack.copy());
-            } else if (container.canInsert(4, resultStack)) {
+            } else if (container.canForceInsert(4, resultStack)) {
                 container.getStackInSlot(4).grow(resultStack.getCount());
             }
 
@@ -541,6 +540,32 @@ public class CondenserBlockEntity extends AgresticContainerBlockEntity implement
     @Override
     public void clearContent() {
         if (!isController()) return;
-        getContainer().clear();
+        super.clearContent();
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        if (!isController()) return new int[0];
+        if (direction == Direction.DOWN)
+            return new int[]{4};
+        if (direction == level.getBlockState(worldPosition).getValue(CondenserBlock.FACING).getOpposite())
+            return new int[]{2, 3};
+        if (direction.getAxis() != Direction.Axis.Y)
+            return new int[]{0, 1};
+        return new int[0];
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, @Nullable Direction direction) {
+        if (!isController() || direction == Direction.DOWN) return false;
+        if (direction != level.getBlockState(worldPosition).getValue(CondenserBlock.FACING).getOpposite())
+            return (index == 2 || index == 3) && container.canInsert(index, itemStack);
+        return (index == 0 || index == 1) && container.canInsert(index, itemStack);
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int index, ItemStack itemStack, Direction direction) {
+        if (!isController() || direction != Direction.DOWN) return false;
+        return index == 4 && container.canExtract(index, itemStack.getCount());
     }
 }

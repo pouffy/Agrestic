@@ -62,6 +62,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("emi.category.agrestic.basin_evaporating", "Basin Evaporating");
         add("emi.category.agrestic.brewing", "Booze Brewing");
         add("emi.category.agrestic.alchemy", "Alchemy");
+        add("emi.category.agrestic.advanced_alchemy", "Advanced Alchemy");
         add("recipe.agrestic.chance", "Chance: %s");
         add("recipe.agrestic.time", "Time: %s");
         add("recipe.agrestic.brewing.optional", "Starter culture fluid is optional");

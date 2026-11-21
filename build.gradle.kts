@@ -194,13 +194,26 @@ java {
 publishing {
     publications {
         register<MavenPublication>("mavenJava") {
-            artifactId = "${property("mod_id")}"
             from(components["java"])
+            artifactId = "${property("mod_id")}"
         }
     }
     repositories {
         maven {
-            url = uri("file://${System.getenv("local_maven")}")
+            name = "krystal-maven"
+            url = uri("https://krystalsmaven.oreostack.uk/${findProperty("krystalRepository") ?: "releases"}")
+            credentials {
+                username = "${findProperty("krystalMavenUser") ?: System.getenv("KRYSTAL_MAVEN_USER")}"
+                password = "${findProperty("krystalMavenToken") ?: System.getenv("KRYSTAL_MAVEN_PASSWORD")}"
+            }
+        }
+        maven {
+            name = "krystal-snapshot-maven"
+            url = uri("https://krystalsmaven.oreostack.uk/snapshots")
+            credentials {
+                username = "${findProperty("krystalMavenUser") ?: System.getenv("KRYSTAL_MAVEN_USER")}"
+                password = "${findProperty("krystalMavenToken") ?: System.getenv("KRYSTAL_MAVEN_PASSWORD")}"
+            }
         }
     }
 }

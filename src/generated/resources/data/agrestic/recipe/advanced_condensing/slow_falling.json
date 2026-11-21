@@ -1,0 +1,42 @@
+{
+  "type": "agrestic:advanced_condensing",
+  "base": {
+    "amount": 250,
+    "tag": "c:water"
+  },
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "ingredients": [
+    {
+      "item": "agrestic:cloudsbluff"
+    },
+    {
+      "tag": "c:feathers"
+    },
+    {
+      "item": "minecraft:paper"
+    }
+  ],
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "custom_effects": [
+          {
+            "duration": 3600,
+            "id": "minecraft:slow_falling",
+            "neoforge:cures": [
+              "milk",
+              "protected_by_totem"
+            ],
+            "show_icon": true
+          }
+        ],
+        "potion": "minecraft:water"
+      }
+    },
+    "count": 1,
+    "id": "agrestic:elixir"
+  },
+  "time": 400
+}

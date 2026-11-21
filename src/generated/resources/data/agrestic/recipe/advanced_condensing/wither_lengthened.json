@@ -1,0 +1,43 @@
+{
+  "type": "agrestic:advanced_condensing",
+  "base": {
+    "amount": 250,
+    "tag": "c:water"
+  },
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "ingredients": [
+    {
+      "item": "agrestic:deathstalk"
+    },
+    {
+      "type": "neoforge:block_tag",
+      "tag": "minecraft:wither_summon_base_blocks"
+    }
+  ],
+  "modifier": {
+    "item": "agrestic:horsetail"
+  },
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "custom_effects": [
+          {
+            "duration": 1800,
+            "id": "minecraft:wither",
+            "neoforge:cures": [
+              "milk",
+              "protected_by_totem"
+            ],
+            "show_icon": true
+          }
+        ],
+        "potion": "minecraft:water"
+      }
+    },
+    "count": 1,
+    "id": "agrestic:elixir"
+  },
+  "time": 400
+}

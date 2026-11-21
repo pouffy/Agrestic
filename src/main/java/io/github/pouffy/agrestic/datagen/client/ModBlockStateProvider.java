@@ -75,6 +75,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         appleLeaves(AgresticBlocks.APPLE_LEAVES);
         basicCondenser(AgresticBlocks.BASIC_CONDENSER);
         horizontalFacing(AgresticBlocks.BASIC_RETORT, "retort");
+        advancedCondenser(AgresticBlocks.ADVANCED_CONDENSER);
+        horizontalFacing(AgresticBlocks.ADVANCED_RETORT, "advanced_retort");
     }
 
     private void leaves(Supplier<? extends LeavesBlock> leaves, ResourceLocation texture) {
@@ -345,6 +347,29 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     Agrestic.location("block/condenser/front"),
                     Agrestic.location("block/condenser/bottom"),
                     Agrestic.location("block/condenser/top")
+            )).rotationY(yRot).build();
+        });
+        this.simpleBlockItem(block);
+    }
+
+    private void advancedCondenser(Supplier<? extends AdvancedCondenserBlock> block) {
+        String name = this.name(block.get());
+        getVariantBuilder(block.get()).forAllStatesExcept((state) -> {
+            Half half = state.getValue(CondenserBlock.HALF);
+            int yRot = Mth.floor((state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360);
+            if (half == Half.TOP) {
+                return ConfiguredModel.builder().modelFile(this.models().withExistingParent(name + "_top", Agrestic.location("block/template/advanced_condenser_top"))
+                        .texture("side", Agrestic.location("block/condenser/advanced_upper_side"))
+                        .texture("front", Agrestic.location("block/condenser/advanced_upper_front"))
+                        .texture("bottom", Agrestic.location("block/condenser/advanced_bottom"))
+                        .texture("top", Agrestic.location("block/condenser/advanced_retort_extra"))).rotationY(yRot).build();
+            }
+
+            return ConfiguredModel.builder().modelFile(this.models().orientableWithBottom(name + "_bottom",
+                    Agrestic.location("block/condenser/advanced_side"),
+                    Agrestic.location("block/condenser/advanced_front"),
+                    Agrestic.location("block/condenser/advanced_bottom"),
+                    Agrestic.location("block/condenser/advanced_bottom")
             )).rotationY(yRot).build();
         });
         this.simpleBlockItem(block);

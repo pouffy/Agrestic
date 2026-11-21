@@ -142,8 +142,8 @@ public class AgresticCreativeTab {
         consumer.accept(AgresticBlocks.DEATHSTALK.stack());
         consumer.accept(AgresticBlocks.BASIC_CONDENSER.stack());
         consumer.accept(AgresticBlocks.BASIC_RETORT.stack());
-        ///consumer.accept(AgresticBlocks.ADVANCED_CONDENSER.stack());
-        ///consumer.accept(AgresticBlocks.ADVANCED_RETORT.stack());
+        consumer.accept(AgresticBlocks.ADVANCED_CONDENSER.stack());
+        consumer.accept(AgresticBlocks.ADVANCED_RETORT.stack());
         ElixirItem.getElixirs().forEach(consumer);
     }
 

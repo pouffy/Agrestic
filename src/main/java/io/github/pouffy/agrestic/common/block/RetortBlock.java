@@ -53,6 +53,8 @@ public class RetortBlock extends HorizontalDirectionalBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         BlockState condenser = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
+        Direction cFacing = condenser.getValue(CondenserBlock.FACING);
+        if (cFacing.getOpposite() == state.getValue(FACING) || cFacing == state.getValue(FACING)) return InteractionResult.PASS;
         if (condenser.getBlock() == AgresticBlocks.BASIC_CONDENSER.block()) {
             return condenser.useWithoutItem(level, player, hitResult.withPosition(pos.relative(state.getValue(FACING).getOpposite())));
         }
@@ -62,6 +64,8 @@ public class RetortBlock extends HorizontalDirectionalBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockState condenser = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
+        Direction cFacing = condenser.getValue(CondenserBlock.FACING);
+        if (cFacing.getOpposite() == state.getValue(FACING) || cFacing == state.getValue(FACING)) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (condenser.getBlock() == AgresticBlocks.BASIC_CONDENSER.block()) {
             return condenser.useItemOn(stack, level, player, hand, hitResult.withPosition(pos.relative(state.getValue(FACING).getOpposite())));
         }

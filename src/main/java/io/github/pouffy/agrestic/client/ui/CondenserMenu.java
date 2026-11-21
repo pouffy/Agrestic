@@ -65,15 +65,35 @@ public class CondenserMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem()) {
             ItemStack originalStack = slot.getItem();
+            itemstack = originalStack.copy();
+            if (index < inventory.getContainerSize()) {
+                if (!this.moveItemStackTo(originalStack, 5, slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else {
+                if (isFuel(originalStack)) {
+                    if (!this.moveItemStackTo(originalStack, 2, 3, false))
+                        return ItemStack.EMPTY;
+                } else if (!this.moveItemStackTo(originalStack, 0, 2, false) || !this.moveItemStackTo(originalStack, 3, 4, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
 
             if (originalStack.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }
+
+            if (originalStack.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, originalStack);
         }
         return ItemStack.EMPTY;
     }

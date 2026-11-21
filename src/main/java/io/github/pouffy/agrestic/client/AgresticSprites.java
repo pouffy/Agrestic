@@ -23,6 +23,15 @@ public enum AgresticSprites {
     LIT_BASE("animated/lit_base", 14, 14),
     LIT("animated/lit", 14, 14),
 
+    ADV_ALCHEMY_ARROW_BASE("animated/adv_alchemy_arrow_base", 50, 52),
+    ADV_ALCHEMY_ARROW_BASE_MOD("animated/adv_alchemy_arrow_base_mod", 50, 52),
+    ADV_ALCHEMY_ARROW_BASE_TWO("animated/adv_alchemy_arrow_base_two", 50, 52),
+    ADV_ALCHEMY_ARROW_BASE_THREE("animated/adv_alchemy_arrow_base_three", 50, 52),
+    ADV_ALCHEMY_ARROW("animated/adv_alchemy_arrow", 50, 53),
+    ADV_ALCHEMY_ARROW_MOD("animated/adv_alchemy_arrow_mod", 50, 53),
+    ADV_ALCHEMY_ARROW_TWO("animated/adv_alchemy_arrow_two", 50, 53),
+    ADV_ALCHEMY_ARROW_THREE("animated/adv_alchemy_arrow_three", 50, 53),
+
     // Inventories
     PLAYER_INVENTORY("container/player_inventory", 256, 256, 176, 84),
     BLANK_CONTAINER("container/blank", 256, 256, 176, 83),

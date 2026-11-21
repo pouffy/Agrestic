@@ -53,6 +53,16 @@ public class AgresticItemContainer extends ItemStackHandler {
 
     public boolean canInsert(int slot, ItemStack stack) {
         if (forbidInsertion) return false;
+        return canForceInsert(slot, stack);
+    }
+
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+        if (forbidInsertion)
+            return stack;
+        return forceInsertItem(slot, stack, simulate);
+    }
+
+    public boolean canForceInsert(int slot, ItemStack stack) {
         if (stack.isEmpty() || !this.isItemValid(slot, stack)) return false;
         this.validateSlotIndex(slot);
         ItemStack existing = this.stacks.get(slot);
@@ -65,9 +75,7 @@ public class AgresticItemContainer extends ItemStackHandler {
         }
     }
 
-    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-        if (forbidInsertion)
-            return stack;
+    public ItemStack forceInsertItem(int slot, ItemStack stack, boolean simulate) {
         if (stack.isEmpty()) {
             return ItemStack.EMPTY;
         } else if (!this.isItemValid(slot, stack)) {
@@ -105,15 +113,23 @@ public class AgresticItemContainer extends ItemStackHandler {
 
     public boolean canExtract(int slot, int amount) {
         if (forbidExtraction) return false;
+        return canForceExtract(slot, amount);
+    }
+
+    public ItemStack extractItem(int slot, int amount, boolean simulate) {
+        if (forbidExtraction)
+            return ItemStack.EMPTY;
+        return forceExtractItem(slot, amount, simulate);
+    }
+
+    public boolean canForceExtract(int slot, int amount) {
         if (amount == 0) return false;
         this.validateSlotIndex(slot);
         ItemStack existing = this.stacks.get(slot);
         return !existing.isEmpty();
     }
 
-    public ItemStack extractItem(int slot, int amount, boolean simulate) {
-        if (forbidExtraction)
-            return ItemStack.EMPTY;
+    public ItemStack forceExtractItem(int slot, int amount, boolean simulate) {
         if (amount == 0) {
             return ItemStack.EMPTY;
         } else {

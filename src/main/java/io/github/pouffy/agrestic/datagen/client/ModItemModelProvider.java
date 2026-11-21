@@ -96,6 +96,7 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.herb(AgresticBlocks.VANTA_LILY::asItem);
         this.herb(AgresticBlocks.WIND_THISTLE::asItem);
         this.customModel(AgresticBlocks.BASIC_RETORT::asItem, Agrestic.location("block/retort"));
+        this.customModel(AgresticBlocks.ADVANCED_RETORT::asItem, Agrestic.location("block/advanced_retort"));
 
         this.getBuilder(itemName(AgresticItems.ELIXIR.item())).parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", Agrestic.location("item/elixir_bottle"))

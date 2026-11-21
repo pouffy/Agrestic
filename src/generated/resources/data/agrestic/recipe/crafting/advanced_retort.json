@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:bricks/nether"
+    },
+    "E": {
+      "tag": "c:buckets/empty"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    " B ",
+    "IE ",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "agrestic:advanced_retort"
+  }
+}

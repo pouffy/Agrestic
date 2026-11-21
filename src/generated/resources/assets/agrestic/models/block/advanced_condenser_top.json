@@ -1,0 +1,9 @@
+{
+  "parent": "agrestic:block/template/advanced_condenser_top",
+  "textures": {
+    "bottom": "agrestic:block/condenser/advanced_bottom",
+    "front": "agrestic:block/condenser/advanced_upper_front",
+    "side": "agrestic:block/condenser/advanced_upper_side",
+    "top": "agrestic:block/condenser/advanced_retort_extra"
+  }
+}

@@ -18,6 +18,7 @@ public class AgresticRecipeTypes {
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> registerRecipeType("brewing_barrel"));
 
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<BasicCondensingRecipe>> CONDENSING = HELPER.register("condensing", () -> registerRecipeType("condensing"));
+    public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<AdvancedCondensingRecipe>> ADVANCED_CONDENSING = HELPER.register("advanced_condensing", () -> registerRecipeType("advanced_condensing"));
 
     public static final DeferredHolder<RecipeType<?>, SimpleRecipeType<CraftingRecipe>> OLIVE_OILING = HELPER.register("olive_oiling", () -> registerRecipeType("olive_oiling"));
 
@@ -37,7 +38,7 @@ public class AgresticRecipeTypes {
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<BrewingBarrelRecipe>> BREWING_BARREL = HELPER.register("brewing_barrel", () -> new SimpleRecipeSerializer<>(BrewingBarrelRecipe.CODEC));
 
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<BasicCondensingRecipe>> CONDENSING = HELPER.register("condensing", () -> new SimpleRecipeSerializer<>(BasicCondensingRecipe.CODEC));
-
+        public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<AdvancedCondensingRecipe>> ADVANCED_CONDENSING = HELPER.register("advanced_condensing", () -> new SimpleRecipeSerializer<>(AdvancedCondensingRecipe.CODEC));
         // Crafting sub-types
         public static final DeferredHolder<RecipeSerializer<?>, SimpleRecipeSerializer<ShapelessNoReturnRecipe>> SHAPELESS_NO_RETURN = HELPER.register("shapeless_no_return", () -> new SimpleRecipeSerializer<>(ShapelessNoReturnRecipe.CODEC));
         public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<OliveOilingRecipe>> OLIVE_OILING = HELPER.register("olive_oiling", () -> new SimpleCraftingRecipeSerializer<>(OliveOilingRecipe::new));

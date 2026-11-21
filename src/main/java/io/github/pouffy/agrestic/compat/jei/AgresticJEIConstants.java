@@ -32,6 +32,7 @@ public class AgresticJEIConstants {
     public static final RecipeType<RecipeHolder<EvaporatingBasinRecipe>> EVAPORATING_BASIN = RecipeType.createFromVanilla(AgresticRecipeTypes.EVAPORATING_BASIN.get());
     public static final RecipeType<RecipeHolder<BrewingBarrelRecipe>> BREWING_BARREL = RecipeType.createFromVanilla(AgresticRecipeTypes.BREWING_BARREL.get());
     public static final RecipeType<RecipeHolder<BasicCondensingRecipe>> CONDENSING = RecipeType.createFromVanilla(AgresticRecipeTypes.CONDENSING.get());
+    public static final RecipeType<RecipeHolder<AdvancedCondensingRecipe>> ADVANCED_CONDENSING = RecipeType.createFromVanilla(AgresticRecipeTypes.ADVANCED_CONDENSING.get());
 
     public static IDrawable asDrawable(AgresticSprites sprite) {
         return new IDrawable() {

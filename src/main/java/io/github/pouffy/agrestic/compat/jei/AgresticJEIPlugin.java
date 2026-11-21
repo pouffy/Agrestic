@@ -5,10 +5,7 @@ import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
 import io.github.pouffy.agrestic.client.ui.CondenserScreen;
 import io.github.pouffy.agrestic.common.item.ElixirItem;
 import io.github.pouffy.agrestic.common.recipe.*;
-import io.github.pouffy.agrestic.compat.jei.category.BrewingBarrelCategory;
-import io.github.pouffy.agrestic.compat.jei.category.CondensingCategory;
-import io.github.pouffy.agrestic.compat.jei.category.CrushingTubCategory;
-import io.github.pouffy.agrestic.compat.jei.category.EvaporatingBasinCategory;
+import io.github.pouffy.agrestic.compat.jei.category.*;
 import io.github.pouffy.agrestic.compat.jei.util.GuiContainerTankHandler;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import mezz.jei.api.IModPlugin;
@@ -50,6 +47,8 @@ public class AgresticJEIPlugin implements IModPlugin {
     private IRecipeCategory<RecipeHolder<BrewingBarrelRecipe>> brewingCategory;
     @Nullable
     private IRecipeCategory<RecipeHolder<BasicCondensingRecipe>> condensingCategory;
+    @Nullable
+    private IRecipeCategory<RecipeHolder<AdvancedCondensingRecipe>> advancedCondensingCategory;
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
@@ -63,7 +62,8 @@ public class AgresticJEIPlugin implements IModPlugin {
                 crushingCategory = new CrushingTubCategory(guiHelper),
                 evaporatingCategory = new EvaporatingBasinCategory(guiHelper),
                 brewingCategory = new BrewingBarrelCategory(guiHelper),
-                condensingCategory = new CondensingCategory(guiHelper, furnaceFuels)
+                condensingCategory = new CondensingCategory(guiHelper, furnaceFuels),
+                advancedCondensingCategory = new AdvancedCondensingCategory(guiHelper, furnaceFuels)
         );
     }
 
@@ -79,6 +79,7 @@ public class AgresticJEIPlugin implements IModPlugin {
         registration.addRecipes(AgresticJEIConstants.EVAPORATING_BASIN, agresticRecipes.getEvaporatingRecipes());
         registration.addRecipes(AgresticJEIConstants.BREWING_BARREL, agresticRecipes.getBrewingRecipes());
         registration.addRecipes(AgresticJEIConstants.CONDENSING, agresticRecipes.getCondensingRecipes());
+        registration.addRecipes(AgresticJEIConstants.ADVANCED_CONDENSING, agresticRecipes.getAdvancedCondensingRecipes());
     }
 
     @Override
@@ -88,6 +89,8 @@ public class AgresticJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(AgresticBlocks.BREWING_BARREL, AgresticJEIConstants.BREWING_BARREL);
         registration.addRecipeCatalyst(AgresticBlocks.BASIC_CONDENSER, AgresticJEIConstants.CONDENSING, RecipeTypes.FUELING);
         registration.addRecipeCatalyst(AgresticBlocks.BASIC_RETORT, AgresticJEIConstants.CONDENSING);
+        registration.addRecipeCatalyst(AgresticBlocks.ADVANCED_CONDENSER, AgresticJEIConstants.ADVANCED_CONDENSING, RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(AgresticBlocks.ADVANCED_RETORT, AgresticJEIConstants.ADVANCED_CONDENSING);
 
         registration.addRecipeCatalyst(AgresticBlocks.FLUID_BARREL, MantleJEIConstants.FLUID_TRANSFER);
     }
